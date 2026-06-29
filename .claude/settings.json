@@ -12,7 +12,8 @@
       "Bash(node -e \"const j=require\\('./src/localization/translations/en.json'\\); console.log\\('valid, keys:', Object.keys\\(j\\).length, '| has Integrations:', !!j['Integrations'], '| has timer key:', !!j['notification.timer.custom.body']\\);\")",
       "Bash(echo \"Exit code: $?\")",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(xargs cat)"
     ]
   }
 }

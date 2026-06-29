@@ -47,8 +47,8 @@ interface ActivityTileGroupProps {
  * This component is responsible for rendering the activity buttons in the log entry page
  * and displaying status bubbles with timing information.
  */
-// Activity type definition
-type ActivityType = 'sleep' | 'feed' | 'diaper' | 'note' | 'bath' | 'pump' | 'play' | 'measurement' | 'milestone' | 'medicine' | 'vaccine';
+// Activity type — built-ins plus dynamic `custom-<id>` keys
+type ActivityType = string;
 
 export function ActivityTileGroup({
   selectedBaby,
@@ -156,6 +156,29 @@ export function ActivityTileGroup({
     fetchCustomActivities();
   }, []);
 
+  // Ref to track which custom IDs were present when settings were last loaded.
+  // Used to distinguish "brand new activity" from "hidden activity" on reload.
+  const savedCustomIdsRef = useRef<Set<string>>(new Set());
+
+  // Merge newly-loaded custom activities into order/visibility.
+  // Only activities that were NOT part of the saved order are treated as new
+  // and automatically made visible. Hidden activities stay hidden.
+  useEffect(() => {
+    if (!settingsLoaded || customActivities.length === 0) return;
+    const customIds = customActivities.map(ca => `custom-${ca.id}`);
+    // IDs not previously tracked in the saved settings → truly new activities
+    const newIds = customIds.filter(id => !savedCustomIdsRef.current.has(id));
+    if (newIds.length === 0) return;
+    // Record them so future runs don't re-process them
+    newIds.forEach(id => savedCustomIdsRef.current.add(id));
+    setActivityOrder(prev => [...prev, ...newIds.filter(id => !prev.includes(id))]);
+    setVisibleActivities(prev => {
+      const s = new Set(prev);
+      newIds.forEach(id => s.add(id));
+      return s;
+    });
+  }, [customActivities, settingsLoaded]);
+
   // State for tracking the current caretaker ID
   const [caretakerId, setCaretakerId] = useState<string | null>(null);
   
@@ -245,6 +268,10 @@ export function ActivityTileGroup({
             const originalOrder = [...loadedOrder];
             const originalVisible = new Set(loadedVisible);
             
+            // Record which custom IDs are already in the saved order so the
+            // merge effect knows not to re-add hidden custom activities as visible.
+            savedCustomIdsRef.current = new Set(loadedOrder.filter(id => id.startsWith('custom-')));
+
             // Update state with loaded settings
             setActivityOrder(loadedOrder);
             setVisibleActivities(loadedVisible);
@@ -419,8 +446,8 @@ export function ActivityTileGroup({
     }
   };
 
-  // Activity display names for the menu
-  const activityDisplayNames: Record<ActivityType, string> = {
+  // Activity display names for the menu (built-ins)
+  const activityDisplayNames: Record<string, string> = {
     sleep: t('Sleep'),
     feed: t('Feed'),
     diaper: t('Diaper'),
@@ -432,6 +459,16 @@ export function ActivityTileGroup({
     medicine: t('Medicine'),
     play: t('Activity'),
     vaccine: t('Vaccines')
+  };
+
+  const getActivityDisplayName = (activity: string): string => {
+    if (activityDisplayNames[activity]) return activityDisplayNames[activity];
+    if (activity.startsWith('custom-')) {
+      const id = activity.replace('custom-', '');
+      const ca = customActivities.find(c => c.id === id);
+      return ca ? `${ca.icon} ${ca.name}` : activity;
+    }
+    return activity;
   };
 
   const firstVisibleActivity = activityOrder.find(a => visibleActivities.has(a));
@@ -815,8 +852,26 @@ export function ActivityTileGroup({
             />
           </div>
         );
-      default:
+      default: {
+        if (activity.startsWith('custom-')) {
+          const caId = activity.replace('custom-', '');
+          const ca = customActivities.find(c => c.id === caId);
+          if (!ca) return null;
+          return (
+            <div key={activity} className="relative w-[82px] min-h-24 flex-shrink-0 snap-center">
+              <ActivityTile
+                activity={{ id: activity, babyId: selectedBaby.id, time: new Date().toISOString(), content: '', category: 'Custom', caretakerId: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), deletedAt: null } as any}
+                title={ca.name}
+                variant="default"
+                isButton={true}
+                icon={<span style={{ fontSize: '2.5rem', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{ca.icon}</span>}
+                onClick={() => { updateUnlockTimer(); onCustomActivityClick?.(ca); }}
+              />
+            </div>
+          );
+        }
         return null;
+      }
     }
   };
 
@@ -825,33 +880,6 @@ export function ActivityTileGroup({
       <div ref={scrollContainerRef} className="flex overflow-x-auto border-0 no-scrollbar snap-x snap-mandatory relative p-2 gap-1">
         {/* Render activity tiles based on order and visibility */}
         {activityOrder.map(activity => renderActivityTile(activity))}
-
-        {/* Custom activity tiles */}
-        {customActivities.map(ca => (
-          <div key={`custom-${ca.id}`} className="relative w-[82px] min-h-24 flex-shrink-0 snap-center">
-            <ActivityTile
-              activity={{
-                id: `custom-${ca.id}`,
-                babyId: selectedBaby.id,
-                time: new Date().toISOString(),
-                content: '',
-                category: 'Custom',
-                caretakerId: null,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                deletedAt: null,
-              } as any}
-              title={ca.name}
-              variant="default"
-              isButton={true}
-              icon={<span style={{ fontSize: '1.5rem' }}>{ca.icon}</span>}
-              onClick={() => {
-                updateUnlockTimer();
-                onCustomActivityClick?.(ca);
-              }}
-            />
-          </div>
-        ))}
 
         {/* Configure Button for customizing activity tiles */}
         <div className="relative w-[82px] min-h-24 flex-shrink-0 snap-center">
@@ -1080,7 +1108,7 @@ export function ActivityTileGroup({
                   onCheckedChange={() => toggleActivity(activity)}
                   className="flex-grow"
                 >
-                  {activityDisplayNames[activity]}
+                  {getActivityDisplayName(activity)}
                 </DropdownMenuCheckboxItem>
               </div>
             ))}

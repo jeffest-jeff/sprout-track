@@ -1,0 +1,21 @@
+/* Dark mode overrides for CustomActivityModal component */
+
+html.dark .custom-activity-modal-field-item {
+  border-color: #374151 !important; /* gray-700 */
+}
+
+html.dark .custom-activity-modal-field-type {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+html.dark .custom-activity-modal-icon-input {
+  color: #e5e7eb !important; /* gray-200 */
+}
+
+html.dark .color-swatch-selected {
+  border-color: #e5e7eb !important; /* gray-200 — visible against dark background */
+}
+
+html.dark .custom-activity-reminder-text {
+  color: #9ca3af !important; /* gray-400 */
+}

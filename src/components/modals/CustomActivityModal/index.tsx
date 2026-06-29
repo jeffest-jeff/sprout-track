@@ -15,6 +15,7 @@ import {
 import { useToast } from '@/src/components/ui/toast';
 import { useLocalization } from '@/src/context/localization';
 import CustomFieldModal, { FieldDraft } from './CustomFieldModal';
+import './custom-activity-modal.css';
 
 interface CustomActivityModalProps {
   isOpen: boolean;
@@ -170,7 +171,7 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
                       key={swatch}
                       type="button"
                       onClick={() => setColor(swatch)}
-                      className={`h-8 w-8 rounded-full border-2 ${color === swatch ? 'border-gray-800' : 'border-transparent'}`}
+                      className={`h-8 w-8 rounded-full border-2 ${color === swatch ? 'border-gray-800 color-swatch-selected' : 'border-transparent'}`}
                       style={{ backgroundColor: swatch }}
                       aria-label={swatch}
                     />
@@ -189,8 +190,8 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
               </div>
               <div className="space-y-1">
                 {fields.map((field, index) => (
-                  <div key={field.id || index} className="flex items-center justify-between rounded border p-2">
-                    <span className="text-sm">{field.name} <span className="text-gray-400">({t(field.fieldType === 'BOOLEAN' ? 'Yes/No' : field.fieldType.charAt(0) + field.fieldType.slice(1).toLowerCase())})</span></span>
+                  <div key={field.id || index} className="flex items-center justify-between rounded border p-2 custom-activity-modal-field-item">
+                    <span className="text-sm">{field.name} <span className="text-gray-400 custom-activity-modal-field-type">({t(field.fieldType === 'BOOLEAN' ? 'Yes/No' : field.fieldType.charAt(0) + field.fieldType.slice(1).toLowerCase())})</span></span>
                     <div className="flex gap-1">
                       <button type="button" onClick={() => { setEditingFieldIndex(index); setFieldModalOpen(true); }}>
                         <Pencil className="h-4 w-4 text-gray-500" />
@@ -213,9 +214,9 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
                 </div>
                 {reminderEnabled && (
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">{t('Remind after')}</span>
+                    <span className="text-sm custom-activity-reminder-text">{t('Remind after')}</span>
                     <Input type="number" min={1} max={72} value={reminderHours} onChange={(e) => setReminderHours(e.target.value)} className="w-20" />
-                    <span className="text-sm">{t('hours without a log')}</span>
+                    <span className="text-sm custom-activity-reminder-text">{t('hours without a log')}</span>
                   </div>
                 )}
               </div>

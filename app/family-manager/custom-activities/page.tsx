@@ -93,39 +93,42 @@ export default function CustomActivitiesPage() {
   }, [rows, search]);
 
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-xl font-semibold">{t('Custom Activities')}</h1>
-      <TableSearch value={search} onSearchChange={setSearch} placeholder={t('Search')} />
-      {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin" />
-        </div>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t('Family')}</TableHead>
-              <TableHead>{t('Activity Name')}</TableHead>
-              <TableHead>{t('Field Label')}</TableHead>
-              <TableHead>{t('Log Entry')}</TableHead>
-              <TableHead>{t('Last Entry')}</TableHead>
-              <TableHead>{t('Active')}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((r) => (
-              <TableRow key={r.activityId}>
-                <TableCell>{r.familyName}</TableCell>
-                <TableCell>{r.icon} {r.activityName}</TableCell>
-                <TableCell>{r.fieldCount}</TableCell>
-                <TableCell>{r.logCount}</TableCell>
-                <TableCell>{r.lastEntryAt ? formatDateTime(r.lastEntryAt) : '—'}</TableCell>
-                <TableCell>{r.isActive ? t('Yes') : t('No')}</TableCell>
+    <div className="family-manager-page">
+      <div className="family-manager-search">
+        <TableSearch value={search} onSearchChange={setSearch} placeholder={t('Search')} />
+      </div>
+      <div className="family-manager-table-area p-4">
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('Family')}</TableHead>
+                <TableHead>{t('Activity Name')}</TableHead>
+                <TableHead>{t('Field Label')}</TableHead>
+                <TableHead>{t('Log Entry')}</TableHead>
+                <TableHead>{t('Last Entry')}</TableHead>
+                <TableHead>{t('Active')}</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
+            </TableHeader>
+            <TableBody>
+              {filtered.map((r) => (
+                <TableRow key={r.activityId}>
+                  <TableCell>{r.familyName}</TableCell>
+                  <TableCell>{r.icon} {r.activityName}</TableCell>
+                  <TableCell>{r.fieldCount}</TableCell>
+                  <TableCell>{r.logCount}</TableCell>
+                  <TableCell>{r.lastEntryAt ? formatDateTime(r.lastEntryAt) : '—'}</TableCell>
+                  <TableCell>{r.isActive ? t('Yes') : t('No')}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
     </div>
   );
 }

@@ -17,10 +17,13 @@ import {
 } from '@/src/components/ui/select';
 import { ShareButton } from '@/src/components/ui/share-button';
 import { Checkbox } from '@/src/components/ui/checkbox';
+import { Switch } from '@/src/components/ui/switch';
 import { useLocalization } from '@/src/context/localization';
 import { useTimezone } from '@/app/context/timezone';
+import { useToast } from '@/src/components/ui/toast';
 import { Settings } from '@/app/api/types';
 import { DateFormatSetting, TimeFormatSetting } from '@/src/utils/dateFormat';
+import CustomActivitySettings from '@/src/components/settings/CustomActivitySettings';
 
 interface FamilyData {
   id: string;
@@ -90,6 +93,25 @@ export default function ConfigTab({
   const { t } = useLocalization();
   const router = useRouter();
   const { setDateTimeFormats } = useTimezone();
+  const { showToast } = useToast();
+
+  const handleWebhookTest = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const response = await fetch('/api/settings/webhook-test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': authToken ? `Bearer ${authToken}` : '' },
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showToast({ variant: 'success', title: t('Test Webhook'), message: t('Webhook test sent'), duration: 4000 });
+      } else {
+        showToast({ variant: 'error', title: 'Error', message: data.error || 'Failed', duration: 5000 });
+      }
+    } catch {
+      showToast({ variant: 'error', title: 'Error', message: 'Failed to send test', duration: 5000 });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -363,6 +385,49 @@ export default function ConfigTab({
               </SelectContent>
             </Select>
           </div>
+        </div>
+      </div>
+
+      {/* Custom Activities */}
+      <div className="border-t border-slate-200 pt-6">
+        <CustomActivitySettings babies={babies.map((b) => ({ id: b.id, firstName: b.firstName }))} />
+      </div>
+
+      {/* Integrations */}
+      <div className="border-t border-slate-200 pt-6">
+        <h3 className="form-label mb-4">{t('Integrations')}</h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>{t('Enable Webhook')}</Label>
+            <Switch
+              checked={!!(settings as any)?.outboundWebhookEnabled}
+              onCheckedChange={(checked) => onSettingsChange({ outboundWebhookEnabled: checked } as Partial<Settings>)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t('Webhook URL')}</Label>
+            <Input
+              key={(settings as any)?.outboundWebhookUrl || ''}
+              defaultValue={(settings as any)?.outboundWebhookUrl || ''}
+              placeholder="https://..."
+              onBlur={(e) => onSettingsChange({ outboundWebhookUrl: e.target.value } as Partial<Settings>)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t('Webhook Secret')}</Label>
+            <Input
+              type="password"
+              key={`secret-${(settings as any)?.outboundWebhookSecret || ''}`}
+              defaultValue={(settings as any)?.outboundWebhookSecret || ''}
+              placeholder={t('Optional HMAC secret')}
+              onBlur={(e) => onSettingsChange({ outboundWebhookSecret: e.target.value } as Partial<Settings>)}
+            />
+          </div>
+          {!!(settings as any)?.outboundWebhookEnabled && (settings as any)?.outboundWebhookUrl && (
+            <Button variant="outline" onClick={handleWebhookTest} className="w-full">
+              {t('Send Test Webhook')}
+            </Button>
+          )}
         </div>
       </div>
 

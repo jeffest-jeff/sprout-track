@@ -28,6 +28,7 @@ import CustomActivitySettings from '@/src/components/settings/CustomActivitySett
 import { useToast } from '@/src/components/ui/toast';
 
 import { useLocalization } from '@/src/context/localization';
+import './SettingsModal.css';
 
 interface SettingsModalProps {
   open: boolean;
@@ -276,7 +277,7 @@ export default function SettingsModal({
               </div>
             </div>
 
-            <div className="border-t border-slate-200 pt-6">
+            <div className="border-t border-slate-200 pt-6 settings-section-divider">
               <h3 className="form-label mb-4">{t('Manage Babies')}</h3>
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2 w-full">
@@ -326,12 +327,12 @@ export default function SettingsModal({
             </div>
 
             {/* Custom Activities */}
-            <div className="border-t border-slate-200 pt-6">
+            <div className="border-t border-slate-200 pt-6 settings-section-divider">
               <CustomActivitySettings babies={babies.map((b) => ({ id: b.id, firstName: b.firstName }))} />
             </div>
 
             {/* Integrations */}
-            <div className="border-t border-slate-200 pt-6">
+            <div className="border-t border-slate-200 pt-6 settings-section-divider">
               <h3 className="form-label mb-4">{t('Integrations')}</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

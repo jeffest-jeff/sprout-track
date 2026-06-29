@@ -1,0 +1,33 @@
+/* Dark mode overrides for CustomActivitySettings component */
+
+html.dark .custom-activity-heading {
+  color: #e5e7eb !important; /* gray-200 */
+}
+
+html.dark .custom-activity-item {
+  border-color: #374151 !important; /* gray-700 */
+}
+
+html.dark .custom-activity-item-name {
+  color: #e5e7eb !important; /* gray-200 */
+}
+
+html.dark .custom-activity-field-count {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+html.dark .custom-activity-empty-text {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+html.dark .custom-activity-table th {
+  color: #9ca3af !important; /* gray-400 */
+}
+
+html.dark .custom-activity-table td {
+  color: #e5e7eb !important; /* gray-200 */
+}
+
+html.dark .custom-activity-table .border-t {
+  border-color: #374151 !important; /* gray-700 */
+}

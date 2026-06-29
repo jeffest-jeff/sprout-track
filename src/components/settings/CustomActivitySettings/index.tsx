@@ -8,6 +8,7 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { useToast } from '@/src/components/ui/toast';
 import { useLocalization } from '@/src/context/localization';
 import CustomActivityModal from '@/src/components/modals/CustomActivityModal';
+import './custom-activity-settings.css';
 
 interface BabyOption {
   id: string;
@@ -110,23 +111,23 @@ export default function CustomActivitySettings({ babies = [] }: CustomActivitySe
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold">{t('Custom Activities')}</h3>
+        <h3 className="text-base font-semibold custom-activity-heading">{t('Custom Activities')}</h3>
         <Button size="sm" onClick={() => { setEditing(null); setModalOpen(true); }}>
           <Plus className="h-4 w-4 mr-1" />{t('Add Custom Activity')}
         </Button>
       </div>
 
       {activities.length === 0 && !loading && (
-        <p className="text-sm text-gray-500">{t('No custom activities yet. Add one to get started.')}</p>
+        <p className="text-sm text-gray-500 custom-activity-empty-text">{t('No custom activities yet. Add one to get started.')}</p>
       )}
 
       <div className="space-y-2">
         {activities.map((activity) => (
-          <div key={activity.id} className="flex items-center justify-between rounded border p-3">
+          <div key={activity.id} className="flex items-center justify-between rounded border p-3 custom-activity-item">
             <div className="flex items-center gap-2">
               <span className="text-xl">{activity.icon}</span>
-              <span className="font-medium">{activity.name}</span>
-              <span className="text-xs text-gray-400">({activity.fields.length})</span>
+              <span className="font-medium custom-activity-item-name">{activity.name}</span>
+              <span className="text-xs text-gray-400 custom-activity-field-count">({activity.fields.length})</span>
             </div>
             <div className="flex gap-2">
               <button type="button" onClick={() => { setEditing(activity); setModalOpen(true); }} aria-label={t('Edit Activity')}>
@@ -143,7 +144,7 @@ export default function CustomActivitySettings({ babies = [] }: CustomActivitySe
       {/* Per-baby visibility grid */}
       {babies.length > 0 && activities.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm custom-activity-table">
             <thead>
               <tr>
                 <th className="text-left p-2">{t('Custom Activity')}</th>
