@@ -112,6 +112,7 @@ export async function createDataExport(exportData: {
   measurements?: any[];
   medicines?: any[];
   medicineLogs?: any[];
+  customActivityLogs?: any[];
   calendarEvents?: any[];
   settings?: any;
 }, familySlug: string) {
@@ -145,6 +146,7 @@ export async function createDataExport(exportData: {
     { key: 'measurements', filename: 'measurements.csv' },
     { key: 'medicines', filename: 'medicines.csv' },
     { key: 'medicineLogs', filename: 'medicine-logs.csv' },
+    { key: 'customActivityLogs', filename: 'custom-activity-logs.csv' },
     { key: 'calendarEvents', filename: 'calendar-events.csv' }
   ];
   

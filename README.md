@@ -152,6 +152,21 @@ The Setup Wizard will guide you through initial configuration on first access.
 
 See [Docker Deployment](documentation/Admin-Documentation/docker-deployment.md) for docker-compose setup, volumes, custom ports, and container details.
 
+## Quick Start: Home Assistant Addon
+
+Sprout Track can run as a Home Assistant addon. The addon definition lives in `hassio-addon/`.
+
+1. Add this repository as a custom addon repository in Home Assistant (Settings → Add-ons → Add-on Store → ⋮ → Repositories).
+2. Install the "Sprout Track" addon.
+3. Configure `auth_life`, `idle_time`, and `enable_notifications` in the addon options.
+4. Start the addon and open the Web UI on port 3000.
+
+The SQLite database is persisted under Home Assistant's `/share/sprout-track` directory so it survives restarts and updates.
+
+### Home Assistant integration (outbound webhook)
+
+Beyond the inbound REST API + API keys, Sprout Track can **push** events to Home Assistant via an outbound webhook. In Settings → Integrations, set your HA webhook URL, optionally provide an HMAC secret, enable it, and use "Test Webhook" to verify. Custom activity log entries dispatch a `custom_activity_created` event; the payload is `{ event, timestamp, familyId, data }` and is signed with `X-Sprout-Signature` (HMAC-SHA256) when a secret is configured.
+
 ## Quick Start: Local (SQLite)
 
 Requires Node.js 22+, npm 10+, Git, and Bash.

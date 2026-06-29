@@ -4,13 +4,14 @@ import { ActivityType as ImportedActivityType } from '@/src/components/ui/activi
 // Define the extended ActivityType that includes caretaker information
 export type FullLogActivityType = ImportedActivityType & {
   caretakerId?: string | null;
-  caretakerName?: string;
+  caretakerName?: string | null;
 };
 
 // Use FullLogActivityType for internal component logic
 export type ActivityType = FullLogActivityType;
 
-export type FilterType = 'sleep' | 'feed' | 'diaper' | 'note' | 'bath' | 'pump' | 'breast-milk-adjustment' | 'milestone' | 'measurement' | 'medicine' | 'play' | 'vaccine' | null;
+// Custom activity filters use a `custom:<id>` string so each custom activity is its own filter option
+export type FilterType = 'sleep' | 'feed' | 'diaper' | 'note' | 'bath' | 'pump' | 'breast-milk-adjustment' | 'milestone' | 'measurement' | 'medicine' | 'play' | 'vaccine' | `custom:${string}` | null;
 
 export interface FullLogTimelineProps {
   activities: ImportedActivityType[];

@@ -89,6 +89,16 @@ function buildNotificationBody(
     ? t('notification.by', userLanguage, { actorName })
     : '';
 
+  // Custom activities use a `custom:` prefixed type and family-defined names/values
+  if (normalizedType.startsWith('custom:')) {
+    const { customActivityName, customActivityIcon, fieldValues } = activityData || {};
+    const summary = (fieldValues || [])
+      .slice(0, 2)
+      .map((fv: any) => `${fv.field?.name}: ${fv.value}${fv.field?.unit ? ' ' + fv.field.unit : ''}`)
+      .join(', ');
+    return `${customActivityIcon || ''} ${customActivityName || 'Custom Activity'} logged${summary ? ` — ${summary}` : ''}${byActor}`.trim();
+  }
+
   switch (normalizedType) {
     case 'feed': {
       const feedType = activityData?.type;
@@ -255,6 +265,10 @@ export async function notifyActivityCreated(
 
       try {
         const activityTypes = JSON.parse(pref.activityTypes) as string[];
+        // Custom activities: match the specific `custom:<id>` OR a generic `custom` entry
+        if (activityType.startsWith('custom:')) {
+          return activityTypes.includes(activityType) || activityTypes.includes('custom');
+        }
         const normalizedActivityType = ACTIVITY_TYPE_MAP[activityType] || activityType.toLowerCase();
         return activityTypes.includes(normalizedActivityType);
       } catch (error) {
@@ -299,7 +313,10 @@ export async function notifyActivityCreated(
 
       // Create localized notification payload
       const normalizedType = ACTIVITY_TYPE_MAP[activityType] || activityType.toLowerCase();
-      const activityName = getActivityTypeName(activityType, userLanguage);
+      // Custom activities use the family-defined name rather than a translated type name
+      const activityName = activityType.startsWith('custom:')
+        ? (activityData?.customActivityName || 'Custom Activity')
+        : getActivityTypeName(activityType, userLanguage);
       const payload: NotificationPayload = {
         title: t('notification.activity.title', userLanguage, {
           activityName,

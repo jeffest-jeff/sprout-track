@@ -45,6 +45,7 @@ function detectActivityType(activity: any): string {
   if ('doseAmount' in activity && 'medicineId' in activity) return 'medicine';
   if ('vaccineName' in activity) return 'vaccine';
   if ('activities' in activity && 'type' in activity) return 'play';
+  if ('customActivityId' in activity) return 'custom';
   return 'unknown';
 }
 
@@ -65,6 +66,18 @@ function getActivityTypeName(type: string, translations: Record<string, string>)
     'vaccine': 'Vaccine',
   };
   return t(typeNames[type] || type, translations);
+}
+
+// Serialize custom activity field values to "Label: value unit; ..."
+function getCustomActivityDetails(activity: any): string {
+  const fvs = activity.fieldValues || [];
+  return fvs
+    .map((fv: any) => {
+      const name = fv.field?.name ?? fv.customActivityField?.name ?? '';
+      const unit = fv.field?.unit ?? fv.customActivityField?.unit ?? '';
+      return `${name}: ${fv.value}${unit ? ' ' + unit : ''}`;
+    })
+    .join('; ');
 }
 
 // Get sub-type for an activity
@@ -273,17 +286,18 @@ function activityToRow(activity: any, timezone: string, translations: Record<str
     duration = formatFeedDuration(activity.feedDuration, translations);
   }
 
+  const isCustom = type === 'custom';
   return {
     [t('Date', translations)]: date,
     [t('Time', translations)]: time,
-    [t('Activity Type', translations)]: getActivityTypeName(type, translations),
-    [t('Sub-Type', translations)]: getSubType(activity, type, translations),
+    [t('Activity Type', translations)]: isCustom ? (activity.customActivity?.name || t('Custom Activity', translations)) : getActivityTypeName(type, translations),
+    [t('Sub-Type', translations)]: isCustom ? '' : getSubType(activity, type, translations),
     [t('Start Time', translations)]: startTime,
     [t('End Time', translations)]: endTime,
     [t('Duration', translations)]: duration,
-    [t('Amount', translations)]: getAmount(activity, type),
-    [t('Unit', translations)]: getUnit(activity, type),
-    [t('Details', translations)]: getDetails(activity, type, translations),
+    [t('Amount', translations)]: isCustom ? '' : getAmount(activity, type),
+    [t('Unit', translations)]: isCustom ? '' : getUnit(activity, type),
+    [t('Details', translations)]: isCustom ? getCustomActivityDetails(activity) : getDetails(activity, type, translations),
     [t('Notes', translations)]: getNotes(activity, type),
     [t('Caretaker', translations)]: activity.caretakerName || '',
   };
@@ -454,6 +468,20 @@ async function handleGet(req: NextRequest, authContext: AuthResult) {
       }) : emptyPromise,
     ]);
 
+    // Fetch custom activity logs (always included unless a specific built-in filter is set)
+    const customActivityLogs = ((!filter || filter === 'custom') && familyId) ? await prisma.customActivityLog.findMany({
+      where: {
+        babyId, familyId, deletedAt: null,
+        ...(startDateUTC && endDateUTC ? { time: { gte: startDateUTC, lte: endDateUTC } } : {}),
+      },
+      include: {
+        caretaker: true,
+        customActivity: true,
+        fieldValues: { include: { customActivityField: true } },
+      },
+      orderBy: { time: 'desc' },
+    }) : [];
+
     // Format all activities with caretaker names
     const formatLog = (log: any) => {
       const { caretaker, medicine, documents, contacts, ...rest } = log;
@@ -469,6 +497,22 @@ async function handleGet(req: NextRequest, authContext: AuthResult) {
       return formatted;
     };
 
+    const formatCustomLog = (log: any) => ({
+      customActivityId: log.customActivityId,
+      babyId: log.babyId,
+      time: formatForResponse(log.time),
+      notes: log.notes,
+      caretakerName: log.caretaker?.name || '',
+      customActivity: log.customActivity ? { name: log.customActivity.name } : null,
+      fieldValues: (log.fieldValues || []).map((fv: any) => ({
+        value: fv.value,
+        field: {
+          name: fv.customActivityField?.name ?? '',
+          unit: fv.customActivityField?.unit ?? '',
+        },
+      })),
+    });
+
     const allActivities = [
       ...sleepLogs.map(formatLog),
       ...feedLogs.map(formatLog),
@@ -482,6 +526,7 @@ async function handleGet(req: NextRequest, authContext: AuthResult) {
       ...medicineLogs.map(formatLog),
       ...breastMilkAdjustments.map(formatLog),
       ...vaccineLogs.map(formatLog),
+      ...customActivityLogs.map(formatCustomLog),
     ].sort((a, b) => getActivityTime(b) - getActivityTime(a));
 
     // Build export rows

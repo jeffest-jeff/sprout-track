@@ -116,6 +116,7 @@ async function handlePut(req: NextRequest, authContext: AuthResult) {
       'enableBreastMilkTracking',
       'includeSolidsInFeedTimer',
       'dateFormat', 'timeFormat',
+      'outboundWebhookUrl', 'outboundWebhookEnabled', 'outboundWebhookSecret',
     ];
 
     const isAdmin = authContext.caretakerRole === 'ADMIN' ||

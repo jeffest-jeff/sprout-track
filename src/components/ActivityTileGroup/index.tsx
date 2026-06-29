@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ActivityTile } from '@/src/components/ui/activity-tile';
 import { StatusBubble } from "@/src/components/ui/status-bubble";
-import { SleepLogResponse, FeedLogResponse, DiaperLogResponse, NoteResponse, BathLogResponse, PumpLogResponse, PlayLogResponse, MeasurementResponse, MilestoneResponse, MedicineLogResponse, VaccineLogResponse, ActivitySettings } from '@/app/api/types';
+import { SleepLogResponse, FeedLogResponse, DiaperLogResponse, NoteResponse, BathLogResponse, PumpLogResponse, PlayLogResponse, MeasurementResponse, MilestoneResponse, MedicineLogResponse, VaccineLogResponse, ActivitySettings, CustomActivityResponse } from '@/app/api/types';
 import { ArrowDownUp } from 'lucide-react';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
@@ -38,6 +38,7 @@ interface ActivityTileGroupProps {
   onMedicineClick: () => void;
   onPlayClick?: () => void;
   onVaccineClick?: () => void;
+  onCustomActivityClick?: (activity: CustomActivityResponse) => void;
 }
 
 /**
@@ -77,7 +78,8 @@ export function ActivityTileGroup({
     }
   },
   onPlayClick = () => {},
-  onVaccineClick = () => {}
+  onVaccineClick = () => {},
+  onCustomActivityClick,
 }: ActivityTileGroupProps) {
   const { theme } = useTheme();
   const { t } = useLocalization();
@@ -131,6 +133,29 @@ export function ActivityTileGroup({
   // State for tracking if settings have been loaded
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   
+  // State for custom activities
+  const [customActivities, setCustomActivities] = useState<CustomActivityResponse[]>([]);
+
+  // Fetch custom activities for the family
+  useEffect(() => {
+    const fetchCustomActivities = async () => {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) return;
+      try {
+        const response = await fetch('/api/custom-activity', {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) setCustomActivities(data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching custom activities:', error);
+      }
+    };
+    fetchCustomActivities();
+  }, []);
+
   // State for tracking the current caretaker ID
   const [caretakerId, setCaretakerId] = useState<string | null>(null);
   
@@ -800,6 +825,33 @@ export function ActivityTileGroup({
       <div ref={scrollContainerRef} className="flex overflow-x-auto border-0 no-scrollbar snap-x snap-mandatory relative p-2 gap-1">
         {/* Render activity tiles based on order and visibility */}
         {activityOrder.map(activity => renderActivityTile(activity))}
+
+        {/* Custom activity tiles */}
+        {customActivities.map(ca => (
+          <div key={`custom-${ca.id}`} className="relative w-[82px] min-h-24 flex-shrink-0 snap-center">
+            <ActivityTile
+              activity={{
+                id: `custom-${ca.id}`,
+                babyId: selectedBaby.id,
+                time: new Date().toISOString(),
+                content: '',
+                category: 'Custom',
+                caretakerId: null,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                deletedAt: null,
+              } as any}
+              title={ca.name}
+              variant="default"
+              isButton={true}
+              icon={<span style={{ fontSize: '1.5rem' }}>{ca.icon}</span>}
+              onClick={() => {
+                updateUnlockTimer();
+                onCustomActivityClick?.(ca);
+              }}
+            />
+          </div>
+        ))}
 
         {/* Configure Button for customizing activity tiles */}
         <div className="relative w-[82px] min-h-24 flex-shrink-0 snap-center">

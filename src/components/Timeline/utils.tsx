@@ -62,6 +62,10 @@ const isPlayActivity = (activity: any): boolean => {
 };
 
 export const getActivityIcon = (activity: ActivityType) => {
+  // Custom activity - check first since it has a distinctive customActivityId property
+  if ('customActivityId' in activity) {
+    return <span style={{ fontSize: '1rem' }}>{(activity as any).customActivity?.icon || '⭐'}</span>;
+  }
   // Play activity - check before sleep since both have duration and type
   if (isPlayActivity(activity)) {
     return <Baby className="h-4 w-4 text-black" />;
@@ -193,6 +197,23 @@ export const getActivityDetails = (activity: ActivityType, settings: Settings | 
   const caretakerDetail = activity.caretakerName ? [
     { label: t('Caretaker'), value: activity.caretakerName }
   ] : [];
+
+  // Custom activity
+  if ('customActivityId' in activity) {
+    const ca = activity as any;
+    const details = [
+      { label: t('Time'), value: formatTime(ca.time, settings, true, t) },
+      ...(ca.fieldValues || []).map((fv: any) => ({
+        label: fv.field?.name || '',
+        value: `${fv.value}${fv.field?.unit ? ' ' + fv.field.unit : ''}`,
+      })),
+    ];
+    if (ca.notes) details.push({ label: t('Notes'), value: ca.notes });
+    return {
+      title: ca.customActivity?.name || t('Custom Activity'),
+      details: [...details, ...caretakerDetail],
+    };
+  }
 
   // Play activity - check before sleep since both have duration and type
   if (isPlayActivity(activity)) {
@@ -645,6 +666,19 @@ export const getActivityDetails = (activity: ActivityType, settings: Settings | 
 };
 
 export const getActivityDescription = (activity: ActivityType, settings: Settings | null, t: (key: string) => string): ActivityDescription => {
+  // Custom activity
+  if ('customActivityId' in activity) {
+    const ca = activity as any;
+    const time = formatTime(ca.time, settings, true, t);
+    const fieldSummary = (ca.fieldValues || [])
+      .slice(0, 2)
+      .map((fv: any) => `${fv.field?.name}: ${fv.value}${fv.field?.unit ? ' ' + fv.field.unit : ''}`)
+      .join(' • ');
+    return {
+      type: ca.customActivity?.name || t('Custom Activity'),
+      details: [time, fieldSummary].filter(Boolean).join(' • '),
+    };
+  }
   // Play activity - check before sleep since both have duration and type
   if (isPlayActivity(activity)) {
     const formatPlayType = (type: string) => {
@@ -1005,6 +1039,8 @@ export const getActivityDescription = (activity: ActivityType, settings: Setting
 };
 
 export const getActivityEndpoint = (activity: ActivityType): string => {
+  // Custom activity
+  if ('customActivityId' in activity) return 'custom-activity-log';
   // Check play activity before sleep since both have duration and type
   if (isPlayActivity(activity)) return 'play-log';
   // Check for breast milk adjustment before pump
@@ -1028,6 +1064,10 @@ export const getActivityEndpoint = (activity: ActivityType): string => {
 };
 
 export const getActivityStyle = (activity: ActivityType): ActivityStyle => {
+  // Custom activity - neutral background; the emoji icon carries the activity color
+  if ('customActivityId' in activity) {
+    return { bg: 'bg-indigo-100', textColor: 'text-gray-700' };
+  }
   // Play activity - check before sleep since both have duration and type
   if (isPlayActivity(activity)) {
     return { bg: 'bg-[#F3C4A2]', textColor: 'text-white' };

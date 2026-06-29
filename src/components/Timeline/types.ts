@@ -5,7 +5,7 @@ import { SleepLogResponse } from '@/app/api/types';
 // Define the extended ActivityType that includes caretaker information
 export type TimelineActivityType = ImportedActivityType & {
   caretakerId?: string | null;
-  caretakerName?: string;
+  caretakerName?: string | null;
 };
 
 // Use TimelineActivityType for internal component logic

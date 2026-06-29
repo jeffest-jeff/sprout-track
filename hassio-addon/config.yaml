@@ -1,0 +1,24 @@
+name: "Sprout Track"
+description: "Baby activity tracker - self-hosted"
+version: "1.3.5"
+slug: "sprout_track"
+init: false
+arch:
+  - amd64
+  - aarch64
+  - armv7
+ports:
+  3000/tcp: 3000
+ports_description:
+  3000/tcp: "Web UI"
+map:
+  - share:rw
+options:
+  auth_life: 86400
+  idle_time: 604800
+  enable_notifications: true
+schema:
+  auth_life: int
+  idle_time: int
+  enable_notifications: bool
+image: "ghcr.io/oak-and-sprout/sprout-track-hassio/{arch}"

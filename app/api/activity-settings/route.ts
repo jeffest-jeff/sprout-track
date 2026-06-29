@@ -23,8 +23,38 @@ async function getActivitySettings(req: NextRequest, authContext: AuthResult): P
     // Get caretakerId from query params if provided
     const url = new URL(req.url);
     const caretakerId = url.searchParams.get('caretakerId');
-    
-    console.log(`GET /api/activity-settings - caretakerId: ${caretakerId || 'null'}, familyId: ${userFamilyId}`);
+    const babyId = url.searchParams.get('babyId');
+
+    console.log(`GET /api/activity-settings - caretakerId: ${caretakerId || 'null'}, babyId: ${babyId || 'null'}, familyId: ${userFamilyId}`);
+
+    // Per-baby custom activity visibility settings (independent of caretaker order/visible)
+    if (babyId) {
+      const settingsRec = await prisma.settings.findFirst({
+        where: { familyId: userFamilyId },
+        orderBy: { updatedAt: 'desc' },
+      });
+      let visible: string[] = [];
+      let hasKey = false;
+      if (settingsRec) {
+        const withActivity = settingsRec as unknown as { activitySettings?: string };
+        if (withActivity.activitySettings) {
+          try {
+            const all = JSON.parse(withActivity.activitySettings);
+            const key = `baby-${babyId}`;
+            if (all[key] && Array.isArray(all[key].visible)) {
+              visible = all[key].visible;
+              hasKey = true;
+            }
+          } catch { /* ignore */ }
+        }
+      }
+      // When no baby-specific key exists, default is all visible (empty order, empty visible signals "no restriction")
+      return NextResponse.json<ApiResponse<ActivitySettings>>({
+        success: true,
+        data: { order: [], visible, babyId, caretakerId: null },
+      });
+      void hasKey;
+    }
     
     // Default settings to use if none are found
     const defaultSettings: ActivitySettings = {
@@ -299,9 +329,39 @@ async function saveActivitySettings(req: NextRequest, authContext: AuthResult): 
     }
 
     const body = await req.json();
-    const { order, visible, caretakerId } = body as ActivitySettings;
-    
-    console.log(`POST /api/activity-settings - caretakerId: ${caretakerId || 'null'}, familyId: ${userFamilyId}`);
+    const { order, visible, caretakerId, babyId } = body as ActivitySettings;
+
+    console.log(`POST /api/activity-settings - caretakerId: ${caretakerId || 'null'}, babyId: ${babyId || 'null'}, familyId: ${userFamilyId}`);
+
+    // Per-baby custom activity visibility: write only the `visible` array under baby-<id>
+    if (babyId) {
+      if (!visible || !Array.isArray(visible)) {
+        return NextResponse.json({ success: false, error: 'Invalid baby settings format' }, { status: 400 });
+      }
+      let settingsRec = await prisma.settings.findFirst({
+        where: { familyId: userFamilyId },
+        orderBy: { updatedAt: 'desc' },
+      });
+      if (!settingsRec) {
+        settingsRec = await prisma.settings.create({
+          data: { familyId: userFamilyId, familyName: 'My Family', securityPin: '111222' },
+        });
+      }
+      const withActivity = settingsRec as unknown as { activitySettings?: string };
+      let all: Record<string, any> = {};
+      if (withActivity.activitySettings) {
+        try { all = JSON.parse(withActivity.activitySettings); } catch { all = {}; }
+      }
+      all[`baby-${babyId}`] = { visible };
+      await prisma.settings.update({
+        where: { id: settingsRec.id },
+        data: ({ activitySettings: JSON.stringify(all) }) as any,
+      });
+      return NextResponse.json<ApiResponse<ActivitySettings>>({
+        success: true,
+        data: { order: [], visible, babyId, caretakerId: null },
+      });
+    }
 
     // Validate input
     if (!order || !Array.isArray(order) || !visible || !Array.isArray(visible)) {

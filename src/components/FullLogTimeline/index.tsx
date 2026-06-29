@@ -254,6 +254,15 @@ const FullLogTimeline: React.FC<FullLogTimelineProps> = ({
       return false;
     }
 
+    // Custom activity search
+    if ('customActivityId' in activity) {
+      const act = activity as any;
+      if (act.customActivity?.name && act.customActivity.name.toLowerCase().includes(searchLower)) return true;
+      if (act.notes && act.notes.toLowerCase().includes(searchLower)) return true;
+      if ((act.fieldValues || []).some((fv: any) => String(fv.value).toLowerCase().includes(searchLower))) return true;
+      return false;
+    }
+
     return false;
   }, []);
 
@@ -296,6 +305,10 @@ const FullLogTimeline: React.FC<FullLogTimelineProps> = ({
             case 'vaccine':
               return 'vaccineName' in activity;
             default:
+              // Custom activity filters use a `custom:<id>` value
+              if (typeof activeFilter === 'string' && activeFilter.startsWith('custom:')) {
+                return 'customActivityId' in activity && (activity as any).customActivityId === activeFilter.slice('custom:'.length);
+              }
               return true;
           }
         });
@@ -350,15 +363,18 @@ const FullLogTimeline: React.FC<FullLogTimelineProps> = ({
             case 'vaccine':
               return 'vaccineName' in activity;
             default:
+              if (typeof activeFilter === 'string' && activeFilter.startsWith('custom:')) {
+                return 'customActivityId' in activity && (activity as any).customActivityId === activeFilter.slice('custom:'.length);
+              }
               return true;
           }
         });
 
     // Then filter by search query
-    const searchFiltered = !searchQuery 
-      ? typeFiltered 
+    const searchFiltered = !searchQuery
+      ? typeFiltered
       : typeFiltered.filter(activity => matchesSearch(activity, searchQuery));
-    
+
     return Math.ceil(searchFiltered.length / itemsPerPage);
   }, [activities, activeFilter, itemsPerPage, searchQuery, matchesSearch, breastMilkTrackingEnabled]);
 

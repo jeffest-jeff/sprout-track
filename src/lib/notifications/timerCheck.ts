@@ -298,6 +298,7 @@ export async function checkTimerExpirations(): Promise<number> {
             NotificationEventType.FEED_TIMER_EXPIRED,
             NotificationEventType.DIAPER_TIMER_EXPIRED,
             NotificationEventType.MEDICINE_TIMER_EXPIRED,
+            NotificationEventType.CUSTOM_ACTIVITY_TIMER_EXPIRED,
           ],
         },
         enabled: true,
@@ -650,6 +651,125 @@ export async function checkTimerExpirations(): Promise<number> {
                     `[TimerCheck] Error sending medicine timer notification for preference ${preference.id}, medicine "${medicine.name}":`,
                     error
                   );
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Check custom activity timers
+      if (eventMap.has(NotificationEventType.CUSTOM_ACTIVITY_TIMER_EXPIRED)) {
+        const customPreferences = eventMap.get(NotificationEventType.CUSTOM_ACTIVITY_TIMER_EXPIRED)!;
+        console.log(`[TimerCheck] Checking custom activity timers for baby ${babyId}`);
+
+        if (!baby.familyId) {
+          console.warn(`[TimerCheck] Baby ${babyId} has no familyId, skipping custom activity timer check`);
+        } else {
+          // Find all custom activities with reminders enabled for this family
+          const customActivities = await prisma.customActivity.findMany({
+            where: {
+              familyId: baby.familyId,
+              reminderEnabled: true,
+              reminderIntervalHours: { not: null },
+              deletedAt: null,
+            },
+            select: { id: true, name: true, reminderIntervalHours: true },
+          });
+
+          for (const activity of customActivities) {
+            const thresholdMinutes = (activity.reminderIntervalHours || 0) * 60;
+            if (thresholdMinutes <= 0) continue;
+
+            // Find the last log for this activity for this baby
+            const lastLog = await prisma.customActivityLog.findFirst({
+              where: { babyId, customActivityId: activity.id, deletedAt: null },
+              orderBy: { time: 'desc' },
+              select: { time: true },
+            });
+
+            if (!lastLog) continue;
+
+            const timeSinceLast = (Date.now() - lastLog.time.getTime()) / (1000 * 60);
+            if (timeSinceLast < thresholdMinutes) continue;
+
+            console.log(`[TimerCheck] Custom activity "${activity.name}" eligible: ${timeSinceLast.toFixed(1)}min since last log (threshold: ${thresholdMinutes}min)`);
+
+            for (const preference of customPreferences) {
+              if (!preference.subscription) continue;
+
+              // This preference may be scoped to a specific custom activity via activityTypes
+              if (preference.activityTypes) {
+                try {
+                  const types = JSON.parse(preference.activityTypes) as string[];
+                  if (types.length > 0 && !types.includes(`custom:${activity.id}`) && !types.includes('custom')) {
+                    continue;
+                  }
+                } catch {
+                  // ignore parse errors, treat as all
+                }
+              }
+
+              const eligible = isNotificationEligible(
+                preference.lastTimerNotifiedAt,
+                preference.timerIntervalMinutes,
+                lastLog.time,
+                thresholdMinutes
+              );
+
+              if (eligible) {
+                try {
+                  const userLanguage = await getUserLanguage(
+                    preference.subscription.accountId,
+                    preference.subscription.caretakerId
+                  );
+                  const timeElapsed = formatTimeElapsed(timeSinceLast, userLanguage);
+
+                  const payload: NotificationPayload = {
+                    title: t('notification.timer.custom.title', userLanguage),
+                    body: t('notification.timer.custom.body', userLanguage, {
+                      babyName: baby.firstName,
+                      activityName: activity.name,
+                      timeElapsed,
+                    }),
+                    icon: '/sprout-128.png',
+                    badge: '/sprout-128.png',
+                    tag: `timer-${baby.id}-custom-${activity.id}`,
+                    data: {
+                      eventType: NotificationEventType.CUSTOM_ACTIVITY_TIMER_EXPIRED,
+                      babyId: baby.id,
+                    },
+                  };
+
+                  const previousNotifiedAt = preference.lastTimerNotifiedAt;
+                  await prisma.notificationPreference.update({
+                    where: { id: preference.id },
+                    data: { lastTimerNotifiedAt: new Date() },
+                  });
+
+                  try {
+                    await sendNotificationWithLogging(
+                      preference.subscription.id,
+                      {
+                        endpoint: preference.subscription.endpoint,
+                        p256dh: preference.subscription.p256dh,
+                        auth: preference.subscription.auth,
+                      },
+                      payload,
+                      NotificationEventType.CUSTOM_ACTIVITY_TIMER_EXPIRED,
+                      null,
+                      baby.id
+                    );
+                    notificationsSent++;
+                  } catch (sendError) {
+                    await prisma.notificationPreference.update({
+                      where: { id: preference.id },
+                      data: { lastTimerNotifiedAt: previousNotifiedAt },
+                    });
+                    throw sendError;
+                  }
+                } catch (error) {
+                  console.error(`[TimerCheck] Error sending custom activity timer notification for preference ${preference.id}:`, error);
                 }
               }
             }
