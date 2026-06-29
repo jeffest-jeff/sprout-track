@@ -21,8 +21,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
+import { Switch } from '@/src/components/ui/switch';
 import BabyModal from '@/src/components/modals/BabyModal';
 import ChangePinModal from '@/src/components/modals/ChangePinModal';
+import CustomActivitySettings from '@/src/components/settings/CustomActivitySettings';
+import { useToast } from '@/src/components/ui/toast';
 
 import { useLocalization } from '@/src/context/localization';
 
@@ -47,6 +50,7 @@ export default function SettingsModal({
   variant = 'default'
 }: SettingsModalProps) {
   const { t } = useLocalization();
+  const { showToast } = useToast();
   const [settings, setSettings] = useState<Settings | null>(null);
   const [babies, setBabies] = useState<Baby[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,6 +113,27 @@ export default function SettingsModal({
       }
     } catch (error) {
       console.error('Error updating settings:', error);
+    }
+  };
+
+  const handleWebhookTest = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const response = await fetch('/api/settings/webhook-test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': authToken ? `Bearer ${authToken}` : '',
+        },
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        showToast({ variant: 'success', title: t('Test Webhook'), message: t('Webhook test sent'), duration: 4000 });
+      } else {
+        showToast({ variant: 'error', title: 'Error', message: data.error || 'Failed', duration: 5000 });
+      }
+    } catch (error) {
+      showToast({ variant: 'error', title: 'Error', message: 'Failed to send test', duration: 5000 });
     }
   };
 
@@ -297,6 +322,44 @@ export default function SettingsModal({
                     {t('Add')}
                   </Button>
                 </div>
+              </div>
+            </div>
+
+            {/* Custom Activities */}
+            <div className="border-t border-slate-200 pt-6">
+              <CustomActivitySettings babies={babies.map((b) => ({ id: b.id, firstName: b.firstName }))} />
+            </div>
+
+            {/* Integrations */}
+            <div className="border-t border-slate-200 pt-6">
+              <h3 className="form-label mb-4">{t('Integrations')}</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label>{t('Enable Webhook')}</Label>
+                  <Switch
+                    checked={!!(settings as any)?.outboundWebhookEnabled}
+                    onCheckedChange={(checked) => handleSettingsChange({ outboundWebhookEnabled: checked } as Partial<Settings>)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t('Webhook URL')}</Label>
+                  <Input
+                    value={(settings as any)?.outboundWebhookUrl || ''}
+                    onChange={(e) => setSettings((prev) => prev ? ({ ...prev, outboundWebhookUrl: e.target.value } as Settings) : prev)}
+                    onBlur={(e) => handleSettingsChange({ outboundWebhookUrl: e.target.value } as Partial<Settings>)}
+                    placeholder="https://homeassistant.local/api/webhook/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t('Webhook Secret (optional)')}</Label>
+                  <Input
+                    type="password"
+                    value={(settings as any)?.outboundWebhookSecret || ''}
+                    onChange={(e) => setSettings((prev) => prev ? ({ ...prev, outboundWebhookSecret: e.target.value } as Settings) : prev)}
+                    onBlur={(e) => handleSettingsChange({ outboundWebhookSecret: e.target.value } as Partial<Settings>)}
+                  />
+                </div>
+                <Button variant="outline" onClick={handleWebhookTest}>{t('Test Webhook')}</Button>
               </div>
             </div>
           </div>

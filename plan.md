@@ -542,3 +542,41 @@ The original 10 steps remain. These additional features slot in after the core i
 15. **Export (Path B)** — New `app/api/custom-activity-log/export/route.ts` with dynamic columns; wire up in Reports UI
 16. **Export (full family)** — Extend `createDataExport` in `csv-export.ts` to include custom activity data
 17. **Sysadmin panel** — New `GET /api/family/custom-activities` endpoint and `/family-manager/custom-activities/page.tsx`
+18. **Docker support** — Multi-stage `Dockerfile`, `docker-compose.yml`, `.dockerignore` for self-hosting (SQLite and PostgreSQL)
+19. **Home Assistant addon** — `hassio-addon/` (config.yaml, run.sh, Dockerfile) so Sprout Track can run as an HA addon
+
+---
+
+## Home Assistant Integration
+
+### Option 1 — REST API + API keys (existing)
+
+Sprout Track already exposes an `ApiKey` model and external endpoints. Home Assistant can call these directly with a scoped API key (e.g. a nursery button that logs a feed). This is the inbound path: HA → Sprout Track.
+
+### Option 2 — Outbound webhook (push from Sprout Track to HA)
+
+For the reverse direction (Sprout Track → HA), an **outbound webhook** is added so external systems can react to activity events in real time.
+
+**Schema (`Settings`):**
+
+```prisma
+outboundWebhookUrl     String?   // Home Assistant / external webhook URL
+outboundWebhookEnabled Boolean   @default(false)
+outboundWebhookSecret  String?   // Optional HMAC secret for payload signing
+```
+
+**Utility (`src/lib/webhooks/outbound.ts`):**
+
+`dispatchOutboundWebhook(familyId, event, data)` POSTs `{ event, timestamp, familyId, data }` to the configured URL. When a secret is set, an `X-Sprout-Signature` header carries the HMAC-SHA256 of the JSON body. The function never throws — it is called fire-and-forget from API handlers.
+
+**Wiring:** the `custom-activity-log` POST handler dispatches a `custom_activity_created` event. A `test` event can be sent from the settings UI via `POST /api/settings/webhook-test`.
+
+**UI:** an "Integrations" section in the settings panel exposes the URL, enable toggle, optional secret, and a Test button.
+
+---
+
+## Docker & Self-Hosting
+
+A `Dockerfile`, `docker-compose.yml`, and `docker-startup.sh` provide a self-hosting path supporting both SQLite (default) and PostgreSQL via the `DATABASE_PROVIDER` env var. The startup script runs `prisma migrate deploy`, pushes the log schema, seeds, and (optionally) starts the notification cron daemon.
+
+A Home Assistant addon under `hassio-addon/` (`config.yaml`, `run.sh`, `Dockerfile`) builds the app and persists the SQLite DB under HA's `/share/sprout-track` volume. Addon options map `auth_life`, `idle_time`, and `enable_notifications` to environment variables.

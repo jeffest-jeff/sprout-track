@@ -1,5 +1,24 @@
 # Sprout Track Changelog
 
+## [Unreleased]
+
+### Added
+- Custom activity tracking: families can define custom activity types with configurable fields (number with unit, text, yes/no, duration, select list)
+- Custom activity builder in settings panel — add icon (emoji), color, and unlimited custom fields
+- Per-field unit support (e.g., mL, oz, mg, °F) for number-type fields
+- Custom activity log entries appear in the main timeline and full log alongside built-in activities
+- Per-baby visibility controls for custom activities
+- Custom activity reminders — configure an interval and receive push notifications when a log is overdue
+- Push notification support for custom activity entries
+- CSV export for custom activity logs with dynamic columns per activity type
+- Custom activities included in full timeline export
+- Outbound webhook integration for Home Assistant and other external systems
+  - Configurable webhook URL, optional HMAC secret, and test button in settings
+  - Events dispatched on custom activity creation
+- System admin panel: custom activity overview showing per-family activity usage
+- Docker Compose support for self-hosting
+- Home Assistant addon (`hassio-addon/`) for running Sprout Track as an HA addon
+
 ## v1.3.4 - Community Language additions and Better Translations
 
 ### Changes

@@ -22,6 +22,8 @@ import MilestoneForm from '@/src/components/forms/MilestoneForm';
 import MedicineForm from '@/src/components/forms/MedicineForm';
 import ActivityForm from '@/src/components/forms/ActivityForm';
 import VaccineForm from '@/src/components/forms/VaccineForm';
+import CustomActivityForm from '@/src/components/forms/CustomActivityForm';
+import { CustomActivityResponse } from '@/app/api/types';
 import { useParams } from 'next/navigation';
 import { NoBabySelected } from '@/src/components/ui/no-baby-selected';
 import ActiveFeedBanner from '@/src/components/ActiveFeedBanner';
@@ -46,6 +48,7 @@ function HomeContent(): React.ReactElement {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showVaccineModal, setShowVaccineModal] = useState<boolean>(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [activeCustomActivity, setActiveCustomActivity] = useState<CustomActivityResponse | null>(null);
   const [localTime, setLocalTime] = useState<string>('');
   const [sleepStartTime, setSleepStartTime] = useState<Record<string, Date>>({});
   const [lastSleepEndTime, setLastSleepEndTime] = useState<Record<string, Date>>({});
@@ -465,6 +468,7 @@ function HomeContent(): React.ReactElement {
           onMedicineClick={() => setShowMedicineModal(true)}
           onPlayClick={() => setShowActivityModal(true)}
           onVaccineClick={() => setShowVaccineModal(true)}
+          onCustomActivityClick={(ca) => setActiveCustomActivity(ca)}
         />
       )}
 
@@ -749,6 +753,23 @@ function HomeContent(): React.ReactElement {
           }
         }}
       />
+
+      {/* Custom Activity Form */}
+      {activeCustomActivity && (
+        <CustomActivityForm
+          isOpen={!!activeCustomActivity}
+          onClose={() => setActiveCustomActivity(null)}
+          babyId={selectedBaby?.id}
+          initialTime={localTime}
+          customActivity={activeCustomActivity}
+          onSuccess={() => {
+            setActiveCustomActivity(null);
+            if (selectedBaby?.id) {
+              triggerRefresh();
+            }
+          }}
+        />
+      )}
 
       {/* Settings Modal */}
       <SettingsModal

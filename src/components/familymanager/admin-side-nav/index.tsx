@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { X, Users, Mail, UserCircle, MessageSquare, Plus, Settings, LogOut } from 'lucide-react';
+import { X, Users, Mail, UserCircle, MessageSquare, Plus, Settings, LogOut, Star } from 'lucide-react';
 import { LanguageSelector } from '@/src/components/ui/side-nav/language-selector';
 import ThemeToggle from '@/src/components/ui/theme-toggle';
 import NavCountBubble from '@/src/components/ui/nav-count-bubble';
@@ -142,6 +142,14 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
             onClick={onNavigate}
             className="admin-side-nav-item"
             badge={<NavCountBubble count={counts.invites} />}
+          />
+          <SideNavItem
+            path="/family-manager/custom-activities"
+            label={t('Custom Activities')}
+            icon={<Star size={18} />}
+            isActive={currentPath === '/family-manager/custom-activities'}
+            onClick={onNavigate}
+            className="admin-side-nav-item"
           />
           {isSaasMode && counts.accounts !== undefined && (
             <SideNavItem

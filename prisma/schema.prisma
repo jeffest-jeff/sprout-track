@@ -102,6 +102,16 @@ enum NotificationEventType {
   FEED_TIMER_EXPIRED
   DIAPER_TIMER_EXPIRED
   MEDICINE_TIMER_EXPIRED
+  CUSTOM_ACTIVITY_TIMER_EXPIRED
+}
+
+// Field type for custom activity fields
+enum CustomFieldType {
+  NUMBER
+  TEXT
+  BOOLEAN
+  DURATION
+  SELECT
 }
 
 // Account model for email/password authentication
@@ -198,6 +208,8 @@ model Family {
   activeActivities  ActiveActivity[]
   vaccineLogs    VaccineLog[]
   apiKeys        ApiKey[]
+  customActivities    CustomActivity[]
+  customActivityLogs  CustomActivityLog[]
 }
 
 // New model for family membership
@@ -250,6 +262,7 @@ model Baby {
   activeActivity   ActiveActivity?
   vaccineLogs  VaccineLog[]
   apiKeys      ApiKey[]
+  customActivityLogs CustomActivityLog[]
 
   @@index([birthDate])
   @@index([deletedAt])
@@ -299,6 +312,7 @@ model Caretaker {
   activeBreastFeeds ActiveBreastFeed[]
   activeActivities  ActiveActivity[]
   vaccineLogs   VaccineLog[]
+  customActivityLogs CustomActivityLog[]
 
   @@index([deletedAt])
   @@index([familyId])
@@ -492,6 +506,9 @@ model Settings {
   includeSolidsInFeedTimer Boolean @default(true) // Include solid food feedings when calculating time since last feed
   dateFormat          String   @default("MM/DD/YYYY") // "MM/DD/YYYY" | "DD/MM/YYYY" | "YYYY-MM-DD"
   timeFormat          String   @default("12h") // "12h" | "24h"
+  outboundWebhookUrl     String?  // Home Assistant / external webhook URL
+  outboundWebhookEnabled Boolean  @default(false)
+  outboundWebhookSecret  String?  // Optional HMAC secret for payload signing
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
@@ -1353,4 +1370,89 @@ model ApiKey {
   @@index([keyHash])
   @@index([familyId])
   @@index([revoked])
+}
+
+// Custom activity definition - families define their own activity types
+model CustomActivity {
+  id                    String   @id @default(cuid())
+  familyId              String
+  name                  String
+  icon                  String   @default("⭐")
+  color                 String   @default("#6366f1")
+  isActive              Boolean  @default(true)
+  sortOrder             Int      @default(0)
+  reminderEnabled       Boolean  @default(false)
+  reminderIntervalHours Int?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  deletedAt            DateTime?
+
+  family Family                @relation(fields: [familyId], references: [id])
+  fields CustomActivityField[]
+  logs   CustomActivityLog[]
+
+  @@index([familyId])
+  @@index([deletedAt])
+}
+
+// Field definition belonging to a custom activity
+model CustomActivityField {
+  id               String          @id @default(cuid())
+  customActivityId String
+  name             String
+  fieldType        CustomFieldType
+  unit             String?
+  options          String? // JSON array string for SELECT type
+  isRequired       Boolean         @default(false)
+  sortOrder        Int             @default(0)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deletedAt        DateTime?
+
+  customActivity CustomActivity           @relation(fields: [customActivityId], references: [id])
+  logValues      CustomActivityLogValue[]
+
+  @@index([customActivityId])
+  @@index([deletedAt])
+}
+
+// Log entry for a custom activity
+model CustomActivityLog {
+  id               String    @id @default(cuid())
+  familyId         String
+  babyId           String
+  caretakerId      String?
+  customActivityId String
+  time             DateTime
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+
+  family         Family                   @relation(fields: [familyId], references: [id])
+  baby           Baby                     @relation(fields: [babyId], references: [id])
+  caretaker      Caretaker?               @relation(fields: [caretakerId], references: [id])
+  customActivity CustomActivity           @relation(fields: [customActivityId], references: [id])
+  fieldValues    CustomActivityLogValue[]
+
+  @@index([familyId])
+  @@index([babyId])
+  @@index([caretakerId])
+  @@index([customActivityId])
+  @@index([deletedAt])
+  @@index([time])
+}
+
+// EAV value for a custom activity log field
+model CustomActivityLogValue {
+  id                    String @id @default(cuid())
+  customActivityLogId   String
+  customActivityFieldId String
+  value                 String
+
+  customActivityLog   CustomActivityLog   @relation(fields: [customActivityLogId], references: [id], onDelete: Cascade)
+  customActivityField CustomActivityField @relation(fields: [customActivityFieldId], references: [id])
+
+  @@index([customActivityLogId])
+  @@index([customActivityFieldId])
 }

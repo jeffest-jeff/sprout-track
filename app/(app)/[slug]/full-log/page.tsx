@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import FullLogTimeline from '@/src/components/FullLogTimeline';
 import { NoBabySelected } from '@/src/components/ui/no-baby-selected';
 import { Baby as BabyIcon } from 'lucide-react';
+import { ActivityType } from '@/src/components/ui/activity-tile/activity-tile.types';
 
 function FullLogPage() {
   const { selectedBaby, accountStatus, isAccountAuth, isCheckingAccountStatus } = useBaby();
@@ -18,7 +19,7 @@ function FullLogPage() {
   const params = useParams();
   const familySlug = params?.slug as string;
   
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState<ActivityType[]>([]);
   const [startDate, setStartDate] = useState(() => {
     const date = new Date();
     date.setDate(date.getDate() - 7); // Default to last 7 days
@@ -35,28 +36,35 @@ function FullLogPage() {
       // Set start date to beginning of day (00:00:00) and end date to end of day (23:59:59)
       const adjustedStartDate = new Date(startDate);
       adjustedStartDate.setHours(0, 0, 0, 0);
-      
+
       const adjustedEndDate = new Date(endDate);
       adjustedEndDate.setHours(23, 59, 59, 999);
 
       // Build the URL with query parameters
       let url = `/api/timeline?babyId=${selectedBaby.id}&startDate=${adjustedStartDate.toISOString()}&endDate=${adjustedEndDate.toISOString()}&timezone=${encodeURIComponent(userTimezone)}`;
-      
+
       // Add family ID if available
       if (family?.id) {
         url += `&familyId=${family.id}`;
       }
 
       const authToken = localStorage.getItem('authToken');
-      const response = await fetch(url, {
-        headers: authToken ? {
-          'Authorization': `Bearer ${authToken}`
-        } : {}
-      });
-      const data = await response.json();
-      if (data.success) {
-        setActivities(data.data);
-      }
+      const headers: Record<string, string> = authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+
+      const customLogUrl = `/api/custom-activity-log?babyId=${selectedBaby.id}&startDate=${adjustedStartDate.toISOString()}&endDate=${adjustedEndDate.toISOString()}`;
+
+      const [timelineRes, customLogRes] = await Promise.all([
+        fetch(url, { headers }),
+        fetch(customLogUrl, { headers }),
+      ]);
+
+      const timelineData = await timelineRes.json();
+      const customLogData = await customLogRes.json();
+
+      const timeline = timelineData.success ? timelineData.data : [];
+      const customLogs = customLogData.success ? customLogData.data : [];
+
+      setActivities([...timeline, ...customLogs]);
     } catch (error) {
       console.error('Error fetching activities:', error);
     } finally {

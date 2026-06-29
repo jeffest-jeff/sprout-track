@@ -1,4 +1,4 @@
-import { Baby, SleepLog, FeedLog, DiaperLog, MoodLog, Note, Caretaker, Settings as PrismaSettings, Gender, SleepType, SleepQuality, FeedType, BreastSide, DiaperType, Mood, PumpLog, PlayLog, Milestone, MilestoneCategory, Measurement, MeasurementType, Medicine, MedicineLog, EmailConfig as PrismaEmailConfig, EmailProviderType, BreastMilkAdjustment, ActiveBreastFeed, ActiveActivity, VaccineLog, VaccineDocument } from '@prisma/client';
+import { Baby, SleepLog, FeedLog, DiaperLog, MoodLog, Note, Caretaker, Settings as PrismaSettings, Gender, SleepType, SleepQuality, FeedType, BreastSide, DiaperType, Mood, PumpLog, PlayLog, Milestone, MilestoneCategory, Measurement, MeasurementType, Medicine, MedicineLog, EmailConfig as PrismaEmailConfig, EmailProviderType, BreastMilkAdjustment, ActiveBreastFeed, ActiveActivity, VaccineLog, VaccineDocument, CustomActivity, CustomActivityField, CustomActivityLog, CustomFieldType } from '@prisma/client';
 
 // Family types
 export interface Family {
@@ -41,6 +41,7 @@ export interface ActivitySettings {
   order: string[];
   visible: string[];
   caretakerId?: string | null; // Optional caretaker ID for per-caretaker settings
+  babyId?: string | null; // Optional baby ID for per-baby custom activity visibility
 }
 
 // Sleep location settings types
@@ -605,4 +606,75 @@ export interface GrowthMetric {
   unit: string;
   percentile: number;
   trend: 'up' | 'down' | 'stable';
+}
+
+// Custom activity types
+export type CustomActivityFieldResponse = Omit<CustomActivityField, 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+};
+
+export type CustomActivityResponse = Omit<CustomActivity, 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  fields: CustomActivityFieldResponse[];
+};
+
+export type CustomActivityLogValueResponse = {
+  id: string;
+  customActivityLogId: string;
+  customActivityFieldId: string;
+  value: string;
+  field: {
+    name: string;
+    fieldType: CustomFieldType;
+    unit: string | null;
+  };
+};
+
+export type CustomActivityLogResponse = Omit<CustomActivityLog, 'time' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+  time: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  customActivity: {
+    id: string;
+    name: string;
+    icon: string;
+    color: string;
+  };
+  fieldValues: CustomActivityLogValueResponse[];
+  caretakerName?: string | null;
+};
+
+export interface CustomActivityCreate {
+  name: string;
+  icon?: string;
+  color?: string;
+  sortOrder?: number;
+  reminderEnabled?: boolean;
+  reminderIntervalHours?: number | null;
+}
+
+export interface CustomActivityFieldCreate {
+  customActivityId: string;
+  name: string;
+  fieldType: CustomFieldType;
+  unit?: string;
+  options?: string; // JSON array string
+  isRequired?: boolean;
+  sortOrder?: number;
+}
+
+export interface CustomActivityLogCreate {
+  babyId: string;
+  customActivityId: string;
+  time: string;
+  notes?: string;
+  fieldValues: Array<{
+    customActivityFieldId: string;
+    value: string;
+  }>;
 }
