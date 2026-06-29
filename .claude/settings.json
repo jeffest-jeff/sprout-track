@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -E \"\\\\.\\(ts|tsx|js\\)$\")"
+      "Bash(grep -E \"\\\\.\\(ts|tsx|js\\)$\")",
+      "Bash(npm run *)",
+      "Bash(npx prisma *)",
+      "Bash(./node_modules/.bin/prisma migrate *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(npm ci *)",
+      "Bash(npx tsc *)",
+      "Bash(node scripts/check-missing-translations.js)",
+      "Bash(node -e \"const j=require\\('./src/localization/translations/en.json'\\); console.log\\('valid, keys:', Object.keys\\(j\\).length, '| has Integrations:', !!j['Integrations'], '| has timer key:', !!j['notification.timer.custom.body']\\);\")",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
