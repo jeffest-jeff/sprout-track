@@ -26,7 +26,8 @@ import { DynamicTitle } from '@/src/components/ui/dynamic-title';
 import { AccountButton } from '@/src/components/ui/account-button';
 import AccountManager from '@/src/components/account-manager';
 import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import AccountExpirationBanner from '@/src/components/ui/account-expiration-banner';
 import NotificationSplashModal from '@/src/components/modals/NotificationSplashModal';
 import { checkPushSupport, checkSubscriptionStatus } from '@/src/lib/notifications/client';
@@ -37,7 +38,7 @@ const PaymentModal = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center p-4">
-        <Loader2 className="h-6 w-6 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="1.5rem" spin className="text-teal-600" />
       </div>
     )
   }

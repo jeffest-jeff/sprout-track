@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { XCircle, Home, ArrowLeft } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCloseCircle, mdiHome, mdiArrowLeft } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Label } from '@/src/components/ui/label';
@@ -45,7 +46,7 @@ export default function PaymentCancelledPage() {
           {/* Cancel Icon */}
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 bg-gray-400 rounded-full flex items-center justify-center">
-              <XCircle className="w-12 h-12 text-white" />
+              <Icon path={mdiCloseCircle} size="3rem" className="text-white" />
             </div>
           </div>
 
@@ -81,7 +82,7 @@ export default function PaymentCancelledPage() {
               onClick={() => router.push('/account')}
               className="w-full"
             >
-              <Home className="h-4 w-4 mr-2" />
+              <Icon path={mdiHome} size="1rem" className="mr-2" />
               {t('Return to Account')}
             </Button>
 
@@ -90,7 +91,7 @@ export default function PaymentCancelledPage() {
               variant="outline"
               className="w-full"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <Icon path={mdiArrowLeft} size="1rem" className="mr-2" />
               {t('Go Back')}
             </Button>
           </div>

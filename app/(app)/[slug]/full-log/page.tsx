@@ -8,7 +8,8 @@ import { useLocalization } from '@/src/context/localization';
 import { useParams } from 'next/navigation';
 import FullLogTimeline from '@/src/components/FullLogTimeline';
 import { NoBabySelected } from '@/src/components/ui/no-baby-selected';
-import { Baby as BabyIcon } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline } from '@mdi/js';
 import { ActivityType } from '@/src/components/ui/activity-tile/activity-tile.types';
 
 function FullLogPage() {
@@ -125,7 +126,7 @@ function FullLogPage() {
           {isCheckingAccountStatus ? (
             <div className="flex flex-col items-center justify-center h-[calc(100vh-192px)] text-center bg-white border-t border-gray-200">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center animate-pulse">
-                <BabyIcon className="h-8 w-8 text-indigo-600" />
+                <Icon path={mdiBabyFaceOutline} size="2rem" className="text-indigo-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-1">{t('Loading')}...</h3>
               <p className="text-sm text-gray-500">
@@ -135,7 +136,7 @@ function FullLogPage() {
           ) : isAccountAuth && accountStatus && !accountStatus.hasFamily ? (
             <div className="flex flex-col items-center justify-center h-[calc(100vh-192px)] text-center bg-white border-t border-gray-200">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-                <BabyIcon className="h-8 w-8 text-green-600" />
+                <Icon path={mdiBabyFaceOutline} size="2rem" className="text-green-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-1">{t('Family Setup Required')}</h3>
               <p className="text-sm text-gray-500 mb-4">
@@ -151,7 +152,7 @@ function FullLogPage() {
           ) : isAccountAuth && accountStatus && !accountStatus.verified ? (
             <div className="flex flex-col items-center justify-center h-[calc(100vh-192px)] text-center bg-white border-t border-gray-200">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-100 flex items-center justify-center">
-                <BabyIcon className="h-8 w-8 text-yellow-600" />
+                <Icon path={mdiBabyFaceOutline} size="2rem" className="text-yellow-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-1">{t('Email Verification Required')}</h3>
               <p className="text-sm text-gray-500 mb-4">

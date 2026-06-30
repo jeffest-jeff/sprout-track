@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import { useRouter } from 'next/navigation';
 import { useLocalization } from '@/src/context/localization';
 import { useDeployment } from '@/app/context/deployment';
@@ -97,7 +98,7 @@ export default function FeedbackPage() {
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Icon path={mdiLoading} size="2rem" spin />
       </div>
     );
   }

@@ -14,7 +14,8 @@ import {
 } from "@/src/components/ui/table";
 import type { SortDirection } from "@/src/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/src/components/ui/dialog";
-import { Loader2 } from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import { useRouter } from 'next/navigation';
 import FamilyForm from '@/src/components/forms/FamilyForm';
 import AppConfigForm from '@/src/components/forms/AppConfigForm';
@@ -300,7 +301,7 @@ export default function FamiliesPage() {
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Icon path={mdiLoading} size="2rem" spin />
       </div>
     );
   }
@@ -390,7 +391,7 @@ export default function FamiliesPage() {
           <div className="mt-4">
             {loadingCaretakers ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Icon path={mdiLoading} size="1.5rem" spin />
               </div>
             ) : selectedFamilyCaretakers.length > 0 ? (
               <Table>

@@ -1,0 +1,89 @@
+.icon-picker-search-icon {
+  color: #9ca3af;
+}
+
+.icon-picker-tab {
+  border: 1px solid transparent;
+}
+
+.icon-picker-tab-active {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.icon-picker-tab-inactive {
+  color: #64748b;
+}
+
+.icon-picker-tab-inactive:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.icon-picker-cell {
+  border: 2px solid transparent;
+}
+
+.icon-picker-cell-selected {
+  border-color: #6366f1;
+  background-color: #eef2ff;
+}
+
+.icon-picker-cell-unselected:hover {
+  background-color: #f1f5f9;
+}
+
+.icon-picker-icon {
+  color: #374151;
+}
+
+.icon-picker-icon-selected {
+  color: #4f46e5;
+}
+
+.icon-picker-preview-row {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.5rem;
+}
+
+/* Dark mode */
+html.dark .icon-picker-search-icon {
+  color: #6b7280;
+}
+
+html.dark .icon-picker-tab-active {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+html.dark .icon-picker-tab-inactive {
+  color: #94a3b8;
+}
+
+html.dark .icon-picker-tab-inactive:hover {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+html.dark .icon-picker-cell-selected {
+  border-color: #818cf8;
+  background-color: #312e81;
+}
+
+html.dark .icon-picker-cell-unselected:hover {
+  background-color: #1e293b;
+}
+
+html.dark .icon-picker-icon {
+  color: #d1d5db;
+}
+
+html.dark .icon-picker-icon-selected {
+  color: #a5b4fc;
+}
+
+html.dark .icon-picker-preview-row {
+  border-top-color: #334155;
+}

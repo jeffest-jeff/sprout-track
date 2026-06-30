@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState, Suspense, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CheckCircle, Home, Loader2, AlertTriangle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheckCircle, mdiHome, mdiLoading, mdiAlert } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Label } from '@/src/components/ui/label';
@@ -119,7 +120,7 @@ function PaymentSuccessContent() {
             <>
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
+                  <Icon path={mdiLoading} size="3rem" spin className="text-teal-600" />
                 </div>
               </div>
               <Label className="text-3xl font-bold text-gray-900 mb-4 block">
@@ -133,7 +134,7 @@ function PaymentSuccessContent() {
             <>
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center">
-                  <AlertTriangle className="w-12 h-12 text-amber-600" />
+                  <Icon path={mdiAlert} size="3rem" className="text-amber-600" />
                 </div>
               </div>
               <Label className="text-3xl font-bold text-gray-900 mb-4 block">
@@ -151,7 +152,7 @@ function PaymentSuccessContent() {
               {/* Success Icon */}
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-12 h-12 text-white" />
+                  <Icon path={mdiCheckCircle} size="3rem" className="text-white" />
                 </div>
               </div>
 
@@ -197,7 +198,7 @@ function PaymentSuccessContent() {
                 onClick={() => router.push(getRedirectUrl())}
                 className="w-full"
               >
-                <Home className="h-4 w-4 mr-2" />
+                <Icon path={mdiHome} size="1rem" className="mr-2" />
                 {t('Go to Home Now')}
               </Button>
             </>
@@ -227,7 +228,7 @@ export default function PaymentSuccessPage() {
             <CardContent className="text-center pt-8">
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
+                  <Icon path={mdiLoading} size="3rem" spin className="text-teal-600" />
                 </div>
               </div>
               <Label className="text-3xl font-bold text-gray-900 mb-4 block">

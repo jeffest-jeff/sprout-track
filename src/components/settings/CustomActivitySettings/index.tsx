@@ -4,7 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { CustomActivityResponse } from '@/app/api/types';
 import { Button } from '@/src/components/ui/button';
 import { Switch } from '@/src/components/ui/switch';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPlus, mdiPencil, mdiTrashCan } from '@mdi/js';
+import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import { useToast } from '@/src/components/ui/toast';
 import { useLocalization } from '@/src/context/localization';
 import CustomActivityModal from '@/src/components/modals/CustomActivityModal';
@@ -113,7 +115,7 @@ export default function CustomActivitySettings({ babies = [] }: CustomActivitySe
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold custom-activity-heading">{t('Custom Activities')}</h3>
         <Button size="sm" onClick={() => { setEditing(null); setModalOpen(true); }}>
-          <Plus className="h-4 w-4 mr-1" />{t('Add Custom Activity')}
+          <Icon path={mdiPlus} size="1rem" className="mr-1" />{t('Add Custom Activity')}
         </Button>
       </div>
 
@@ -125,16 +127,20 @@ export default function CustomActivitySettings({ babies = [] }: CustomActivitySe
         {activities.map((activity) => (
           <div key={activity.id} className="flex items-center justify-between rounded border p-3 custom-activity-item">
             <div className="flex items-center gap-2">
-              <span className="text-xl">{activity.icon}</span>
+              {activity.icon.startsWith('mdi') && ICON_PATH_MAP[activity.icon] ? (
+                <Icon path={ICON_PATH_MAP[activity.icon]} size="1.25rem" color={activity.color} />
+              ) : (
+                <span className="text-xl">{activity.icon}</span>
+              )}
               <span className="font-medium custom-activity-item-name">{activity.name}</span>
               <span className="text-xs text-gray-400 custom-activity-field-count">({activity.fields.length})</span>
             </div>
             <div className="flex gap-2">
               <button type="button" onClick={() => { setEditing(activity); setModalOpen(true); }} aria-label={t('Edit Activity')}>
-                <Pencil className="h-4 w-4 text-gray-500" />
+                <Icon path={mdiPencil} size="1rem" className="text-gray-500" />
               </button>
               <button type="button" onClick={() => handleDelete(activity.id)} aria-label={t('Delete Activity')}>
-                <Trash2 className="h-4 w-4 text-red-500" />
+                <Icon path={mdiTrashCan} size="1rem" className="text-red-500" />
               </button>
             </div>
           </div>

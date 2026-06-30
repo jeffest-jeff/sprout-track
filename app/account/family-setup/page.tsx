@@ -9,7 +9,8 @@ import { AccountButton } from '@/src/components/ui/account-button';
 import { MobileMenu } from '@/src/components/ui/mobile-menu';
 import SetupWizard from '@/src/components/SetupWizard';
 import AccountModal from '@/src/components/modals/AccountModal';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiAlertCircle } from '@mdi/js';
 import PrivacyPolicyModal from '@/src/components/modals/privacy-policy';
 import TermsOfUseModal from '@/src/components/modals/terms-of-use';import { useLocalization } from '@/src/context/localization';
 
@@ -148,7 +149,7 @@ export default function AccountFamilySetupPage() {
         {/* Loading Content */}
         <div className="min-h-screen flex items-center justify-center p-4" style={{ paddingTop: '6rem' }}>
           <div className="text-center">
-            <Loader2 className="w-12 h-12 animate-spin text-teal-600 mx-auto mb-4" />
+            <Icon path={mdiLoading} size="3rem" spin className="text-teal-600 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
               {t('Checking Account Status')}
             </h2>
@@ -261,7 +262,7 @@ export default function AccountFamilySetupPage() {
         {/* Error Content */}
         <div className="min-h-screen flex items-center justify-center p-4" style={{ paddingTop: '6rem' }}>
           <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 text-center">
-            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <Icon path={mdiAlertCircle} size="3rem" className="text-red-500 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
               {t('Access Denied')}
             </h2>

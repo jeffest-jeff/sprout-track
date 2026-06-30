@@ -10,7 +10,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/src/components/ui/ca
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
-import { Loader2, Eye, EyeOff } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiEye, mdiEyeOff } from '@mdi/js';
 import { FamilyResponse } from '@/app/api/types';
 
 function LoginPageContent() {
@@ -221,9 +222,9 @@ function LoginPageContent() {
                     disabled={tokenLoading}
                   >
                     {showTokenPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <Icon path={mdiEyeOff} size="1rem" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Icon path={mdiEye} size="1rem" />
                     )}
                   </Button>
                 </div>
@@ -242,7 +243,7 @@ function LoginPageContent() {
               >
                 {tokenLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                     {t('Authenticating...')}
                   </>
                 ) : (

@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
-import { Search, ChevronDown, Users, ArrowRight } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMagnify, mdiChevronDown, mdiAccountGroup, mdiArrowRight } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { FamilyResponse } from '@/app/api/types';import { useLocalization } from '@/src/context/localization';
 
@@ -250,7 +251,7 @@ export default function FamilySelectPage() {
             {/* Family Search Section */}
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 text-teal-600 mb-4">
-                <Users className="w-5 h-5 family-select-section-icon" />
+                <Icon path={mdiAccountGroup} size="1.25rem" className="family-select-section-icon" />
                 <span className="text-lg font-semibold family-select-section-title">{t('Family Selection')}</span>
               </div>
               
@@ -259,7 +260,7 @@ export default function FamilySelectPage() {
                 <div className="relative w-full">
                   <div className="flex items-center w-full">
                     <div className="absolute left-3 z-10">
-                      <Search className="h-4 w-4 text-gray-500 family-select-search-icon" />
+                      <Icon path={mdiMagnify} size="1rem" className="text-gray-500 family-select-search-icon" />
                     </div>
                     <Input
                       ref={inputRef}
@@ -271,8 +272,8 @@ export default function FamilySelectPage() {
                       placeholder="Search for your family..."
                       disabled={loading}
                     />
-                    <ChevronDown 
-                      className="absolute right-3 h-4 w-4 text-gray-500 family-select-dropdown-icon"
+                    <span
+                      className="absolute right-3 text-gray-500 family-select-dropdown-icon cursor-pointer"
                       onClick={() => {
                         const willOpen = !dropdownOpen;
                         setDropdownOpen(willOpen);
@@ -282,7 +283,9 @@ export default function FamilySelectPage() {
                           document.activeElement.blur();
                         }
                       }}
-                    />
+                    >
+                      <Icon path={mdiChevronDown} size="1rem" />
+                    </span>
                   </div>
                   
                   {dropdownOpen && filteredFamilies.length > 0 && (
@@ -313,7 +316,7 @@ export default function FamilySelectPage() {
                                     /{family.slug}
                                   </div>
                                 </div>
-                                <Users className="w-4 h-4 text-gray-400" />
+                                <Icon path={mdiAccountGroup} size="1rem" className="text-gray-400" />
                               </div>
                             </div>
                           ))}
@@ -335,7 +338,7 @@ export default function FamilySelectPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center family-select-selected-icon-container">
-                      <Users className="w-4 h-4 text-teal-600 family-select-selected-icon" />
+                      <Icon path={mdiAccountGroup} size="1rem" className="text-teal-600 family-select-selected-icon" />
                     </div>
                     <div>
                       <div className="font-medium text-gray-900 family-select-selected-family-name">
@@ -363,7 +366,7 @@ export default function FamilySelectPage() {
             >
               <span className="flex items-center justify-center space-x-2">
                 <span>{t('Continue to Login')}</span>
-                <ArrowRight className="w-4 h-4" />
+                <Icon path={mdiArrowRight} size="1rem" />
               </span>
             </Button>
           </div>

@@ -7,7 +7,8 @@ import {
   TablePageSize,
 } from "@/src/components/ui/table";
 import type { SortDirection } from "@/src/components/ui/table";
-import { Loader2 } from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import { ActiveInviteView, InviteMobileView, MobileSortButton } from '@/src/components/familymanager';
 import { useLocalization } from '@/src/context/localization';
 import { useIsMobile } from '@/src/hooks/useIsMobile';
@@ -157,7 +158,7 @@ export default function InvitesPage() {
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Icon path={mdiLoading} size="2rem" spin />
       </div>
     );
   }

@@ -14,7 +14,16 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(xargs cat)",
-      "Bash(grep -v \"^$\")"
+      "Bash(grep -v \"^$\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); console.log\\('mdiDiaper' in icons, 'mdiBabyBottle' in icons, 'mdiBreastfeeding' in icons, 'mdiHumanRunning' in icons\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('diaper'\\)\\)\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('breast'\\)\\)\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('human'\\)\\)\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('baby'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('run'\\)\\)\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('nursing'\\) || k.toLowerCase\\(\\).includes\\('lactat'\\) || k.toLowerCase\\(\\).includes\\('pump'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('swim'\\) || k.toLowerCase\\(\\).includes\\('bike'\\) || k.toLowerCase\\(\\).includes\\('yoga'\\) || k.toLowerCase\\(\\).includes\\('dumbbell'\\) || k.toLowerCase\\(\\).includes\\('spoon'\\)\\)\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('medication'\\) || k.toLowerCase\\(\\).includes\\('tooth'\\) || k.toLowerCase\\(\\).includes\\('ear'\\) || k.toLowerCase\\(\\).includes\\('pillow'\\) || k.toLowerCase\\(\\).includes\\('abacus'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('tooth'\\) || k.toLowerCase\\(\\).includes\\('pillow'\\) || k.toLowerCase\\(\\).includes\\('medication'\\) || k.toLowerCase\\(\\).includes\\('hand'\\) && k.toLowerCase\\(\\).includes\\('heart'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('pillow'\\) || k.toLowerCase\\(\\).includes\\('alphabet'\\) || k.toLowerCase\\(\\).includes\\('balloon'\\) || k.toLowerCase\\(\\).includes\\('leaf'\\) || k.toLowerCase\\(\\).includes\\('emoticon'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\(keys.filter\\(k => k.toLowerCase\\(\\).includes\\('feed'\\) || k.toLowerCase\\(\\).includes\\('nurs'\\) || k.toLowerCase\\(\\).includes\\('lactat'\\)\\)\\);\")",
+      "Bash(node -e \"const icons = require\\('@mdi/js'\\); console.log\\('mdiPillow' in icons, 'mdiSleep' in icons, 'mdiFlower' in icons, 'mdiDog' in icons, 'mdiCat' in icons, 'mdiHandshake' in icons, 'mdiFire' in icons, 'mdiSnowflake' in icons, 'mdiGift' in icons, 'mdiVideo' in icons, 'mdiCamera' in icons, 'mdiUmbrella' in icons\\);\")"
     ]
   }
 }

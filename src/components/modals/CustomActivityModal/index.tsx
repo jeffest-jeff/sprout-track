@@ -14,6 +14,9 @@ import {
 } from '@/src/components/ui/form-page';
 import { useToast } from '@/src/components/ui/toast';
 import { useLocalization } from '@/src/context/localization';
+import { IconPicker } from '@/src/components/ui/icon-picker';
+import { Icon } from '@/src/components/ui/icon';
+import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import CustomFieldModal, { FieldDraft } from './CustomFieldModal';
 import './custom-activity-modal.css';
 
@@ -42,7 +45,7 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
   const { showToast } = useToast();
 
   const [name, setName] = useState('');
-  const [icon, setIcon] = useState('⭐');
+  const [icon, setIcon] = useState('mdiStar');
   const [color, setColor] = useState(COLOR_SWATCHES[0]);
   const [reminderEnabled, setReminderEnabled] = useState(false);
   const [reminderHours, setReminderHours] = useState('8');
@@ -56,7 +59,7 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
   useEffect(() => {
     if (!isOpen) return;
     setName(activity?.name || '');
-    setIcon(activity?.icon || '⭐');
+    setIcon(activity?.icon || 'mdiStar');
     setColor(activity?.color || COLOR_SWATCHES[0]);
     setReminderEnabled(activity?.reminderEnabled || false);
     setReminderHours(String(activity?.reminderIntervalHours ?? 8));
@@ -161,7 +164,17 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
               </div>
               <div className="space-y-2">
                 <Label>{t('Activity Icon')}</Label>
-                <Input value={icon} onChange={(e) => setIcon(e.target.value)} maxLength={4} className="w-20 text-center text-xl" />
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: color + '33' }}>
+                    {icon.startsWith('mdi') && ICON_PATH_MAP[icon] ? (
+                      <Icon path={ICON_PATH_MAP[icon]} size="1.5rem" color={color} />
+                    ) : (
+                      <span className="text-2xl">{icon}</span>
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-500">{t('Select an icon below')}</span>
+                </div>
+                <IconPicker value={icon} onChange={setIcon} accentColor={color} />
               </div>
               <div className="space-y-2">
                 <Label>{t('Activity Color')}</Label>

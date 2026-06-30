@@ -7,7 +7,8 @@ import { AccountButton } from '@/src/components/ui/account-button';
 import AccountModal from '@/src/components/modals/AccountModal';
 import AccountManager from '@/src/components/account-manager';
 import { useTheme } from '@/src/context/theme';
-import { Github, Users, TrendingUp, Calendar, BarChart3 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiGithub, mdiAccountGroup, mdiTrendingUp, mdiCalendar, mdiChartBar } from '@mdi/js';
 import PrivacyPolicyModal from '@/src/components/modals/privacy-policy';
 import TermsOfUseModal from '@/src/components/modals/terms-of-use';
 import { useLocalization } from '@/src/context/localization';
@@ -386,7 +387,7 @@ const home = () => {
             <div className="order-1 lg:order-2 relative overflow-visible">
               {/* Background icon - offset to bottom right */}
               <div className="absolute bottom-16 -right-12 z-0">
-                <Users size={200} className="text-teal-500 opacity-20" />
+                <Icon path={mdiAccountGroup} size="200px" className="text-teal-500 opacity-20" />
               </div>
               {/* Caretaker Demo Videos */}
               <div className="relative z-10 max-w-sm mx-auto">
@@ -426,7 +427,7 @@ const home = () => {
             <div className="relative overflow-visible">
               {/* Background icon - offset to bottom left */}
               <div className="absolute bottom-16 -left-12 z-0">
-                <TrendingUp size={200} className="text-emerald-500 opacity-20" />
+                <Icon path={mdiTrendingUp} size="200px" className="text-emerald-500 opacity-20" />
               </div>
               {/* Baby Info Demo Video */}
               <div className="relative z-10 max-w-sm mx-auto">
@@ -503,7 +504,7 @@ const home = () => {
             <div className="order-1 lg:order-2 relative overflow-visible">
               {/* Background icon - offset to bottom right */}
               <div className="absolute bottom-16 -right-12 z-0">
-                <BarChart3 size={200} className="text-teal-600 opacity-20" />
+                <Icon path={mdiChartBar} size="200px" className="text-teal-600 opacity-20" />
               </div>
               {/* Daily Stats Demo Video */}
               <div className="relative z-10 max-w-sm mx-auto">
@@ -536,7 +537,7 @@ const home = () => {
             <div className="relative overflow-visible">
               {/* Background icon - offset to bottom left */}
               <div className="absolute bottom-16 -left-12 z-0">
-                <Calendar size={200} className="text-teal-600 opacity-20" />
+                <Icon path={mdiCalendar} size="200px" className="text-teal-600 opacity-20" />
               </div>
               {/* Calendar Demo Video */}
               <div className="relative z-10 max-w-sm mx-auto">
@@ -768,7 +769,7 @@ const home = () => {
               rel="noopener noreferrer"
               className="saas-github-link"
             >
-              <Github size={16} />
+              <Icon path={mdiGithub} size="1rem" />
             </a>
           </Button>
         </div>

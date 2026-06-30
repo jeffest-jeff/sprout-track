@@ -10,7 +10,9 @@ import {
   TableRow,
   TableSearch,
 } from '@/src/components/ui/table';
-import { Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
+import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import { useLocalization } from '@/src/context/localization';
 import { authFetch, formatDateTime } from '@/src/components/familymanager/utils';
 
@@ -100,7 +102,7 @@ export default function CustomActivitiesPage() {
       <div className="family-manager-table-area p-4">
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="h-6 w-6 animate-spin" />
+            <Icon path={mdiLoading} size={1} spin />
           </div>
         ) : (
           <Table>
@@ -118,7 +120,16 @@ export default function CustomActivitiesPage() {
               {filtered.map((r) => (
                 <TableRow key={r.activityId}>
                   <TableCell>{r.familyName}</TableCell>
-                  <TableCell>{r.icon} {r.activityName}</TableCell>
+                  <TableCell>
+                    <span className="inline-flex items-center gap-1">
+                      {r.icon.startsWith('mdi') && ICON_PATH_MAP[r.icon] ? (
+                        <Icon path={ICON_PATH_MAP[r.icon]} size="1rem" />
+                      ) : (
+                        r.icon
+                      )}
+                      {r.activityName}
+                    </span>
+                  </TableCell>
                   <TableCell>{r.fieldCount}</TableCell>
                   <TableCell>{r.logCount}</TableCell>
                   <TableCell>{r.lastEntryAt ? formatDateTime(r.lastEntryAt) : '—'}</TableCell>

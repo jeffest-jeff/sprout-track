@@ -7,7 +7,8 @@ import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/src/components/ui/card';
-import { Loader2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiEye, mdiEyeOff, mdiArrowLeft } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
 import { ApiResponse } from '@/app/api/types';
@@ -215,9 +216,9 @@ export default function FamilyManagerLoginPage() {
                   disabled={loading || !!lockoutTime}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
+                    <Icon path={mdiEyeOff} size="1rem" />
                   ) : (
-                    <Eye className="h-4 w-4" />
+                    <Icon path={mdiEye} size="1rem" />
                   )}
                 </Button>
               </div>
@@ -237,7 +238,7 @@ export default function FamilyManagerLoginPage() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Authenticating...')}
                 </>
               ) : (
@@ -255,7 +256,7 @@ export default function FamilyManagerLoginPage() {
               onClick={() => router.push('/')}
               disabled={loading}
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <Icon path={mdiArrowLeft} size="1rem" className="mr-2" />
               {t('Go back to home')}
             </Button>
           </div>

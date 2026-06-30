@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ActivityTile } from '@/src/components/ui/activity-tile';
 import { StatusBubble } from "@/src/components/ui/status-bubble";
 import { SleepLogResponse, FeedLogResponse, DiaperLogResponse, NoteResponse, BathLogResponse, PumpLogResponse, PlayLogResponse, MeasurementResponse, MilestoneResponse, MedicineLogResponse, VaccineLogResponse, ActivitySettings, CustomActivityResponse } from '@/app/api/types';
-import { ArrowDownUp } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiArrowUpDown } from '@mdi/js';
+import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
 import './activity-tile-group.css';
@@ -466,7 +468,7 @@ export function ActivityTileGroup({
     if (activity.startsWith('custom-')) {
       const id = activity.replace('custom-', '');
       const ca = customActivities.find(c => c.id === id);
-      return ca ? `${ca.icon} ${ca.name}` : activity;
+      return ca ? ca.name : activity;
     }
     return activity;
   };
@@ -864,7 +866,13 @@ export function ActivityTileGroup({
                 title={ca.name}
                 variant="default"
                 isButton={true}
-                icon={<span style={{ fontSize: '2.5rem', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{ca.icon}</span>}
+                icon={
+                  ca.icon.startsWith('mdi') && ICON_PATH_MAP[ca.icon] ? (
+                    <Icon path={ICON_PATH_MAP[ca.icon]} size="2rem" color={ca.color} />
+                  ) : (
+                    <span style={{ fontSize: '2.5rem', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{ca.icon}</span>
+                  )
+                }
                 onClick={() => { updateUnlockTimer(); onCustomActivityClick?.(ca); }}
               />
             </div>
@@ -1101,7 +1109,7 @@ export function ActivityTileGroup({
                   aria-label={`${t('Drag to reorder')} ${activityDisplayNames[activity]}`}
                   title={t('Drag to reorder')}
                 >
-                  <ArrowDownUp className="h-4 w-4 text-gray-500 icon-text" />
+                  <Icon path={mdiArrowUpDown} size="1rem" className="text-gray-500 icon-text" />
                 </button>
                 <DropdownMenuCheckboxItem
                   checked={visibleActivities.has(activity)}
