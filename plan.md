@@ -580,3 +580,458 @@ outboundWebhookSecret  String?   // Optional HMAC secret for payload signing
 A `Dockerfile`, `docker-compose.yml`, and `docker-startup.sh` provide a self-hosting path supporting both SQLite (default) and PostgreSQL via the `DATABASE_PROVIDER` env var. The startup script runs `prisma migrate deploy`, pushes the log schema, seeds, and (optionally) starts the notification cron daemon.
 
 A Home Assistant addon under `hassio-addon/` (`config.yaml`, `run.sh`, `Dockerfile`) builds the app and persists the SQLite DB under HA's `/share/sprout-track` volume. Addon options map `auth_life`, `idle_time`, and `enable_notifications` to environment variables.
+
+---
+
+## Cloudflare Tunnel + Access Integration
+
+### Overview
+
+Two capabilities are added together:
+
+1. **Cloudflare Tunnel (cloudflared)** — Exposes the app to the internet over a secure outbound tunnel without opening inbound firewall ports. The cloudflared daemon runs as a sidecar container in `docker-compose.yml`.
+
+2. **Cloudflare Access (Google SSO)** — Cloudflare Access sits in front of the tunnel and enforces Google OAuth before any request reaches the app. After authentication, Cloudflare injects a signed JWT (`CF_Authorization` cookie + `Cf-Access-Jwt-Assertion` header) on every request.
+
+3. **PIN bypass** — When Cloudflare Access is configured, Account holders (email-based auth) can skip the PIN entry step. The app validates the Cloudflare JWT, looks up the Account by email, and issues an app session token automatically. Caretaker PIN auth is unaffected.
+
+---
+
+### How Cloudflare Access Works (Request Flow)
+
+```
+Browser → Cloudflare Edge
+  → (not authenticated) Google OAuth → CF Access JWT issued
+  → (authenticated) Request + CF_Authorization cookie → Tunnel → App container
+```
+
+After Google auth, every request carries:
+- `CF_Authorization` cookie — the signed CF Access JWT (HttpOnly, set by Cloudflare)
+- `Cf-Access-Jwt-Assertion` header — same JWT as a header
+
+The JWT is signed with Cloudflare's private key. The app verifies the signature against Cloudflare's JWKS endpoint (`https://<team>.cloudflareaccess.com/cdn-cgi/access/certs`) and validates the `aud` (audience) claim against the configured policy AUD tag.
+
+---
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `CLOUDFLARE_TUNNEL_TOKEN` | Yes | Tunnel token from `cloudflared tunnel create` or the Zero Trust dashboard |
+| `CLOUDFLARE_ACCESS_TEAM_DOMAIN` | Yes | Your team domain, e.g. `myteam.cloudflareaccess.com` |
+| `CLOUDFLARE_ACCESS_AUDIENCE` | Yes | The AUD tag from your Cloudflare Access application policy |
+| `CLOUDFLARE_ACCESS_SKIP_PIN` | No | `true` to enable auto-login for CF-authenticated accounts (default `false`) |
+| `CLOUDFLARE_ACCESS_AUTO_CREATE` | No | `true` to auto-create an Account when the email isn't found (default `false`) |
+
+---
+
+### Docker Compose Changes (`docker-compose.yml`)
+
+Add a `cloudflared` sidecar service:
+
+```yaml
+cloudflared:
+  image: cloudflare/cloudflared:latest
+  restart: unless-stopped
+  command: tunnel --no-autoupdate run
+  environment:
+    - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  depends_on:
+    - app
+```
+
+The tunnel connects to the `app` service on port 3000. No ingress port mapping is needed on the `app` service for external traffic — cloudflared handles it.
+
+---
+
+### New Files
+
+#### `src/lib/cloudflare-access.ts`
+
+Utility for validating Cloudflare Access JWTs:
+
+- `getCloudflarePublicKeys(teamDomain)` — fetches and caches JWKS from Cloudflare (cached for 5 minutes in memory)
+- `validateCloudflareJwt(token, teamDomain, audience)` — verifies signature, expiry, and `aud` claim; returns decoded payload `{ email, sub }` or throws
+- Uses Node.js `crypto` (no external JWT library needed beyond what already exists in the project)
+
+#### `app/api/auth/cloudflare/route.ts`
+
+`POST /api/auth/cloudflare` — called client-side when the CF cookie is detected.
+
+1. Reads `CF_Authorization` cookie (or `Cf-Access-Jwt-Assertion` header as fallback)
+2. Returns 501 if `CLOUDFLARE_ACCESS_SKIP_PIN` is not `true`
+3. Validates the JWT via `validateCloudflareJwt()`
+4. Looks up `Account` by `email` (case-insensitive)
+5. If not found and `CLOUDFLARE_ACCESS_AUTO_CREATE=true`: creates Account with a random secure PIN (PIN-less login only; the user can set a PIN later in settings)
+6. If not found and auto-create is off: returns 403 with `{ error: 'no_account' }`
+7. On success: generates and returns an app JWT (same format as `/api/auth`) with the account's family context
+
+No rate-limiting needed on this endpoint — Cloudflare Access already enforces authentication before the request reaches the app.
+
+---
+
+### Client-Side Auto-Login
+
+**File:** `app/(app)/page.tsx` or the family-select/login client component
+
+On page load (before showing the PIN entry UI):
+1. Check if `CF_Authorization` cookie is present (readable as a non-HttpOnly copy, or detected via a lightweight `/api/auth/cloudflare/check` GET endpoint that returns `{ available: true/false }`)
+2. If `CLOUDFLARE_ACCESS_SKIP_PIN` is enabled server-side and the cookie is present, POST to `/api/auth/cloudflare`
+3. On success: store the returned `authToken` in localStorage and navigate to the app (bypassing PIN entry entirely)
+4. On `403 no_account`: show a message — "No Sprout Track account found for your Google account. Contact your family admin."
+5. On failure: fall through to normal PIN entry (graceful degradation)
+
+The check and redirect complete before the PIN UI renders, so users with CF Access configured never see the PIN form.
+
+---
+
+### Account Mapping
+
+- The Cloudflare email must exactly match an `Account.email` in the database (case-insensitive lookup)
+- Accounts are created normally via the existing registration flow or the family manager
+- If `CLOUDFLARE_ACCESS_AUTO_CREATE=true`: a new Account is created with the CF email, assigned to the first (or only) family in the database, with role `CARETAKER`. If the instance is multi-family SaaS, auto-create is disabled regardless of the env var.
+
+---
+
+### Caretaker PIN Auth — Unchanged
+
+Caretaker PIN auth (the 6-digit family PIN) is completely separate from Account auth. CF Access does not bypass caretaker PINs — those users still enter their PIN as before. Only Account holders (email-based auth) benefit from the CF auto-login.
+
+---
+
+### Cloudflare Access Setup (User Steps)
+
+Documented in `README.md` under a new "Cloudflare Tunnel" section:
+
+1. Create a tunnel: `cloudflared tunnel create sprout-track`
+2. Copy the tunnel token to `CLOUDFLARE_TUNNEL_TOKEN` in your `.env`
+3. In Cloudflare Zero Trust dashboard:
+   - Create a self-hosted application pointing to your domain
+   - Add Google as an identity provider
+   - Create a policy (e.g., allow specific emails or a Google Workspace domain)
+   - Copy the **AUD tag** to `CLOUDFLARE_ACCESS_AUDIENCE`
+   - Copy your **team domain** to `CLOUDFLARE_ACCESS_TEAM_DOMAIN`
+4. Set `CLOUDFLARE_ACCESS_SKIP_PIN=true` in your `.env`
+5. Run `docker compose up -d`
+
+---
+
+### Tunnel Deployment Options
+
+The app does not need to run cloudflared itself — it only needs to receive requests that Cloudflare Access has already validated. Two supported deployment modes:
+
+**Option A — Docker sidecar (standalone)**
+
+Add a `cloudflared` service to `docker-compose.yml`. The tunnel is authenticated with a `CLOUDFLARE_TUNNEL_TOKEN` env var. The sidecar connects to the `app` container on port 3000 and forwards traffic.
+
+```yaml
+cloudflared:
+  image: cloudflare/cloudflared:latest
+  restart: unless-stopped
+  command: tunnel --no-autoupdate run
+  environment:
+    - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  depends_on:
+    - app
+```
+
+This is for users running Sprout Track in a standalone Docker environment (VPS, NAS, etc.).
+
+**Option B — Home Assistant cloudflared addon**
+
+Users who already have Home Assistant running with the [Cloudflare addon](https://github.com/brenner-tobias/addon-cloudflared) can route Sprout Track through HA's existing tunnel instead of running a second cloudflared instance. The setup is purely in the Cloudflare Zero Trust dashboard — add a new public hostname pointing to `http://<sprout-track-host>:3000` on the same tunnel HA already uses. No changes to Sprout Track's Docker config are required.
+
+The `docker-compose.yml` ships with the sidecar service commented out and a comment explaining Option B for HA users.
+
+---
+
+### Implementation Order (slots after step 19)
+
+20. **Cloudflare JWT utility** — `src/lib/cloudflare-access.ts` (JWKS fetch + cache, JWT verify)
+21. **Auto-login API** — `app/api/auth/cloudflare/route.ts` (validate CF JWT → return app token)
+22. **Client-side auto-login** — Detect CF cookie on login/family-select page, call endpoint, bypass PIN
+23. **Docker Compose** — Add `cloudflared` sidecar service (commented out by default); add Option A/B explanation
+24. **Documentation** — Add Cloudflare Tunnel setup section to `README.md` covering both options, env var table to `.env.example`
+
+---
+
+## MDI Icon System
+
+### Overview
+
+Replace the `lucide-react` icon library (used in ~145 files across the app) with [Material Design Icons](https://materialdesignicons.com/) via `@mdi/react` + `@mdi/js`. Additionally, replace the emoji text input in the custom activity builder with a curated MDI icon picker grid.
+
+---
+
+### Why MDI
+
+- 7,000+ icons covering every concept in the app (including baby-specific ones like `mdiBabyBottle`, `mdiBreastfeeding`, `mdiBabyFaceOutline`)
+- Tree-shakeable via `@mdi/js` — only imported paths land in the bundle
+- Consistent 24px grid design; no visual mismatch between icons
+- Single dependency replacing two (`lucide-react` + `@lucide/lab`)
+
+---
+
+### Packages
+
+```bash
+npm install @mdi/react @mdi/js
+npm uninstall lucide-react @lucide/lab
+```
+
+`@mdi/js` exports every icon as a named SVG path string (`mdiPlus`, `mdiTrashCan`, etc.). `@mdi/react` provides the `<Icon path={...} size={1} />` React component. Size `1` = 24px (matching Lucide's default).
+
+---
+
+### Shared Icon Wrapper (`src/components/ui/icon/`)
+
+A thin wrapper around `@mdi/react` that enforces consistent sizing and applies the correct color in dark mode without needing per-icon CSS overrides:
+
+```tsx
+// src/components/ui/icon/index.tsx
+import MdiIcon from '@mdi/react';
+
+interface IconProps {
+  path: string;
+  size?: number | string;  // default 1 (24px)
+  className?: string;
+  spin?: boolean;
+}
+
+export function Icon({ path, size = 1, className, spin }: IconProps) {
+  return <MdiIcon path={path} size={size} className={className} spin={spin} />;
+}
+```
+
+The wrapper accepts `className` so Tailwind color utilities (`text-red-500`, `text-gray-400`, etc.) work the same way they do with Lucide today. SVG `currentColor` picks up the CSS color automatically.
+
+For the spinning loader (replacing `<Loader2 className="animate-spin" />`):
+```tsx
+<Icon path={mdiLoading} spin />
+```
+
+---
+
+### Lucide → MDI Icon Map
+
+Complete mapping of the ~90 Lucide icons used in the app:
+
+| Lucide | MDI | Notes |
+|--------|-----|-------|
+| `Activity` | `mdiHumanRunning` | |
+| `AlertCircle` | `mdiAlertCircle` | |
+| `AlertTriangle` | `mdiAlert` | |
+| `ArrowDown` | `mdiArrowDown` | |
+| `ArrowDownUp` | `mdiArrowUpDown` | |
+| `ArrowLeft` | `mdiArrowLeft` | |
+| `ArrowLeftRight` | `mdiArrowLeftRight` | |
+| `ArrowRight` | `mdiArrowRight` | |
+| `ArrowUp` | `mdiArrowUp` | |
+| `ArrowUpCircle` | `mdiArrowUpCircle` | |
+| `Baby` | `mdiBabyFaceOutline` | |
+| `BarChart3` | `mdiChartBar` | |
+| `Bath` | `mdiBath` | |
+| `BedDouble` | `mdiBed` | |
+| `Bell` | `mdiBell` | |
+| `BellOff` | `mdiBellOff` | |
+| `Briefcase` | `mdiBriefcase` | |
+| `Calendar` | `mdiCalendar` | |
+| `CalendarClock` | `mdiCalendarClock` | |
+| `Check` | `mdiCheck` | |
+| `CheckCircle` | `mdiCheckCircle` | |
+| `ChevronDown` | `mdiChevronDown` | |
+| `ChevronLeft` | `mdiChevronLeft` | |
+| `ChevronRight` | `mdiChevronRight` | |
+| `ChevronUp` | `mdiChevronUp` | |
+| `ChevronsLeft` | `mdiChevronDoubleLeft` | |
+| `ChevronsRight` | `mdiChevronDoubleRight` | |
+| `Circle` | `mdiCircle` | |
+| `CircleDot` | `mdiCircleSlice8` | |
+| `ClipboardList` | `mdiClipboardList` | |
+| `Clock` | `mdiClockOutline` | |
+| `Coffee` | `mdiCoffee` | |
+| `Copy` | `mdiContentCopy` | |
+| `CreditCard` | `mdiCreditCard` | |
+| `Crown` | `mdiCrown` | |
+| `Download` | `mdiDownload` | |
+| `Droplet` | `mdiWater` | |
+| `Edit` | `mdiPencil` | |
+| `ExternalLink` | `mdiOpenInNew` | |
+| `Eye` | `mdiEye` | |
+| `EyeOff` | `mdiEyeOff` | |
+| `FileDown` | `mdiFileDownload` | |
+| `FileText` | `mdiFileDocument` | |
+| `Github` | `mdiGithub` | |
+| `Grid3X3` | `mdiGrid` | |
+| `GripVertical` | `mdiDragVertical` | |
+| `HeartPulse` | `mdiHeartPulse` | |
+| `Home` | `mdiHome` | |
+| `ImagePlus` | `mdiImagePlus` | |
+| `Key` | `mdiKey` | |
+| `KeyRound` | `mdiKeyVariant` | |
+| `LampWallDown` | `mdiBreastfeeding` | Used for pumping/nursing |
+| `Loader2` | `mdiLoading` | Use `spin` prop |
+| `LogOut` | `mdiLogout` | |
+| `Mail` | `mdiEmail` | |
+| `MapPin` | `mdiMapMarker` | |
+| `Menu` | `mdiMenu` | |
+| `MessageSquare` | `mdiMessageText` | |
+| `Minus` | `mdiMinus` | |
+| `Monitor` | `mdiMonitor` | |
+| `Moon` | `mdiMoonWaningCrescent` | |
+| `Pause` | `mdiPause` | |
+| `Pencil` | `mdiPencil` | |
+| `Phone` | `mdiPhone` | |
+| `Pill` | `mdiPill` | |
+| `PillBottle` | `mdiBottleTonicPlus` | |
+| `Play` | `mdiPlay` | |
+| `Plus` | `mdiPlus` | |
+| `PlusCircle` | `mdiPlusCircle` | |
+| `RefreshCw` | `mdiRefresh` | |
+| `Repeat` | `mdiRepeat` | |
+| `RotateCcw` | `mdiRotateLeft` | |
+| `RotateCw` | `mdiRotateRight` | |
+| `Ruler` | `mdiRuler` | |
+| `Save` | `mdiContentSave` | |
+| `Scale` | `mdiScale` | |
+| `Search` | `mdiMagnify` | |
+| `Send` | `mdiSend` | |
+| `Settings` | `mdiCog` | |
+| `Share` | `mdiShareVariant` | |
+| `Shield` | `mdiShield` | |
+| `Square` | `mdiSquare` | |
+| `Star` | `mdiStar` | |
+| `StickyNote` | `mdiNoteText` | |
+| `Sun` | `mdiWhiteBalanceSunny` | |
+| `Syringe` | `mdiSyringe` | |
+| `Thermometer` | `mdiThermometer` | |
+| `Timer` | `mdiTimer` | |
+| `Trash2` | `mdiTrashCan` | |
+| `TrendingUp` | `mdiTrendingUp` | |
+| `Trophy` | `mdiTrophy` | |
+| `Upload` | `mdiUpload` | |
+| `User` | `mdiAccount` | |
+| `UserCircle` | `mdiAccountCircle` | |
+| `Users` | `mdiAccountGroup` | |
+| `Utensils` | `mdiSilverwareForkKnife` | |
+| `Wrench` | `mdiWrench` | |
+| `X` | `mdiClose` | |
+| `XCircle` | `mdiCloseCircle` | |
+| `ZoomIn` | `mdiMagnifyPlus` | |
+| `ZoomOut` | `mdiMagnifyMinus` | |
+| `diaper` (lab) | `mdiDiaper` | MDI has this natively |
+| `bottleBaby` (lab) | `mdiBabyBottle` | MDI has this natively |
+
+---
+
+### Migration Strategy
+
+The migration is mechanical but large (~145 files). It proceeds component-by-component rather than in one pass to keep PRs reviewable:
+
+1. **Install packages** — add `@mdi/react` + `@mdi/js`, keep `lucide-react` temporarily so the build doesn't break mid-migration
+2. **Create the Icon wrapper** — `src/components/ui/icon/index.tsx`
+3. **Migrate UI primitives first** (`src/components/ui/`) — these are imported everywhere; migrating them fixes many downstream consumers automatically
+4. **Migrate feature components** (`src/components/`) — forms, modals, settings, timeline, etc.
+5. **Migrate app pages** (`app/`) — layout, log-entry, full-log, family-manager, etc.
+6. **Remove `lucide-react` and `@lucide/lab`** — after all imports are gone, uninstall both packages
+7. **Audit** — `grep -r "lucide-react" .` should return zero results
+
+Each step is a separate commit. TypeScript compilation confirms nothing is missed — `LucideIcon` types are replaced with `string` (the MDI path) or the `Icon` wrapper props type.
+
+---
+
+### Custom Activity Icon Picker
+
+**Current**: a plain text `<Input>` where users type an emoji character.
+
+**New**: a scrollable icon picker grid showing ~150 curated MDI icons grouped by category. Clicking an icon selects it; the selected icon is shown in the `ActivityTile` preview at the top of the modal.
+
+**Storage**: `CustomActivity.icon` changes from an emoji string (e.g., `"⭐"`) to an MDI icon name string (e.g., `"mdiStar"`). A migration is not needed for existing rows — the display layer checks: if the stored string starts with `mdi`, render it as an MDI icon; otherwise render it as emoji text (backward compat for any existing emoji icons).
+
+**Curated icon set** (`src/constants/custom-activity-icons.ts`):
+
+```ts
+import {
+  mdiBabyBottle, mdiBabyFaceOutline, mdiBottleTonicPlus, mdiPill, ...
+} from '@mdi/js';
+
+export const CUSTOM_ACTIVITY_ICON_GROUPS = [
+  {
+    label: 'Baby & Feeding',
+    icons: [
+      { name: 'mdiBabyBottle', path: mdiBabyBottle },
+      { name: 'mdiBabyFaceOutline', path: mdiBabyFaceOutline },
+      { name: 'mdiBreastfeeding', path: mdiBreastfeeding },
+      { name: 'mdiSpoonSugar', path: mdiSpoonSugar },
+      { name: 'mdiCupWater', path: mdiCupWater },
+      ...
+    ],
+  },
+  {
+    label: 'Health & Medical',
+    icons: [
+      { name: 'mdiPill', path: mdiPill }, { name: 'mdiBottleTonicPlus', path: mdiBottleTonicPlus },
+      { name: 'mdiSyringe', path: mdiSyringe }, { name: 'mdiThermometer', path: mdiThermometer },
+      { name: 'mdiHeartPulse', path: mdiHeartPulse }, { name: 'mdiScale', path: mdiScale },
+      ...
+    ],
+  },
+  {
+    label: 'Activity & Play',
+    icons: [
+      { name: 'mdiHumanRunning', path: mdiHumanRunning }, { name: 'mdiSoccer', path: mdiSoccer },
+      { name: 'mdiToyBrick', path: mdiToyBrick }, { name: 'mdiPuzzle', path: mdiPuzzle },
+      { name: 'mdiSwim', path: mdiSwim }, { name: 'mdiBike', path: mdiBike },
+      ...
+    ],
+  },
+  {
+    label: 'Sleep & Rest',
+    icons: [
+      { name: 'mdiBed', path: mdiBed }, { name: 'mdiMoonWaningCrescent', path: mdiMoonWaningCrescent },
+      { name: 'mdiSleep', path: mdiSleep }, ...
+    ],
+  },
+  {
+    label: 'Learning',
+    icons: [
+      { name: 'mdiBook', path: mdiBook }, { name: 'mdiSchool', path: mdiSchool },
+      { name: 'mdiPencil', path: mdiPencil }, { name: 'mdiPalette', path: mdiPalette },
+      { name: 'mdiMusicNote', path: mdiMusicNote }, ...
+    ],
+  },
+  {
+    label: 'General',
+    icons: [
+      { name: 'mdiStar', path: mdiStar }, { name: 'mdiHeart', path: mdiHeart },
+      { name: 'mdiClockOutline', path: mdiClockOutline }, { name: 'mdiCalendar', path: mdiCalendar },
+      { name: 'mdiTrophy', path: mdiTrophy }, { name: 'mdiNoteText', path: mdiNoteText },
+      ...
+    ],
+  },
+];
+```
+
+**Picker component** (`src/components/ui/icon-picker/`):
+
+- Tabs for each category group
+- 6-column icon grid; each cell is a 40×40 button showing the MDI icon at `size={1}`
+- Selected state: colored border + filled background (matching the activity color swatch)
+- Search input filters icons by name across all groups
+- Used inside `CustomActivityModal` in place of the emoji text input
+
+**Display in tiles and timeline**: `ActivityTileGroup` and `activity-tile-icon.tsx` check `ca.icon.startsWith('mdi')` and render `<Icon path={icons[ca.icon]} size={2.5} />` (using `@mdi/js` name lookup). For backward-compatible emoji storage, render as `<span>{ca.icon}</span>`.
+
+---
+
+### Implementation Order (slots after step 24)
+
+25. **Install packages** — add `@mdi/react` + `@mdi/js`
+26. **Icon wrapper** — `src/components/ui/icon/index.tsx`
+27. **Curated icon set constant** — `src/constants/custom-activity-icons.ts`
+28. **Icon picker component** — `src/components/ui/icon-picker/` (tabs + grid + search)
+29. **Custom activity modal** — swap emoji input for icon picker; update display in `ActivityTileGroup` and timeline icon
+30. **Migrate UI primitives** — all files under `src/components/ui/`
+31. **Migrate feature components** — forms, modals, settings, timeline, full-log, etc.
+32. **Migrate app pages** — `app/` directory
+33. **Remove Lucide** — uninstall `lucide-react` + `@lucide/lab`; verify with grep
