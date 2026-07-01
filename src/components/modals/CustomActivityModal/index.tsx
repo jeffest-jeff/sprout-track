@@ -141,6 +141,7 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
         }
       }
 
+      window.dispatchEvent(new CustomEvent('customActivitiesUpdated'));
       onClose();
       onSaved?.();
     } catch (error) {

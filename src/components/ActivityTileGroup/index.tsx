@@ -139,23 +139,31 @@ export function ActivityTileGroup({
   const [customActivities, setCustomActivities] = useState<CustomActivityResponse[]>([]);
 
   // Fetch custom activities for the family
-  useEffect(() => {
-    const fetchCustomActivities = async () => {
-      const authToken = localStorage.getItem('authToken');
-      if (!authToken) return;
-      try {
-        const response = await fetch('/api/custom-activity', {
-          headers: { 'Authorization': `Bearer ${authToken}` },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) setCustomActivities(data.data);
-        }
-      } catch (error) {
-        console.error('Error fetching custom activities:', error);
+  const fetchCustomActivities = async () => {
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) return;
+    try {
+      const response = await fetch('/api/custom-activity', {
+        headers: { 'Authorization': `Bearer ${authToken}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) setCustomActivities(data.data);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching custom activities:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchCustomActivities();
+  }, []);
+
+  // Re-fetch when a custom activity is created or updated elsewhere on the page
+  useEffect(() => {
+    const handleUpdate = () => fetchCustomActivities();
+    window.addEventListener('customActivitiesUpdated', handleUpdate);
+    return () => window.removeEventListener('customActivitiesUpdated', handleUpdate);
   }, []);
 
   // Ref to track which custom IDs were present when settings were last loaded.
