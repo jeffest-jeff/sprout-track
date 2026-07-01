@@ -11,13 +11,8 @@ import {
 } from "@/src/components/ui/table";
 import type { SortDirection } from "@/src/components/ui/table";
 import { Button } from "@/src/components/ui/button";
-import { 
-  Loader2,
-  Trash2,
-  Clock,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiTrashCan, mdiClockOutline, mdiCheckCircle, mdiCloseCircle } from '@mdi/js';
 import { ShareButton } from '@/src/components/ui/share-button';
 import { useLocalization } from '@/src/context/localization';
 
@@ -108,17 +103,17 @@ export default function ActiveInviteView({
                 <div className="flex items-center gap-2">
                   {invite.isUsed ? (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      <CheckCircle className="h-3 w-3 mr-1" />
+                      <Icon path={mdiCheckCircle} size="0.75rem" className="mr-1" />
                       {t('Used')}
                     </span>
                   ) : invite.isExpired ? (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                      <XCircle className="h-3 w-3 mr-1" />
+                      <Icon path={mdiCloseCircle} size="0.75rem" className="mr-1" />
                       {t('Expired')}
                     </span>
                   ) : (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      <Clock className="h-3 w-3 mr-1" />
+                      <Icon path={mdiClockOutline} size="0.75rem" className="mr-1" />
                       {t('Active')}
                     </span>
                   )}
@@ -155,9 +150,9 @@ export default function ActiveInviteView({
                         title="Revoke invite"
                       >
                         {deletingInviteId === invite.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Icon path={mdiLoading} size="1rem" spin />
                         ) : (
-                          <Trash2 className="h-4 w-4" />
+                          <Icon path={mdiTrashCan} size="1rem" />
                         )}
                       </Button>
                     </>

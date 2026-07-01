@@ -3,7 +3,8 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
-import { Settings, Download, Upload, X, Save } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCog, mdiDownload, mdiUpload, mdiClose, mdiContentSave } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { cn } from '@/src/lib/utils';
 
@@ -300,7 +301,7 @@ export const BackupRestore: React.FC<BackupRestoreProps> = ({
       
       {/* Section Header */}
       <div className={backupRestoreStyles.header.container}>
-        <Settings className={backupRestoreStyles.header.icon} />
+        <Icon path={mdiCog} size="1.25rem" className="text-teal-600" />
         <Label className={backupRestoreStyles.header.title}>
           {importOnly ? 'Import Previous Data' : 'Database Management'}
         </Label>
@@ -316,7 +317,7 @@ export const BackupRestore: React.FC<BackupRestoreProps> = ({
             className={backupRestoreStyles.button.backup}
             disabled={isLoading || isSaving || state.isRestoring || state.isMigrating}
           >
-            <Download className={backupRestoreStyles.icon} />
+            <Icon path={mdiDownload} size="1rem" className="mr-2" />
             {t('Backup Database')}
           </Button>
         )}
@@ -330,7 +331,7 @@ export const BackupRestore: React.FC<BackupRestoreProps> = ({
           )}
           disabled={isLoading || isSaving || state.isRestoring || state.isMigrating}
         >
-          <Upload className={backupRestoreStyles.icon} />
+          <Icon path={mdiUpload} size="1rem" className="mr-2" />
           {state.isRestoring ? 'Importing...' : state.isMigrating ? 'Migrating...' : importOnly ? 'Import Database' : 'Restore Database'}
         </Button>
       </div>
@@ -357,7 +358,7 @@ export const BackupRestore: React.FC<BackupRestoreProps> = ({
       {state.error && (
         <div className={backupRestoreStyles.error.container}>
           <div className={backupRestoreStyles.error.content}>
-            <X className={backupRestoreStyles.error.icon} />
+            <Icon path={mdiClose} size="1rem" className="text-red-500 mr-2" />
             <span className={backupRestoreStyles.error.text}>{state.error}</span>
           </div>
         </div>
@@ -367,7 +368,7 @@ export const BackupRestore: React.FC<BackupRestoreProps> = ({
       {state.success && (
         <div className={backupRestoreStyles.success.container}>
           <div className={backupRestoreStyles.success.content}>
-            <Save className={backupRestoreStyles.success.icon} />
+            <Icon path={mdiContentSave} size="1rem" className="text-green-500 mr-2" />
             <span className={backupRestoreStyles.success.text}>{state.success}</span>
           </div>
         </div>

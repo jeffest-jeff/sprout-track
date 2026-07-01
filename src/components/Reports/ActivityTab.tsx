@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
-import { Activity, Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiRun, mdiLoading } from '@mdi/js';
 import { Settings } from '@prisma/client';
 import { cn } from '@/src/lib/utils';
 import { styles, activityChartStyles } from './reports.styles';
@@ -414,7 +415,7 @@ const ActivityTab: React.FC<ActivityTabProps> = ({
   if (!dateRange.from || !dateRange.to) {
     return (
       <div className={cn(styles.emptyContainer, "reports-empty-container")}>
-        <Activity className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
+        <Icon path={mdiRun} size="1.5rem" className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
         <p className={cn(styles.emptyText, "reports-empty-text")}>
           {t('Select a date range to view activity charts.')}
         </p>
@@ -425,7 +426,7 @@ const ActivityTab: React.FC<ActivityTabProps> = ({
   if (isLoading && !groupedByDay.length) {
     return (
       <div className={cn(styles.loadingContainer, "reports-loading-container")}>
-        <Loader2 className="h-6 w-6 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="1.5rem" className="text-teal-600" spin />
         <p className={cn(styles.loadingText, "reports-loading-text")}>
           {t('Loading activity data...')}
         </p>
@@ -436,7 +437,7 @@ const ActivityTab: React.FC<ActivityTabProps> = ({
   if (!groupedByDay.length) {
     return (
       <div className={cn(styles.emptyContainer, "reports-empty-container")}>
-        <Activity className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
+        <Icon path={mdiRun} size="1.5rem" className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
         <p className={cn(styles.emptyText, "reports-empty-text")}>
           {t('No activities recorded for this date range.')}
         </p>

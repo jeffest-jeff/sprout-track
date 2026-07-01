@@ -18,8 +18,8 @@ import FormPage, { FormPageContent, FormPageFooter } from '@/src/components/ui/f
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
 import CardVisual from '@/src/components/reporting/CardVisual';
-import { Clock, Moon, Sun, Utensils, Droplet, Loader2 } from 'lucide-react';
-import { diaper } from '@lucide/lab';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClockOutline, mdiMoonWaningCrescent, mdiWhiteBalanceSunny, mdiSilverwareForkKnife, mdiWater, mdiLoading, mdiDiaperOutline } from '@mdi/js';
 import { useFamily } from '@/src/context/family';
 import { useLocalization } from '@/src/context/localization';
 
@@ -498,7 +498,7 @@ export const BabyQuickStats: React.FC<BabyQuickStatsProps> = ({
               {/* Stats cards */}
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-8">
-                  <Loader2 className="h-8 w-8 animate-spin text-teal-600 mb-2" />
+                  <Icon path={mdiLoading} size="2rem" spin className="text-teal-600 mb-2" />
                   <p className="text-gray-600">{t('Loading statistics...')}</p>
                 </div>
               ) : error ? (

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Pill } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPill } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -45,7 +46,7 @@ const SupplementStatsSection: React.FC<SupplementStatsSectionProps> = ({
     <>
       <AccordionItem value="supplements">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Pill className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-supplement")} />
+          <Icon path={mdiPill} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-supplement")} />
           <span>{t('Supplement Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

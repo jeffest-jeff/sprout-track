@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { BarChart3, TrendingUp, Activity, Grid3X3, CalendarIcon, Loader2, Baby as BabyIcon, Trophy, HeartPulse, FileText } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChartBar, mdiTrendingUp, mdiRun, mdiGrid, mdiCalendar, mdiLoading, mdiBabyFaceOutline, mdiTrophy, mdiHeartPulse, mdiFileDocument } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { useBaby } from '@/app/context/baby';
 import { Button } from '@/src/components/ui/button';
@@ -145,13 +146,13 @@ const Reports: React.FC<ReportsProps> = ({ className }) => {
   // Tab configuration
   const tabs = useMemo(
     () => [
-      { id: 'stats' as ReportTab, label: t('Stats Tab'), icon: BarChart3 },
-      { id: 'report-card' as ReportTab, label: t('Report Card'), icon: FileText },
-      { id: 'health' as ReportTab, label: t('Health'), icon: HeartPulse },
-      { id: 'milestones' as ReportTab, label: t('Milestones Tab'), icon: Trophy },
-      { id: 'growth' as ReportTab, label: t('Growth Trends Tab'), icon: TrendingUp },
-      { id: 'activity' as ReportTab, label: t('Activity Tab'), icon: Activity },
-      { id: 'heatmaps' as ReportTab, label: t('Heatmaps Tab'), icon: Grid3X3 },
+      { id: 'stats' as ReportTab, label: t('Stats Tab'), icon: mdiChartBar },
+      { id: 'report-card' as ReportTab, label: t('Report Card'), icon: mdiFileDocument },
+      { id: 'health' as ReportTab, label: t('Health'), icon: mdiHeartPulse },
+      { id: 'milestones' as ReportTab, label: t('Milestones Tab'), icon: mdiTrophy },
+      { id: 'growth' as ReportTab, label: t('Growth Trends Tab'), icon: mdiTrendingUp },
+      { id: 'activity' as ReportTab, label: t('Activity Tab'), icon: mdiRun },
+      { id: 'heatmaps' as ReportTab, label: t('Heatmaps Tab'), icon: mdiGrid },
     ],
     [t]
   );
@@ -183,7 +184,7 @@ const Reports: React.FC<ReportsProps> = ({ className }) => {
     return (
       <div className={cn(styles.container, className, "reports-container")}>
         <div className={cn(styles.noBabyContainer, "reports-no-baby-container")}>
-          <BabyIcon className={cn(styles.noBabyIcon, "reports-no-baby-icon")} />
+          <Icon path={mdiBabyFaceOutline} size={1} className={cn(styles.noBabyIcon, "reports-no-baby-icon")} />
           <p className={cn(styles.noBabyText, "reports-no-baby-text")}>
             {t('Please select a baby to view reports')}
           </p>
@@ -208,7 +209,7 @@ const Reports: React.FC<ReportsProps> = ({ className }) => {
                 variant="outline"
                 className={cn(styles.dateRangeButton, "reports-date-range-button")}
               >
-                <CalendarIcon className={cn(styles.dateRangeIcon, "reports-date-range-icon")} />
+                <Icon path={mdiCalendar} size="1rem" className={cn(styles.dateRangeIcon, "reports-date-range-icon")} />
                 {formatDateRange()}
               </Button>
             </PopoverTrigger>
@@ -229,7 +230,6 @@ const Reports: React.FC<ReportsProps> = ({ className }) => {
       <div className={cn(styles.tabContainer, "reports-tab-container-wrapper")}>
         <div className={cn(tabStyles.tabContainer, "reports-tab-container")}>
           {tabs.map((tab) => {
-            const IconComponent = tab.icon;
             const isActive = activeTab === tab.id;
 
             return (
@@ -246,7 +246,7 @@ const Reports: React.FC<ReportsProps> = ({ className }) => {
                 role="tab"
                 aria-selected={isActive}
               >
-                <IconComponent className={tabStyles.tabIcon} />
+                <Icon path={tab.icon} size="1rem" className={tabStyles.tabIcon} />
                 <span>{tab.label}</span>
               </button>
             );

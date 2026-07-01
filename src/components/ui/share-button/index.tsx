@@ -4,7 +4,8 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cn } from "@/src/lib/utils"
 import { useTheme } from "@/src/context/theme"
-import { Share, Copy, Check } from 'lucide-react'
+import { Icon } from '@/src/components/ui/icon';
+import { mdiShareVariant, mdiContentCopy, mdiCheck } from '@mdi/js';
 
 import { shareButtonVariants } from "./share-button.styles"
 import { ShareButtonProps } from "./share-button.types";
@@ -234,11 +235,11 @@ const ShareButton = React.forwardRef<HTMLButtonElement, ShareButtonProps>(
           {...props}
         >
           {copied ? (
-            <Check className="h-4 w-4" />
+            <Icon path={mdiCheck} size="1rem" />
           ) : supportsNativeShare ? (
-            <Share className="h-4 w-4" />
+            <Icon path={mdiShareVariant} size="1rem" />
           ) : (
-            <Copy className="h-4 w-4" />
+            <Icon path={mdiContentCopy} size="1rem" />
           )}
           {showText && (
             <span className="ml-1">
@@ -257,7 +258,7 @@ const ShareButton = React.forwardRef<HTMLButtonElement, ShareButtonProps>(
               "animate-in slide-in-from-top-2"
             )}
           >
-            <Check className="h-4 w-4" />
+            <Icon path={mdiCheck} size="1rem" />
             <span className="text-sm font-medium">{t('Family URL copied to clipboard!')}</span>
           </div>
         )}

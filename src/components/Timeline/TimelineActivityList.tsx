@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/src/components/ui/card';
-import { Baby as BabyIcon } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline } from '@mdi/js';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { ActivityType, TimelineActivityListProps, FilterType } from './types';
 import { getActivityIcon, getActivityStyle, getActivityDescription, getActivityTime } from './utils';
@@ -571,7 +572,7 @@ const TimelineActivityList = ({
             <div className="absolute inset-0 flex items-center justify-center h-full">
               <div className="text-center p-6">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center">
-                  <BabyIcon className="h-8 w-8 text-indigo-600" />
+                  <Icon path={mdiBabyFaceOutline} size="2rem" className="text-indigo-600" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-1 timeline-empty-state">{t('No activities recorded')}</h3>
                 <p className="text-sm text-gray-500 timeline-empty-description">

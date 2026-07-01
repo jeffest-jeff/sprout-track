@@ -6,7 +6,10 @@ import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 import { Switch } from '@/src/components/ui/switch';
-import { Trash2, Pencil, Plus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiTrashCan, mdiPencil, mdiPlus } from '@mdi/js';
+import { IconPicker } from '@/src/components/ui/icon-picker';
+import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import {
   FormPage,
   FormPageContent,
@@ -14,9 +17,6 @@ import {
 } from '@/src/components/ui/form-page';
 import { useToast } from '@/src/components/ui/toast';
 import { useLocalization } from '@/src/context/localization';
-import { IconPicker } from '@/src/components/ui/icon-picker';
-import { Icon } from '@/src/components/ui/icon';
-import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import CustomFieldModal, { FieldDraft } from './CustomFieldModal';
 import './custom-activity-modal.css';
 
@@ -198,7 +198,7 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
               <div className="flex items-center justify-between">
                 <Label>{t('Field Label')}</Label>
                 <Button type="button" variant="outline" size="sm" onClick={() => { setEditingFieldIndex(null); setFieldModalOpen(true); }}>
-                  <Plus className="h-4 w-4 mr-1" />{t('Add Field')}
+                  <Icon path={mdiPlus} size="1rem" className="mr-1" />{t('Add Field')}
                 </Button>
               </div>
               <div className="space-y-1">
@@ -207,10 +207,10 @@ export default function CustomActivityModal({ isOpen, onClose, activity, onSaved
                     <span className="text-sm">{field.name} <span className="text-gray-400 custom-activity-modal-field-type">({t(field.fieldType === 'BOOLEAN' ? 'Yes/No' : field.fieldType.charAt(0) + field.fieldType.slice(1).toLowerCase())})</span></span>
                     <div className="flex gap-1">
                       <button type="button" onClick={() => { setEditingFieldIndex(index); setFieldModalOpen(true); }}>
-                        <Pencil className="h-4 w-4 text-gray-500" />
+                        <Icon path={mdiPencil} size="1rem" className="text-gray-500" />
                       </button>
                       <button type="button" onClick={() => setFields((prev) => prev.filter((_, i) => i !== index))}>
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                        <Icon path={mdiTrashCan} size="1rem" className="text-red-500" />
                       </button>
                     </div>
                   </div>

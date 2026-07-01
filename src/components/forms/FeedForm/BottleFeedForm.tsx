@@ -1,7 +1,8 @@
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
-import { Plus, Minus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPlus, mdiMinus } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import { useUnit } from '@/src/hooks/useUnit';
 
@@ -82,7 +83,7 @@ export default function BottleFeedForm({
                 disabled={loading}
                 className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                <Minus className="h-4 w-4 text-white" />
+                <Icon path={mdiMinus} size="1rem" className="text-white" />
               </Button>
               <Input
                 type="text"
@@ -101,7 +102,7 @@ export default function BottleFeedForm({
                 disabled={loading}
                 className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                <Plus className="h-4 w-4 text-white" />
+                <Icon path={mdiPlus} size="1rem" className="text-white" />
               </Button>
             </div>
           </div>
@@ -116,7 +117,7 @@ export default function BottleFeedForm({
                 disabled={loading}
                 className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                <Minus className="h-4 w-4 text-white" />
+                <Icon path={mdiMinus} size="1rem" className="text-white" />
               </Button>
               <Input
                 type="text"
@@ -135,7 +136,7 @@ export default function BottleFeedForm({
                 disabled={loading}
                 className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
               >
-                <Plus className="h-4 w-4 text-white" />
+                <Icon path={mdiPlus} size="1rem" className="text-white" />
               </Button>
             </div>
           </div>
@@ -152,7 +153,7 @@ export default function BottleFeedForm({
               disabled={loading}
               className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-14 w-14 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
-              <Minus className="h-5 w-5 text-white" />
+              <Icon path={mdiMinus} size="1.25rem" className="text-white" />
             </Button>
             <Input
               type="text"
@@ -171,7 +172,7 @@ export default function BottleFeedForm({
               disabled={loading}
               className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-14 w-14 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
-              <Plus className="h-5 w-5 text-white" />
+              <Icon path={mdiPlus} size="1.25rem" className="text-white" />
             </Button>
           </div>
         </>

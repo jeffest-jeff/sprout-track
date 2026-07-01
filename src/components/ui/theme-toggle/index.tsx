@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Monitor } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMoonWaningCrescent, mdiWhiteBalanceSunny, mdiMonitor } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { cn } from '@/src/lib/utils';
 import { themeToggleStyles } from './theme-toggle.styles';
@@ -64,10 +65,10 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
 
   // Get the appropriate icon and label for the current theme
   const getCurrentThemeIcon = () => {
-    const iconSize = (variant === 'light' || variant === 'minimal') ? 14 : 16;
-    if (!isHydrated) return <Sun size={iconSize} />; // Default to Sun icon during SSR
-    if (useSystemTheme) return <Monitor size={iconSize} />;
-    return theme === 'light' ? <Sun size={iconSize} /> : <Moon size={iconSize} />;
+    const iconSize = (variant === 'light' || variant === 'minimal') ? "0.875rem" : "1rem";
+    if (!isHydrated) return <Icon path={mdiWhiteBalanceSunny} size={iconSize} />; // Default to Sun icon during SSR
+    if (useSystemTheme) return <Icon path={mdiMonitor} size={iconSize} />;
+    return theme === 'light' ? <Icon path={mdiWhiteBalanceSunny} size={iconSize} /> : <Icon path={mdiMoonWaningCrescent} size={iconSize} />;
   };
 
   const getCurrentTheme = () => {

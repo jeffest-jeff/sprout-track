@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '@/src/lib/utils';
 import { medicineFormStyles as styles } from './medicine-form.styles';
 import { GiveMedicineTabProps, MedicineWithContacts, MedicineLogFormData } from './medicine-form.types';
-import { Loader2, AlertCircle, ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiAlertCircle, mdiChevronDown } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
@@ -282,14 +283,14 @@ const GiveMedicineTab: React.FC<GiveMedicineTabProps> = ({
       <div className="flex-1 overflow-y-auto p-1">
         {isFetching ? (
           <div className={cn(styles.loadingContainer, "medicine-form-loading-container")}>
-            <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+            <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
             <p className="mt-2 text-gray-600">{t('Loading form data...')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {error && (
               <div className={cn(styles.errorContainer, "medicine-form-error-container flex items-center text-red-500 p-2 bg-red-50 rounded-md")}>
-                <AlertCircle className="mr-2 h-4 w-4" />
+                <Icon path={mdiAlertCircle} size="1rem" className="mr-2" />
                 <span>{error}</span>
               </div>
             )}
@@ -300,7 +301,7 @@ const GiveMedicineTab: React.FC<GiveMedicineTabProps> = ({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     {selectedMedicine ? selectedMedicine.name : t('Select a medicine')}
-                    <ChevronDown className="ml-2 h-4 w-4" />
+                    <Icon path={mdiChevronDown} size="1rem" className="ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">

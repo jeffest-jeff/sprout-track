@@ -2,17 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '@/src/lib/utils';
 import { styles } from './baby-quick-info.styles';
 import { StatsTabProps } from './baby-quick-info.types';
-import { 
-  Moon, 
-  Sun, 
-  Utensils, 
-  Droplet, 
-  StickyNote, 
-  Bath,
-  Loader2
-} from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
-import { Icon } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
 import CardVisual from '@/src/components/reporting/CardVisual';
@@ -459,7 +450,7 @@ const StatsTab: React.FC<StatsTabProps> = ({
       {/* Stats cards */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-teal-600 mb-2" />
+          <Icon path={mdiLoading} size="2rem" className="text-teal-600 mb-2" spin />
           <p className="text-gray-600">{t('Loading statistics...')}</p>
         </div>
       ) : error ? (

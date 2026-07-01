@@ -4,15 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { VaccineHistoryTabProps } from './vaccine-form.types';
 import { VaccineLogResponse } from '@/app/api/types';
 import { Button } from '@/src/components/ui/button';
-import {
-  Loader2,
-  AlertCircle,
-  Syringe,
-  ChevronDown,
-  Paperclip,
-  Download,
-  FileSpreadsheet,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiAlertCircle, mdiNeedle, mdiChevronDown, mdiPaperclip, mdiDownload, mdiFileExcel } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { useTimezone } from '@/app/context/timezone';
 import { useLocalization } from '@/src/context/localization';
@@ -163,9 +156,9 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
           disabled={isExporting || vaccineRecords.length === 0}
         >
           {isExporting ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
           ) : (
-            <FileSpreadsheet className="h-4 w-4 mr-2" />
+            <Icon path={mdiFileExcel} size="1rem" className="mr-2" />
           )}
           {t('Export to Excel')}
         </Button>
@@ -174,7 +167,7 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
       {/* Loading state */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-8 vaccine-form-loading-container">
-          <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+          <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
           <p className="mt-2 text-gray-600">{t('Loading vaccine records...')}</p>
         </div>
       )}
@@ -182,7 +175,7 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
       {/* Error state */}
       {error && (
         <div className="flex flex-col items-center justify-center py-8 vaccine-form-error-container">
-          <AlertCircle className="h-8 w-8 text-red-500" />
+          <Icon path={mdiAlertCircle} size="2rem" className="text-red-500" />
           <p className="mt-2 text-red-500">{error}</p>
           <Button
             variant="outline"
@@ -197,7 +190,7 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
       {/* Empty state */}
       {!isLoading && !error && vaccineRecords.length === 0 && (
         <div className="flex flex-col items-center justify-center py-8 vaccine-form-empty-state">
-          <Syringe className="h-12 w-12 mx-auto mb-2 text-gray-400" />
+          <Icon path={mdiNeedle} size="3rem" className="mx-auto mb-2 text-gray-400" />
           <p className="text-gray-500">{t('No vaccines recorded')}</p>
         </div>
       )}
@@ -222,7 +215,7 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
                 >
                   <div className="flex items-center flex-1 min-w-0">
                     <div className="flex-shrink-0 vaccine-form-icon-container rounded-full bg-teal-100 p-1.5">
-                      <Syringe className="h-3.5 w-3.5 text-teal-600" />
+                      <Icon path={mdiNeedle} size="0.875rem" className="text-teal-600" />
                     </div>
                     <div className="ml-2 min-w-0 flex-1">
                       <div className="font-medium text-sm truncate vaccine-history-item-name">
@@ -236,10 +229,10 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
                     {hasDocuments && (
-                      <Paperclip className="h-3.5 w-3.5 text-gray-400" />
+                      <Icon path={mdiPaperclip} size="0.875rem" className="text-gray-400" />
                     )}
-                    <ChevronDown className={cn(
-                      "h-4 w-4 text-gray-500 transition-transform duration-200",
+                    <Icon path={mdiChevronDown} size="1rem" className={cn(
+                      "text-gray-500 transition-transform duration-200",
                       isExpanded && "rotate-180"
                     )} />
                   </div>
@@ -290,7 +283,7 @@ const VaccineHistoryTab: React.FC<VaccineHistoryTabProps> = ({
                                 }}
                                 title={t('Download')}
                               >
-                                <Download className="h-3.5 w-3.5 text-teal-600" />
+                                <Icon path={mdiDownload} size="0.875rem" className="text-teal-600" />
                               </Button>
                             </div>
                           ))}

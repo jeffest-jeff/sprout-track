@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { X, Users, Mail, UserCircle, MessageSquare, Plus, Settings, LogOut, Star } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClose, mdiAccountGroup, mdiEmail, mdiAccountCircle, mdiMessageText, mdiPlus, mdiCog, mdiLogout, mdiStar } from '@mdi/js';
 import { LanguageSelector } from '@/src/components/ui/side-nav/language-selector';
 import ThemeToggle from '@/src/components/ui/theme-toggle';
 import NavCountBubble from '@/src/components/ui/nav-count-bubble';
@@ -116,7 +117,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
                   className={cn(adminSideNavStyles.closeButton, "admin-side-nav-close-button")}
                   aria-label="Close navigation"
                 >
-                  <X size={20} />
+                  <Icon path={mdiClose} size="1.25rem" />
                 </button>
               )}
             </div>
@@ -128,7 +129,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
           <SideNavItem
             path="/family-manager/families"
             label={t('Families')}
-            icon={<Users size={18} />}
+            icon={<Icon path={mdiAccountGroup} size="1.125rem" />}
             isActive={currentPath === '/family-manager/families'}
             onClick={onNavigate}
             className="admin-side-nav-item"
@@ -137,7 +138,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
           <SideNavItem
             path="/family-manager/invites"
             label={t('Active Invites')}
-            icon={<Mail size={18} />}
+            icon={<Icon path={mdiEmail} size="1.125rem" />}
             isActive={currentPath === '/family-manager/invites'}
             onClick={onNavigate}
             className="admin-side-nav-item"
@@ -146,7 +147,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
           <SideNavItem
             path="/family-manager/custom-activities"
             label={t('Custom Activities')}
-            icon={<Star size={18} />}
+            icon={<Icon path={mdiStar} size="1.125rem" />}
             isActive={currentPath === '/family-manager/custom-activities'}
             onClick={onNavigate}
             className="admin-side-nav-item"
@@ -155,7 +156,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
             <SideNavItem
               path="/family-manager/accounts"
               label={t('Accounts')}
-              icon={<UserCircle size={18} />}
+              icon={<Icon path={mdiAccountCircle} size="1.125rem" />}
               isActive={currentPath === '/family-manager/accounts'}
               onClick={onNavigate}
               className="admin-side-nav-item"
@@ -166,7 +167,7 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
             <SideNavItem
               path="/family-manager/feedback"
               label={t('Feedback')}
-              icon={<MessageSquare size={18} />}
+              icon={<Icon path={mdiMessageText} size="1.125rem" />}
               isActive={currentPath === '/family-manager/feedback'}
               onClick={onNavigate}
               className="admin-side-nav-item"
@@ -190,18 +191,18 @@ export const AdminSideNav: React.FC<AdminSideNavProps> = ({
         {/* Footer */}
         <div className={cn(adminSideNavStyles.footer, "admin-side-nav-footer")}>
           <FooterButton
-            icon={<Plus />}
+            icon={<Icon path={mdiPlus} size={1} />}
             label={t('Add New Family')}
             onClick={onAddFamily}
           />
           <ThemeToggle className="mb-2" />
           <FooterButton
-            icon={<Settings />}
+            icon={<Icon path={mdiCog} size={1} />}
             label={t('Settings')}
             onClick={onSettingsClick}
           />
           <FooterButton
-            icon={<LogOut />}
+            icon={<Icon path={mdiLogout} size={1} />}
             label={t('Logout')}
             onClick={onLogout}
           />

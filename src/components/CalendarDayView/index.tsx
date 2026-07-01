@@ -3,7 +3,8 @@ import { cn } from '@/src/lib/utils';
 import { CalendarDayViewProps, EventGroups } from './calendar-day-view.types';
 import { calendarDayViewStyles as styles } from './calendar-day-view.styles';
 import { CalendarEventItem } from '../CalendarEventItem';
-import { Loader2, Calendar, Sun, Coffee, Moon, PlusCircle, CalendarClock, X } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiCalendar, mdiWhiteBalanceSunny, mdiCoffee, mdiMoonWaningCrescent, mdiPlusCircle, mdiCalendarClock, mdiClose } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { 
   FormPage, 
@@ -325,7 +326,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
     if (isLoading) {
       return (
         <div className="flex items-center justify-center h-full">
-          <Loader2 className="h-8 w-8 text-teal-500 calendar-day-view-loader animate-spin" />
+          <Icon path={mdiLoading} size="2rem" className="text-teal-500 calendar-day-view-loader" spin />
         </div>
       );
     }
@@ -334,7 +335,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
     if (events.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-full text-center p-6">
-          <CalendarClock className="h-12 w-12 text-gray-400 calendar-day-view-empty-icon mb-2" />
+          <Icon path={mdiCalendarClock} size="3rem" className="text-gray-400 calendar-day-view-empty-icon mb-2" />
           <p className="text-gray-500 calendar-day-view-empty-text text-sm">
             {t('No events scheduled for this day')}
           </p>
@@ -350,7 +351,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           {groupedEvents.morning.length > 0 && (
             <div className={styles.eventGroup}>
               <div className={styles.eventGroupHeader}>
-                <Sun className={styles.eventGroupIcon} />
+                <Icon path={mdiWhiteBalanceSunny} size={1} className={styles.eventGroupIcon} />
                 <h3 className={cn(
                   styles.eventGroupTitle,
                   'calendar-day-view-group-title'
@@ -375,7 +376,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           {groupedEvents.afternoon.length > 0 && (
             <div className={styles.eventGroup}>
               <div className={styles.eventGroupHeader}>
-                <Coffee className={styles.eventGroupIcon} />
+                <Icon path={mdiCoffee} size={1} className={styles.eventGroupIcon} />
                 <h3 className={cn(
                   styles.eventGroupTitle,
                   'calendar-day-view-group-title'
@@ -400,7 +401,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           {groupedEvents.evening.length > 0 && (
             <div className={styles.eventGroup}>
               <div className={styles.eventGroupHeader}>
-                <Moon className={styles.eventGroupIcon} />
+                <Icon path={mdiMoonWaningCrescent} size={1} className={styles.eventGroupIcon} />
                 <h3 className={cn(
                   styles.eventGroupTitle,
                   'calendar-day-view-group-title'
@@ -450,7 +451,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
               {t('Close')}
             </Button>
             <Button onClick={handleAddEvent}>
-              <PlusCircle className="mr-2 h-4 w-4" />
+              <Icon path={mdiPlusCircle} size="1rem" className="mr-2" />
               {t('Add Event')}
             </Button>
           </div>

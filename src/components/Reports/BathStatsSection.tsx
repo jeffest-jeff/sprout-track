@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bath } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBathtub } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -34,7 +35,7 @@ const BathStatsSection: React.FC<BathStatsSectionProps> = ({ stats, activities, 
     <>
       <AccordionItem value="baths">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Bath className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-bath")} />
+          <Icon path={mdiBathtub} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-bath")} />
           <span>{t('Bath Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

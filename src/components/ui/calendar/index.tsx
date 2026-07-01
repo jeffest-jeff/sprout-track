@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import './calendar.css'; // Import the CSS file with dark mode overrides
 
@@ -463,7 +464,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             aria-label={currentPage === 'years' ? "Previous years" : "Previous month"}
             tabIndex={-1} // Prevent default focus
           >
-            <ChevronLeft className="h-4 w-4" />
+            <Icon path={mdiChevronLeft} size="1rem" />
           </button>
           
           <div className="flex items-center gap-1">
@@ -504,7 +505,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             aria-label={currentPage === 'years' ? "Next years" : "Next month"}
             tabIndex={-1} // Prevent default focus
           >
-            <ChevronRight className="h-4 w-4" />
+            <Icon path={mdiChevronRight} size="1rem" />
           </button>
         </div>
         

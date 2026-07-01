@@ -13,7 +13,8 @@ import {
   DialogFooter,
 } from '@/src/components/ui/dialog';
 import { Card, CardContent } from '@/src/components/ui/card';
-import { RefreshCw, Loader2, CheckCircle, XCircle, AlertTriangle, ArrowUpCircle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiRefresh, mdiLoading, mdiCheckCircle, mdiCloseCircle, mdiAlert, mdiArrowUpCircle } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import { cn } from '@/src/lib/utils';
 import { guardianUpdateStyles } from './guardian-update.styles';
@@ -112,7 +113,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
     <div className={guardianUpdateStyles.container}>
       {/* Section Header */}
       <div className={guardianUpdateStyles.header.container}>
-        <RefreshCw className={guardianUpdateStyles.header.icon} />
+        <Icon path={mdiRefresh} size="1.25rem" className="text-teal-600" />
         <Label className={guardianUpdateStyles.header.title}>
           {t('System Updates')}
         </Label>
@@ -136,7 +137,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             >
               {checking ? (
                 <>
-                  <Loader2 className={cn(guardianUpdateStyles.icon, 'animate-spin')} />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Checking...')}
                 </>
               ) : (
@@ -173,7 +174,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             {/* Update available */}
             {versionInfo?.updateAvailable === true && (
               <div className={guardianUpdateStyles.banner.row}>
-                <ArrowUpCircle className="h-4 w-4 text-teal-600 flex-shrink-0" />
+                <Icon path={mdiArrowUpCircle} size="1rem" className="text-teal-600 flex-shrink-0" />
                 <div>
                   <p className={guardianUpdateStyles.banner.text}>
                     {t('Update available!')}
@@ -188,7 +189,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             {/* Up to date */}
             {versionInfo?.updateAvailable === false && (
               <div className={guardianUpdateStyles.banner.row}>
-                <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                <Icon path={mdiCheckCircle} size="1rem" className="text-green-600 flex-shrink-0" />
                 <p className={guardianUpdateStyles.banner.text}>
                   {t('You are running the latest version')}
                 </p>
@@ -198,7 +199,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             {/* GitHub unreachable */}
             {versionInfo?.updateAvailable === null && versionInfo?.latestVersion === null && (
               <div className={guardianUpdateStyles.banner.row}>
-                <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                <Icon path={mdiAlert} size="1rem" className="text-amber-600 flex-shrink-0" />
                 <p className={guardianUpdateStyles.banner.text}>
                   {t('Could not reach GitHub to check for updates. You can still trigger a manual update.')}
                 </p>
@@ -208,7 +209,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             {/* Docker mode warning */}
             {dockerMode ? (
               <div className={guardianUpdateStyles.banner.row}>
-                <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                <Icon path={mdiAlert} size="1rem" className="text-amber-600 flex-shrink-0" />
                 <p className={guardianUpdateStyles.banner.text}>
                   {t('Updates are managed by Docker and cannot be triggered from the admin panel.')}
                 </p>
@@ -222,7 +223,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
                   onClick={() => setShowConfirmDialog(true)}
                   disabled={updating || isLoading || isSaving}
                 >
-                  <RefreshCw className={guardianUpdateStyles.icon} />
+                  <Icon path={mdiRefresh} size="1rem" className="mr-2" />
                   {versionInfo?.updateAvailable ? t('Update Now') : t('Force Update')}
                 </Button>
                 <Button
@@ -232,7 +233,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
                   onClick={checkForUpdates}
                   disabled={checking}
                 >
-                  <RefreshCw className={cn('h-3 w-3', checking && 'animate-spin')} />
+                  <Icon path={mdiRefresh} size="0.75rem" spin={checking} />
                 </Button>
               </div>
             )}
@@ -240,7 +241,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             {/* Updating redirect message */}
             {updating && (
               <div className={guardianUpdateStyles.banner.row}>
-                <Loader2 className="h-4 w-4 text-teal-600 flex-shrink-0 animate-spin" />
+                <Icon path={mdiLoading} size="1rem" spin className="text-teal-600 flex-shrink-0" />
                 <p className={guardianUpdateStyles.banner.text}>
                   {t('Update triggered. Redirecting to maintenance page...')}
                 </p>
@@ -254,7 +255,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
           <>
             <div className={guardianUpdateStyles.row}>
               <div className="flex items-center space-x-2">
-                <XCircle className="h-4 w-4 text-gray-400" />
+                <Icon path={mdiCloseCircle} size="1rem" className="text-gray-400" />
                 <span className={guardianUpdateStyles.helpText}>
                   {t('Update service not available')}
                 </span>
@@ -292,7 +293,7 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             </DialogDescription>
           </DialogHeader>
           <div className={guardianUpdateStyles.dialog.warningBox}>
-            <AlertTriangle className="h-5 w-5 text-orange-500 flex-shrink-0" />
+            <Icon path={mdiAlert} size="1.25rem" className="text-orange-500 flex-shrink-0" />
             <p className={guardianUpdateStyles.dialog.warningText}>
               {t('The application will restart during the update. All active users will be temporarily disconnected and redirected to a maintenance page.')}
             </p>
@@ -314,12 +315,12 @@ export function GuardianUpdate({ isLoading, isSaving, onError }: GuardianUpdateP
             >
               {updating ? (
                 <>
-                  <Loader2 className={cn(guardianUpdateStyles.icon, 'animate-spin')} />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Updating...')}
                 </>
               ) : (
                 <>
-                  <RefreshCw className={guardianUpdateStyles.icon} />
+                  <Icon path={mdiRefresh} size="1rem" className="mr-2" />
                   {t('Update Now')}
                 </>
               )}

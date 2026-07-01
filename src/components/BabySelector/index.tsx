@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Moon, ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMoonWaningCrescent, mdiChevronDown } from '@mdi/js';
 import { BabySelectorProps } from './baby-selector.types';
 import {
   babySelectorContainer,
@@ -63,7 +64,7 @@ export const BabySelector: React.FC<BabySelectorProps> = ({
             {selectedBaby ? selectedBaby.firstName : t('Select Baby')}
           </span>
           {selectedBaby && sleepingBabies.has(selectedBaby.id) && (
-            <Moon className="h-3 w-3" />
+            <Icon path={mdiMoonWaningCrescent} size="0.75rem" />
           )}
         </div>
         {selectedBaby && (
@@ -81,7 +82,7 @@ export const BabySelector: React.FC<BabySelectorProps> = ({
             size="sm"
             className={babySelectorDropdownButton()}
           >
-            <ChevronDown className="h-4 w-4" />
+            <Icon path={mdiChevronDown} size="1rem" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

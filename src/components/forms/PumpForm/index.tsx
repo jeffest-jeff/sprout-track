@@ -15,7 +15,8 @@ import {
 import { useTimezone } from '@/app/context/timezone';
 import { useToast } from '@/src/components/ui/toast';
 import { handleExpirationError } from '@/src/lib/expiration-error-handler';
-import { Plus, Minus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPlus, mdiMinus } from '@mdi/js';
 import { Switch } from '@/src/components/ui/switch';
 import { useLocalization } from '@/src/context/localization';
 import { BreastMilkAdjustmentResponse } from '@/app/api/types';
@@ -623,14 +624,14 @@ export default function PumpForm({
                   <Label>{t('Amount')}</Label>
                   <div className="flex items-center">
                     <Button type="button" variant="outline" size="icon" onClick={decrementAdjustAmount} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg">
-                      <Minus className="h-4 w-4 text-white" />
+                      <Icon path={mdiMinus} size="1rem" className="text-white" />
                     </Button>
                     <div className="flex mx-2">
                       <Input type="text" inputMode="decimal" placeholder={t("0.0")} value={adjustAmount} onChange={(e) => { if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) setAdjustAmount(e.target.value); }} className="rounded-r-none text-center text-lg w-24" />
                       <div className="inline-flex items-center px-3 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md amount-unit">{unitSymbol(adjustUnit)}</div>
                     </div>
                     <Button type="button" variant="outline" size="icon" onClick={incrementAdjustAmount} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg">
-                      <Plus className="h-4 w-4 text-white" />
+                      <Icon path={mdiPlus} size="1rem" className="text-white" />
                     </Button>
                   </div>
                 </div>
@@ -684,14 +685,14 @@ export default function PumpForm({
                   <Label htmlFor="leftAmount">{t('Left Amount')}</Label>
                   <div className="flex items-center">
                     <Button type="button" variant="outline" size="icon" onClick={() => decrementAmount('leftAmount')} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 decrement-button">
-                      <Minus className="h-4 w-4 text-white" />
+                      <Icon path={mdiMinus} size="1rem" className="text-white" />
                     </Button>
                     <div className="flex mx-2">
                       <Input id="leftAmount" name="leftAmount" type="text" inputMode="decimal" placeholder={t("0.0")} value={formData.leftAmount} onChange={handleInputChange} className="rounded-r-none text-center text-lg w-24" />
                       <div className="inline-flex items-center px-3 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md amount-unit">{unitSymbol(formData.unitAbbr)}</div>
                     </div>
                     <Button type="button" variant="outline" size="icon" onClick={() => incrementAmount('leftAmount')} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 increment-button">
-                      <Plus className="h-4 w-4 text-white" />
+                      <Icon path={mdiPlus} size="1rem" className="text-white" />
                     </Button>
                   </div>
                 </div>
@@ -701,14 +702,14 @@ export default function PumpForm({
                   <Label htmlFor="rightAmount">{t('Right Amount')}</Label>
                   <div className="flex items-center">
                     <Button type="button" variant="outline" size="icon" onClick={() => decrementAmount('rightAmount')} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 decrement-button">
-                      <Minus className="h-4 w-4 text-white" />
+                      <Icon path={mdiMinus} size="1rem" className="text-white" />
                     </Button>
                     <div className="flex mx-2">
                       <Input id="rightAmount" name="rightAmount" type="text" inputMode="decimal" placeholder={t("0.0")} value={formData.rightAmount} onChange={handleInputChange} className="rounded-r-none text-center text-lg w-24" />
                       <div className="inline-flex items-center px-3 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md amount-unit">{unitSymbol(formData.unitAbbr)}</div>
                     </div>
                     <Button type="button" variant="outline" size="icon" onClick={() => incrementAmount('rightAmount')} disabled={loading} className="bg-gradient-to-r from-teal-600 to-emerald-600 border-0 rounded-full h-10 w-10 flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 increment-button">
-                      <Plus className="h-4 w-4 text-white" />
+                      <Icon path={mdiPlus} size="1rem" className="text-white" />
                     </Button>
                   </div>
                 </div>

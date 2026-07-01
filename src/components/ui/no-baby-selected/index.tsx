@@ -1,5 +1,6 @@
 import React from 'react';
-import { Baby } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline } from '@mdi/js';
 import { Label } from '@/src/components/ui/label';
 import { useTheme } from '@/src/context/theme';
 import { cn } from '@/src/lib/utils';
@@ -23,7 +24,7 @@ export const NoBabySelected: React.FC<NoBabySelectedProps> = ({
   return (
     <div className={cn(noBabySelectedStyles.container, className, "no-baby-selected-container")}>
       <div className={cn(noBabySelectedStyles.iconContainer, "no-baby-selected-icon-container")}>
-        <Baby className={cn(noBabySelectedStyles.icon, "no-baby-selected-icon")} />
+        <Icon path={mdiBabyFaceOutline} size={1} className={cn(noBabySelectedStyles.icon, "no-baby-selected-icon")} />
       </div>
       
       <div className={noBabySelectedStyles.textContainer}>

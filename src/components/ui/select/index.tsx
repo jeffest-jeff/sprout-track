@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheck, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import { cn } from "@/src/lib/utils"
 import { selectStyles as styles } from "./select.styles"
 import { useTheme } from "@/src/context/theme"
@@ -38,7 +39,7 @@ const SelectTrigger = React.forwardRef<
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDown className={cn(styles.chevronIcon, "select-icon")} />
+        <Icon path={mdiChevronDown} size={1} className={cn(styles.chevronIcon, "select-icon")} />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -54,7 +55,7 @@ const SelectScrollUpButton = React.forwardRef<
     className={cn(styles.scrollButton, className, "select-icon")}
     {...props}
   >
-    <ChevronUp className="h-4 w-4" />
+    <Icon path={mdiChevronUp} size="1rem" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -68,7 +69,7 @@ const SelectScrollDownButton = React.forwardRef<
     className={cn(styles.scrollButton, className, "select-icon")}
     {...props}
   >
-    <ChevronDown className="h-4 w-4" />
+    <Icon path={mdiChevronDown} size="1rem" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
@@ -132,7 +133,7 @@ const SelectItem = React.forwardRef<
   >
     <span className={cn(styles.itemIndicatorWrapper, "select-icon")}>
       <SelectPrimitive.ItemIndicator>
-        <Check className={cn(styles.checkIcon, "select-check-icon")} />
+        <Icon path={mdiCheck} size={1} className={cn(styles.checkIcon, "select-check-icon")} />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

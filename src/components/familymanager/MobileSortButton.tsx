@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiArrowUpDown, mdiArrowUp, mdiArrowDown } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import {
   DropdownMenu,
@@ -36,8 +37,8 @@ export default function MobileSortButton({
 
   const getSortIcon = (key: string) => {
     if (sortColumn !== key) return null;
-    if (sortDirection === 'asc') return <ArrowUp className="h-3 w-3 ml-auto text-teal-600" />;
-    if (sortDirection === 'desc') return <ArrowDown className="h-3 w-3 ml-auto text-teal-600" />;
+    if (sortDirection === 'asc') return <Icon path={mdiArrowUp} size="0.75rem" className="ml-auto text-teal-600" />;
+    if (sortDirection === 'desc') return <Icon path={mdiArrowDown} size="0.75rem" className="ml-auto text-teal-600" />;
     return null;
   };
 
@@ -50,7 +51,7 @@ export default function MobileSortButton({
           className="h-9 w-9 rounded-full p-0 flex-shrink-0 mobile-sort-button"
           title={t('Sort')}
         >
-          <ArrowUpDown className="h-4 w-4" />
+          <Icon path={mdiArrowUpDown} size="1rem" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">

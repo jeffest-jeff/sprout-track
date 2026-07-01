@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { cn } from '@/src/lib/utils';
-import { Plus, X, MessageSquare } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPlus, mdiClose, mdiMessageText } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
 import { useTimezone } from '@/app/context/timezone';
@@ -84,8 +85,8 @@ export function ChatThreadList({
               )}
             >
               {showNewActive
-                ? <X className="h-3.5 w-3.5 text-gray-600" />
-                : <Plus className="h-3.5 w-3.5 text-emerald-500" />
+                ? <Icon path={mdiClose} size="0.875rem" className="text-gray-600" />
+                : <Icon path={mdiPlus} size="0.875rem" className="text-emerald-500" />
               }
             </button>
           )}
@@ -109,7 +110,7 @@ export function ChatThreadList({
       <div className={styles.list}>
         {threads.length === 0 ? (
           <div className={cn(styles.emptyState, 'chat-thread-list-empty')}>
-            <MessageSquare className="h-8 w-8" />
+            <Icon path={mdiMessageText} size="2rem" />
             <span>{t('No messages yet')}</span>
           </div>
         ) : (

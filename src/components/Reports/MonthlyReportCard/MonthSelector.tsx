@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef, useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { useLocalization } from '@/src/context/localization';
 import { reportCardStyles as s } from './monthly-report-card.styles';
@@ -69,7 +70,7 @@ const MonthSelector: React.FC<MonthSelectorProps> = ({
           aria-label={t('Previous month')}
           type="button"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <Icon path={mdiChevronLeft} size="1rem" />
         </button>
       )}
 
@@ -88,7 +89,7 @@ const MonthSelector: React.FC<MonthSelectorProps> = ({
           aria-label={t('Next month')}
           type="button"
         >
-          <ChevronRight className="w-4 h-4" />
+          <Icon path={mdiChevronRight} size="1rem" />
         </button>
       )}
     </div>

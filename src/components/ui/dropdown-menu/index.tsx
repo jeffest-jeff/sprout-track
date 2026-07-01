@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { Check, ChevronRight, Circle, GripVertical } from "lucide-react"
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheck, mdiChevronRight, mdiCircle, mdiDragVertical } from '@mdi/js';
 import { cn } from "@/src/lib/utils"
 import { dropdownMenuStyles as styles } from "./dropdown-menu.styles"
 import { useTheme } from "@/src/context/theme"
@@ -45,7 +46,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRight className={styles.chevronIcon} />
+    <Icon path={mdiChevronRight} size={1} className={styles.chevronIcon} />
   </DropdownMenuPrimitive.SubTrigger>
 ))
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName
@@ -110,11 +111,11 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className={cn(styles.iconWrapper, "dropdown-menu-icon")}>
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check className={cn(styles.checkIcon, "dropdown-menu-check-icon")} />
+        <Icon path={mdiCheck} size={1} className={cn(styles.checkIcon, "dropdown-menu-check-icon")} />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
-    {sortable && <GripVertical className={cn(styles.dragHandle, "dropdown-menu-icon", "dropdown-menu-drag-handle")} />}
+    {sortable && <Icon path={mdiDragVertical} size={1} className={cn(styles.dragHandle, "dropdown-menu-icon", "dropdown-menu-drag-handle")} />}
   </DropdownMenuPrimitive.CheckboxItem>
 ))
 DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName
@@ -130,7 +131,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   >
     <span className={cn(styles.iconWrapper, "dropdown-menu-icon")}>
       <DropdownMenuPrimitive.ItemIndicator>
-        <Circle className={cn(styles.circleIcon, "dropdown-menu-circle-icon")} />
+        <Icon path={mdiCircle} size={1} className={cn(styles.circleIcon, "dropdown-menu-circle-icon")} />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}

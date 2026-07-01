@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Baby } from '@prisma/client';
 import { Settings } from '@/app/api/types';
-import { Settings as SettingsIcon, Plus, Edit, Download, Upload } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCog, mdiPlus, mdiPencil, mdiDownload, mdiUpload } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
@@ -262,7 +263,7 @@ export default function SettingsModal({
                   className="w-full"
                   disabled={loading}
                 >
-                  <Download className="h-4 w-4 mr-2" />
+                  <Icon path={mdiDownload} size="1rem" className="mr-2" />
                   {t('Backup Database')}
                 </Button>
                 <Button
@@ -271,7 +272,7 @@ export default function SettingsModal({
                   className="w-full"
                   disabled={loading || isRestoring}
                 >
-                  <Upload className="h-4 w-4 mr-2" />
+                  <Icon path={mdiUpload} size="1rem" className="mr-2" />
                   {t('Restore Database')}
                 </Button>
               </div>
@@ -311,7 +312,7 @@ export default function SettingsModal({
                       setShowBabyModal(true);
                     }}
                   >
-                    <Edit className="h-4 w-3 mr-2" />
+                    <Icon path={mdiPencil} size="1rem" className="mr-2" />
                     {t('Edit')}
                   </Button>
                   <Button variant="outline" onClick={() => {
@@ -319,7 +320,7 @@ export default function SettingsModal({
                     setSelectedBaby(null);
                     setShowBabyModal(true);
                   }}>
-                    <Plus className="h-4 w-3 mr-2" />
+                    <Icon path={mdiPlus} size="1rem" className="mr-2" />
                     {t('Add')}
                   </Button>
                 </div>

@@ -8,7 +8,8 @@ import { cn } from '@/src/lib/utils';
 import { isValid } from 'date-fns';
 import { useTimezone } from '@/app/context/timezone';
 import { formatDateLong, formatTimeDisplay } from '@/src/utils/dateFormat';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCalendar, mdiClockOutline } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import {
   Popover,
@@ -143,7 +144,7 @@ export function DateTimePicker({
             className={cn(dateTimePickerButtonStyles, "date-time-picker-button")}
             disabled={disabled}
           >
-            <CalendarIcon className="h-4 w-4 date-time-picker-calendar-icon" />
+            <Icon path={mdiCalendar} size="1rem" className="date-time-picker-calendar-icon" />
             <span>{formatDate(date)}</span>
           </Button>
         </PopoverTrigger>
@@ -173,7 +174,7 @@ export function DateTimePicker({
             className={cn(dateTimePickerButtonStyles, "date-time-picker-button")}
             disabled={disabled}
           >
-            <Clock className="h-4 w-4 date-time-picker-clock-icon" />
+            <Icon path={mdiClockOutline} size="1rem" className="date-time-picker-clock-icon" />
             <span>{formatTime(date)}</span>
           </Button>
         </PopoverTrigger>

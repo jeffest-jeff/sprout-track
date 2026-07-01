@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/src/components/ui/button';
-import { Trash2, Pencil } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiTrashCan, mdiPencil } from '@mdi/js';
 import {
   FormPage,
   FormPageContent,
@@ -110,14 +111,14 @@ const FullLogActivityDetails: React.FC<FullLogActivityDetailsProps> = ({
               variant="destructive"
               onClick={() => onDelete(activity)}
             >
-              <Trash2 className="h-4 w-4 mr-2" />
+              <Icon path={mdiTrashCan} size="1rem" className="mr-2" />
               {t('Delete')}
             </Button>
             <Button
               variant="outline"
               onClick={handleEdit}
             >
-              <Pencil className="h-4 w-4 mr-2" />
+              <Icon path={mdiPencil} size="1rem" className="mr-2" />
               {t('Edit')}
             </Button>
           </div>

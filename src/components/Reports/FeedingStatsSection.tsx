@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Icon } from 'lucide-react';
-import { bottleBaby } from '@lucide/lab';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyBottle } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -47,7 +47,7 @@ const FeedingStatsSection: React.FC<FeedingStatsSectionProps> = ({ stats, activi
     <>
       <AccordionItem value="feeding">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Icon iconNode={bottleBaby} className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-feed")} />
+          <Icon path={mdiBabyBottle} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-feed")} />
           <span>{t('Feeding Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

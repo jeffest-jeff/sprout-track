@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ActiveBreastFeedResponse } from '@/app/api/types';
 import { useLocalization } from '@/src/context/localization';
-import { ArrowLeftRight, Pause, Play, Square } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiSwapHorizontal, mdiPause, mdiPlay, mdiSquare } from '@mdi/js';
 import './active-feed-banner.css';
 
 interface ActiveFeedBannerProps {
@@ -107,7 +108,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-switch"
               title={t('Switch Side')}
             >
-              <ArrowLeftRight className="h-5 w-5" />
+              <Icon path={mdiSwapHorizontal} size="1.25rem" />
             </button>
             <button
               type="button"
@@ -115,7 +116,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-pause"
               title={t('Pause Feed')}
             >
-              <Pause className="h-5 w-5" />
+              <Icon path={mdiPause} size="1.25rem" />
             </button>
             <button
               type="button"
@@ -123,7 +124,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-stop"
               title={t('End Feed')}
             >
-              <Square className="h-5 w-5" />
+              <Icon path={mdiSquare} size="1.25rem" />
             </button>
           </div>
         </div>
@@ -148,7 +149,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-resume"
               title={t('Resume Left')}
             >
-              <Play className="h-5 w-5 mr-0.5" />
+              <Icon path={mdiPlay} size="1.25rem" className="mr-0.5" />
               <span className="text-xs font-semibold">L</span>
             </button>
             <button
@@ -157,7 +158,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-resume"
               title={t('Resume Right')}
             >
-              <Play className="h-5 w-5 mr-0.5" />
+              <Icon path={mdiPlay} size="1.25rem" className="mr-0.5" />
               <span className="text-xs font-semibold">R</span>
             </button>
             <button
@@ -166,7 +167,7 @@ export default function ActiveFeedBanner({
               className="banner-btn banner-btn-stop"
               title={t('End Feed')}
             >
-              <Square className="h-5 w-5" />
+              <Icon path={mdiSquare} size="1.25rem" />
             </button>
           </div>
         </div>

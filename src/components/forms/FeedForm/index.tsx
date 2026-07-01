@@ -11,7 +11,8 @@ import {
   FormPageContent, 
   FormPageFooter 
 } from '@/src/components/ui/form-page';
-import { Check, ArrowLeftRight, Pause, Play } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheck, mdiArrowLeftRight, mdiPause, mdiPlay } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { useTheme } from '@/src/context/theme';
 import { useToast } from '@/src/components/ui/toast';
@@ -979,7 +980,7 @@ export default function FeedForm({
                     <span className="text-xs font-medium mt-1">{t('Breast')}</span>
                     {formData.type === 'BREAST' && (
                       <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
-                        <Check className="h-3 w-3 text-white" />
+                        <Icon path={mdiCheck} size="0.75rem" className="text-white" />
                       </div>
                     )}
                   </button>
@@ -1001,7 +1002,7 @@ export default function FeedForm({
                     <span className="text-xs font-medium mt-1">{t('Bottle')}</span>
                     {formData.type === 'BOTTLE' && (
                       <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
-                        <Check className="h-3 w-3 text-white" />
+                        <Icon path={mdiCheck} size="0.75rem" className="text-white" />
                       </div>
                     )}
                   </button>
@@ -1023,7 +1024,7 @@ export default function FeedForm({
                     <span className="text-xs font-medium mt-1">{t('Solids')}</span>
                     {formData.type === 'SOLIDS' && (
                       <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
-                        <Check className="h-3 w-3 text-white" />
+                        <Icon path={mdiCheck} size="0.75rem" className="text-white" />
                       </div>
                     )}
                   </button>
@@ -1144,7 +1145,7 @@ export default function FeedForm({
                           onClick={onSwitch}
                           title={t('Switch Side')}
                         >
-                          <ArrowLeftRight className="h-5 w-5" />
+                          <Icon path={mdiArrowLeftRight} size="1.25rem" />
                         </Button>
                         <Button
                           type="button"
@@ -1153,7 +1154,7 @@ export default function FeedForm({
                           onClick={onPause}
                           title={t('Pause Feed')}
                         >
-                          <Pause className="h-5 w-5" />
+                          <Icon path={mdiPause} size="1.25rem" />
                         </Button>
                       </>
                     ) : (
@@ -1165,7 +1166,7 @@ export default function FeedForm({
                           onClick={() => onResume?.('LEFT')}
                           title={t('Resume Left')}
                         >
-                          <Play className="h-4 w-4 mr-0.5" />
+                          <Icon path={mdiPlay} size="1rem" className="mr-0.5" />
                           <span className="text-xs font-semibold">L</span>
                         </Button>
                         <Button
@@ -1175,7 +1176,7 @@ export default function FeedForm({
                           onClick={() => onResume?.('RIGHT')}
                           title={t('Resume Right')}
                         >
-                          <Play className="h-4 w-4 mr-0.5" />
+                          <Icon path={mdiPlay} size="1rem" className="mr-0.5" />
                           <span className="text-xs font-semibold">R</span>
                         </Button>
                       </>

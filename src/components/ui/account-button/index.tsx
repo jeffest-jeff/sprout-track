@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { User, LogOut, Home, AlertCircle, Settings, Users, Mail, MessageSquare } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAccount, mdiLogout, mdiHome, mdiAlertCircle, mdiCog, mdiAccountGroup, mdiEmail, mdiMessageText } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import {
   DropdownMenu,
@@ -245,11 +246,11 @@ export function AccountButton({
             {showIcon && (
               <>
                 {!accountStatus.verified ? (
-                  <AlertCircle className="w-4 h-4 mr-2" />
+                  <Icon path={mdiAlertCircle} size="1rem" className="mr-2" />
                 ) : !accountStatus.hasFamily ? (
-                  <Users className="w-4 h-4 mr-2" />
+                  <Icon path={mdiAccountGroup} size="1rem" className="mr-2" />
                 ) : (
-                  <User className="w-4 h-4 mr-2" />
+                  <Icon path={mdiAccount} size="1rem" className="mr-2" />
                 )}
               </>
             )}
@@ -293,7 +294,7 @@ export function AccountButton({
           {!accountStatus.verified && (
             <>
               <DropdownMenuItem onClick={handleResendVerification}>
-                <Mail className="w-4 h-4 mr-2" />
+                <Icon path={mdiEmail} size="1rem" className="mr-2" />
                 {t('Resend Verification Email')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -303,11 +304,11 @@ export function AccountButton({
           {/* Family setup option for verified users without family */}
           {accountStatus.verified && !accountStatus.hasFamily && (
             <>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={handleFamilySetup}
                 className="family-setup-gradient focus:family-setup-gradient"
               >
-                <Users className="w-4 h-4 mr-2" />
+                <Icon path={mdiAccountGroup} size="1rem" className="mr-2" />
                 {t('Set up your family')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -318,13 +319,13 @@ export function AccountButton({
           <DropdownMenuItem onClick={() => {
             onAccountManagerOpen?.();
           }}>
-            <Settings className="w-4 h-4 mr-2" />
+            <Icon path={mdiCog} size="1rem" className="mr-2" />
             {t('Account Settings')}
           </DropdownMenuItem>
           
           {/* Feedback option */}
           <DropdownMenuItem onClick={() => setShowFeedback(true)}>
-            <MessageSquare className="w-4 h-4 mr-2" />
+            <Icon path={mdiMessageText} size="1rem" className="mr-2" />
             {t('Send Feedback')}
           </DropdownMenuItem>
           
@@ -333,7 +334,7 @@ export function AccountButton({
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleFamilyLink}>
-                <Home className="w-4 h-4 mr-2" />
+                <Icon path={mdiHome} size="1rem" className="mr-2" />
                 {t('Go to Family Dashboard')}
               </DropdownMenuItem>
             </>
@@ -341,7 +342,7 @@ export function AccountButton({
           
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="w-4 h-4 mr-2" />
+            <Icon path={mdiLogout} size="1rem" className="mr-2" />
             {t('Log out')}
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -377,7 +378,7 @@ export function AccountButton({
           }
         }}
       >
-        {showIcon && <User className="w-4 h-4 mr-2" />}
+        {showIcon && <Icon path={mdiAccount} size="1rem" className="mr-2" />}
         {displayLabel}
       </Button>
       

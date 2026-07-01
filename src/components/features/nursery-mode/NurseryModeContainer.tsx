@@ -9,7 +9,8 @@ import { useWakeLock } from '@/src/hooks/useWakeLock';
 import { useFullscreen } from '@/src/hooks/useFullscreen';
 import { useNurseryColors } from '@/src/hooks/useNurseryColors';
 import { useNurserySettings } from '@/src/hooks/useNurserySettings';
-import { ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronDown } from '@mdi/js';
 import { Baby } from '@prisma/client';
 import { Clock } from './Clock';
 import { FeedTile } from './FeedTile';
@@ -456,8 +457,9 @@ export function NurseryModeContainer() {
                     {selectedBaby ? selectedBaby.firstName : t('Sprout Track')}
                   </div>
                   {babies.length > 1 && (
-                    <ChevronDown
-                      size={14}
+                    <Icon
+                      path={mdiChevronDown}
+                      size="0.875rem"
                       style={{
                         color: colors.text,
                         opacity: 0.6,
@@ -548,8 +550,9 @@ export function NurseryModeContainer() {
                     {selectedBaby ? selectedBaby.firstName : t('Sprout Track')}
                   </div>
                   {babies.length > 1 && (
-                    <ChevronDown
-                      size={18}
+                    <Icon
+                      path={mdiChevronDown}
+                      size="1.125rem"
                       style={{
                         color: colors.text,
                         opacity: 0.6,

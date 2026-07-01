@@ -6,7 +6,8 @@ import { Gender } from '@prisma/client';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
-import { Calendar } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCalendar } from '@mdi/js';
 import { Calendar as CalendarComponent } from '@/src/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/popover';
 import {
@@ -1040,7 +1041,7 @@ export default function FamilyForm({
                       )}
                       disabled={loading}
                     >
-                      <Calendar className="mr-2 h-4 w-4" />
+                      <Icon path={mdiCalendar} size="1rem" className="mr-2" />
                       {babyBirthDate ? formatDateLong(babyBirthDate, dateFormat) : t("Select date")}
                     </Button>
                   </PopoverTrigger>

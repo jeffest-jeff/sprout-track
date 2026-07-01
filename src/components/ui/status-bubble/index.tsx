@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
-import { Moon, Sun, Icon } from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMoonWaningCrescent, mdiWhiteBalanceSunny, mdiDiaperOutline, mdiBabyBottle } from '@mdi/js';
 import { cn } from "@/src/lib/utils";
 import { statusBubbleStyles as styles } from './status-bubble.styles';
 import { StatusBubbleProps, StatusStyle } from './status-bubble.types';
@@ -113,27 +113,27 @@ export function StatusBubble({
       case 'sleeping':
         return {
           bgColor: styles.statusStyles.sleeping.bgColor,
-          icon: <Moon className={styles.icon} />
+          icon: <Icon path={mdiMoonWaningCrescent} size={1} className={styles.icon} />
         };
       case 'awake':
         return {
           bgColor: styles.statusStyles.awake.bgColor,
-          icon: <Sun className={cn(styles.icon, styles.statusStyles.awake.iconColor)} />
+          icon: <Icon path={mdiWhiteBalanceSunny} size={1} className={cn(styles.icon, styles.statusStyles.awake.iconColor)} />
         };
       case 'feedActive':
         return {
           bgColor: styles.statusStyles.feedActive.bgColor,
-          icon: <Icon iconNode={bottleBaby} className={styles.icon} />
+          icon: <Icon path={mdiBabyBottle} size={1} className={styles.icon} />
         };
       case 'feed':
         return {
           bgColor: isWarning ? styles.statusStyles.feed.warning : styles.statusStyles.feed.normal,
-          icon: <Icon iconNode={bottleBaby} className={styles.icon} />
+          icon: <Icon path={mdiBabyBottle} size={1} className={styles.icon} />
         };
       case 'diaper':
         return {
           bgColor: isWarning ? styles.statusStyles.diaper.warning : styles.statusStyles.diaper.normal,
-          icon: <Icon iconNode={diaper} className={styles.icon} />
+          icon: <Icon path={mdiDiaperOutline} size={1} className={styles.icon} />
         };
       default:
         return {

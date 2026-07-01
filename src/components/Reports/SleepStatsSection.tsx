@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Moon, MapPin } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMoonWaningCrescent, mdiMapMarker } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -66,7 +67,7 @@ const SleepStatsSection: React.FC<SleepStatsSectionProps> = ({
     <>
       <AccordionItem value="sleep">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Moon className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-sleep")} />
+          <Icon path={mdiMoonWaningCrescent} size="1.25rem" className={cn("text-gray-600", "reports-accordion-trigger-icon reports-icon-sleep")} />
           <span>{t('Sleep Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>
@@ -143,7 +144,7 @@ const SleepStatsSection: React.FC<SleepStatsSectionProps> = ({
                   setSleepLocationsModalOpen(true);
                 }}
               >
-                <MapPin className={styles.sectionTitleIcon} />
+                <Icon path={mdiMapMarker} size="1rem" />
                 {t('Popular Nap Locations')}
               </button>
               <div className={styles.locationList}>
@@ -178,7 +179,7 @@ const SleepStatsSection: React.FC<SleepStatsSectionProps> = ({
                   setSleepLocationsModalOpen(true);
                 }}
               >
-                <MapPin className={styles.sectionTitleIcon} />
+                <Icon path={mdiMapMarker} size="1rem" />
                 {t('Popular Night Sleep Locations')}
               </button>
               <div className={styles.locationList}>

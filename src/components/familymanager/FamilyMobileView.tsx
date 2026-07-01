@@ -9,15 +9,8 @@ import { Input } from '@/src/components/ui/input';
 import { Checkbox } from '@/src/components/ui/checkbox';
 import { ShareButton } from '@/src/components/ui/share-button';
 import type { SortDirection } from '@/src/components/ui/table';
-import {
-  Edit,
-  LogIn,
-  Check,
-  X,
-  Loader2,
-  AlertCircle,
-  ChevronRight,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPencil, mdiLogin, mdiCheck, mdiClose, mdiLoading, mdiAlertCircle, mdiChevronRight } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import { authFetch } from '@/src/components/familymanager/utils';
 import './mobile-views.css';
@@ -179,7 +172,7 @@ export default function FamilyMobileView({
                     >
                       {family.isActive ? t('Active') : t('Inactive')}
                     </span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
+                    <Icon path={mdiChevronRight} size="1rem" className="text-gray-400" />
                   </div>
                 </div>
               </CardHeader>
@@ -236,12 +229,12 @@ export default function FamilyMobileView({
                         className={slugError ? 'border-red-500' : ''}
                       />
                       {checkingSlug && (
-                        <Loader2 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
+                        <Icon path={mdiLoading} size="1rem" spin className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       )}
                     </div>
                     {slugError && (
                       <div className="flex items-center gap-1 text-red-600 text-xs">
-                        <AlertCircle className="h-3 w-3" />
+                        <Icon path={mdiAlertCircle} size="0.75rem" />
                         {slugError}
                       </div>
                     )}
@@ -288,7 +281,7 @@ export default function FamilyMobileView({
                       onClick={() => handleConfirmSave(selectedFamily)}
                       disabled={saving}
                     >
-                      {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                      {saving ? <Icon path={mdiLoading} size="1rem" spin className="mr-1" /> : null}
                       {t('Confirm')}
                     </Button>
                     <Button
@@ -335,7 +328,7 @@ export default function FamilyMobileView({
                   <div className="mt-2">
                     {loadingCaretakers ? (
                       <div className="flex items-center justify-center py-4">
-                        <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+                        <Icon path={mdiLoading} size="1.25rem" spin className="text-gray-400" />
                       </div>
                     ) : caretakers.length > 0 ? (
                       <div className="space-y-2">
@@ -381,9 +374,9 @@ export default function FamilyMobileView({
                   disabled={saving || !!slugError || checkingSlug}
                 >
                   {saving ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-1" />
                   ) : (
-                    <Check className="h-4 w-4 mr-1" />
+                    <Icon path={mdiCheck} size="1rem" className="mr-1" />
                   )}
                   {t('Save')}
                 </Button>
@@ -393,7 +386,7 @@ export default function FamilyMobileView({
                   onClick={() => { setShowDeactivateConfirm(false); onCancelEdit(); }}
                   disabled={saving}
                 >
-                  <X className="h-4 w-4 mr-1" />
+                  <Icon path={mdiClose} size="1rem" className="mr-1" />
                   {t('Cancel')}
                 </Button>
               </>
@@ -404,7 +397,7 @@ export default function FamilyMobileView({
                   size="sm"
                   onClick={() => onEdit(selectedFamily)}
                 >
-                  <Edit className="h-4 w-4 mr-1" />
+                  <Icon path={mdiPencil} size="1rem" className="mr-1" />
                   {t('Edit')}
                 </Button>
                 <ShareButton
@@ -420,7 +413,7 @@ export default function FamilyMobileView({
                   size="sm"
                   onClick={() => onLogin(selectedFamily)}
                 >
-                  <LogIn className="h-4 w-4 mr-1" />
+                  <Icon path={mdiLogin} size="1rem" className="mr-1" />
                   {t('Login')}
                 </Button>
                 <Button

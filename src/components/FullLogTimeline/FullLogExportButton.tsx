@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/src/components/ui/button';
-import { Download, Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiDownload, mdiLoading } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import { useTimezone } from '@/app/context/timezone';
 import { FilterType } from './full-log-timeline.types';
@@ -102,9 +103,9 @@ const FullLogExportButton: React.FC<FullLogExportButtonProps> = ({
         className="flex items-center gap-1 h-7 text-sm font-medium text-white hover:bg-transparent hover:text-white/90 p-0"
       >
         {isExporting ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Icon path={mdiLoading} size="1rem" spin />
         ) : (
-          <Download className="h-4 w-4" />
+          <Icon path={mdiDownload} size="1rem" />
         )}
         {t('Export')}
       </Button>

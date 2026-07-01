@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { VaccineFormProps, VaccineFormTab } from './vaccine-form.types';
 import { Contact } from '@/src/components/CalendarEvent/calendar-event.types';
-import { Syringe, ClipboardList } from 'lucide-react';
+import { mdiNeedle, mdiClipboardList } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { FormPage, FormPageFooter } from '@/src/components/ui/form-page';
 import { FormPageTab } from '@/src/components/ui/form-page/form-page.types';
@@ -96,7 +96,7 @@ const VaccineForm: React.FC<VaccineFormProps> = ({
     {
       id: 'record',
       label: t('Record Vaccine'),
-      icon: Syringe,
+      icon: mdiNeedle,
       content: (
         <RecordVaccineTab
           babyId={babyId}
@@ -113,7 +113,7 @@ const VaccineForm: React.FC<VaccineFormProps> = ({
     {
       id: 'history',
       label: t('Vaccine History'),
-      icon: ClipboardList,
+      icon: mdiClipboardList,
       content: (
         <VaccineHistoryTab
           babyId={babyId}

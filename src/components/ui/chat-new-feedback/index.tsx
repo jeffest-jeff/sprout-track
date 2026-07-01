@@ -2,7 +2,8 @@
 
 import React, { useState, useImperativeHandle, forwardRef, useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/src/lib/utils';
-import { ChevronLeft, Send, CheckCircle, ImagePlus, X } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiSend, mdiCheckCircle, mdiImagePlus, mdiClose } from '@mdi/js';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
 import { useTheme } from '@/src/context/theme';
@@ -79,7 +80,7 @@ export const ChatNewFeedback = forwardRef<ChatNewFeedbackRef, ChatNewFeedbackPro
         <div className={cn(styles.header, 'chat-new-feedback-header')}>
           {showBackButton && onBack && (
             <button onClick={onBack} className={styles.backButton} aria-label={t('Back')}>
-              <ChevronLeft className="h-[18px] w-[18px]" />
+              <Icon path={mdiChevronLeft} size="1.125rem" />
             </button>
           )}
           <div className={styles.headerContent}>
@@ -97,7 +98,7 @@ export const ChatNewFeedback = forwardRef<ChatNewFeedbackRef, ChatNewFeedbackPro
       <div className={cn(styles.formBody, 'chat-new-feedback-form-body')}>
         {sent && (
           <div className={cn(styles.successBanner, 'chat-new-feedback-success')}>
-            <CheckCircle className="h-[18px] w-[18px] text-emerald-500 flex-shrink-0" />
+            <Icon path={mdiCheckCircle} size="1.125rem" className="text-emerald-500 flex-shrink-0" />
             <span className={cn(styles.successText, 'chat-new-feedback-success-text')}>
               {t("Sent! We'll get back to you soon.")}
             </span>
@@ -146,7 +147,7 @@ export const ChatNewFeedback = forwardRef<ChatNewFeedbackRef, ChatNewFeedbackPro
             disabled={sending || sent}
             className={cn(styles.fileUploadButton, 'chat-new-feedback-upload-button')}
           >
-            <ImagePlus className="h-4 w-4" />
+            <Icon path={mdiImagePlus} size="1rem" />
             {t('Attach images')}
           </button>
 
@@ -164,7 +165,7 @@ export const ChatNewFeedback = forwardRef<ChatNewFeedbackRef, ChatNewFeedbackPro
                     className={styles.filePreviewDelete}
                     aria-label={t('Remove image')}
                   >
-                    <X className="h-2.5 w-2.5 text-white" />
+                    <Icon path={mdiClose} size="0.625rem" className="text-white" />
                   </button>
                 </div>
               ))}
@@ -186,7 +187,7 @@ export const ChatNewFeedback = forwardRef<ChatNewFeedbackRef, ChatNewFeedbackPro
                 : cn(styles.sendButtonInactive, 'chat-new-feedback-send-inactive'),
             )}
           >
-            <Send className="h-3.5 w-3.5" color={canSend ? '#fff' : '#a3a39b'} />
+            <Icon path={mdiSend} size="0.875rem" color={canSend ? '#fff' : '#a3a39b'} />
             {sending ? t('Sending...') : t('Send feedback')}
           </button>
           <button

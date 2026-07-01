@@ -5,25 +5,26 @@ import {
   DateFormatSetting,
   TimeFormatSetting,
 } from '@/src/utils/dateFormat';
+import { Icon } from '@/src/components/ui/icon';
 import {
-  Moon,
-  Icon,
-  Edit,
-  Bath,
-  LampWallDown,
-  Trophy,
-  Ruler,
-  Scale,
-  RotateCw,
-  Thermometer,
-  PillBottle,
-  Pill,
-  Baby,
-  Plus,
-  Minus,
-  Syringe
-} from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+  mdiMoonWaningCrescent,
+  mdiPencil,
+  mdiBathtub,
+  mdiMotherNurse,
+  mdiTrophy,
+  mdiRuler,
+  mdiScale,
+  mdiRotateRight,
+  mdiThermometer,
+  mdiBottleTonicPlus,
+  mdiPill,
+  mdiBabyFaceOutline,
+  mdiPlus,
+  mdiMinus,
+  mdiNeedle,
+  mdiDiaperOutline,
+  mdiBabyBottle,
+} from '@mdi/js';
 import { 
   ActivityType, 
   ActivityDetails, 
@@ -68,67 +69,67 @@ export const getActivityIcon = (activity: ActivityType) => {
   }
   // Play activity - check before sleep since both have duration and type
   if (isPlayActivity(activity)) {
-    return <Baby className="h-4 w-4 text-black" />;
+    return <Icon path={mdiBabyFaceOutline} size="1rem" className="text-black" />;
   }
   if ('doseAmount' in activity && 'medicineId' in activity) {
     // Medicine or supplement log
     if ('medicine' in activity && activity.medicine && typeof activity.medicine === 'object' && 'isSupplement' in activity.medicine && activity.medicine.isSupplement) {
-      return <Pill className="h-4 w-4 text-white" />;
+      return <Icon path={mdiPill} size="1rem" className="text-white" />;
     }
-    return <PillBottle className="h-4 w-4 text-white" />;
+    return <Icon path={mdiBottleTonicPlus} size="1rem" className="text-white" />;
   }
   // Check for breast milk adjustment BEFORE pump (both have amount)
   if ('reason' in activity && 'amount' in activity && !('type' in activity) && !('leftAmount' in activity)) {
     const amt = (activity as any).amount;
     if (amt < 0) {
-      return <Minus className="h-4 w-4 text-black" />;
+      return <Icon path={mdiMinus} size="1rem" className="text-black" />;
     }
-    return <Plus className="h-4 w-4 text-black" />;
+    return <Icon path={mdiPlus} size="1rem" className="text-black" />;
   }
   // Check for pump activities FIRST (before sleep) since they also have duration and startTime
   if ('leftAmount' in activity || 'rightAmount' in activity) {
-    return <LampWallDown className="h-4 w-4 text-black" />; // Pump activity
+    return <Icon path={mdiMotherNurse} size="1rem" className="text-black" />; // Pump activity
   }
   if ('type' in activity) {
     if ('duration' in activity) {
-      return <Moon className="h-4 w-4 text-white" />; // Sleep activity
+      return <Icon path={mdiMoonWaningCrescent} size="1rem" className="text-white" />; // Sleep activity
     }
     if ('amount' in activity) {
-      return <Icon iconNode={bottleBaby} className="h-4 w-4 text-gray-700" />; // Feed activity
+      return <Icon path={mdiBabyBottle} size="1rem" className="text-gray-700" />; // Feed activity
     }
     if ('condition' in activity) {
-      return <Icon iconNode={diaper} className="h-4 w-4 text-white" />; // Diaper activity
+      return <Icon path={mdiDiaperOutline} size="1rem" className="text-white" />; // Diaper activity
     }
   }
   if ('content' in activity) {
-    return <Edit className="h-4 w-4 text-gray-700" />; // Note activity
+    return <Icon path={mdiPencil} size="1rem" className="text-gray-700" />; // Note activity
   }
   if ('soapUsed' in activity) {
-    return <Bath className="h-4 w-4 text-white" />; // Bath activity
+    return <Icon path={mdiBathtub} size="1rem" className="text-white" />; // Bath activity
   }
   if ('vaccineName' in activity) {
-    return <Syringe className="h-4 w-4 text-red-500" />;
+    return <Icon path={mdiNeedle} size="1rem" className="text-red-500" />;
   }
   if ('title' in activity && 'category' in activity) {
-    return <Trophy className="h-4 w-4 text-white" />; // Milestone activity
+    return <Icon path={mdiTrophy} size="1rem" className="text-white" />; // Milestone activity
   }
   if ('value' in activity && 'unit' in activity) {
     // Different icons based on measurement type
     if ('type' in activity) {
       switch (activity.type) {
         case 'HEIGHT':
-          return <Ruler className="h-4 w-4 text-white" />;
+          return <Icon path={mdiRuler} size="1rem" className="text-white" />;
         case 'WEIGHT':
-          return <Scale className="h-4 w-4 text-white" />;
+          return <Icon path={mdiScale} size="1rem" className="text-white" />;
         case 'HEAD_CIRCUMFERENCE':
-          return <RotateCw className="h-4 w-4 text-white" />;
+          return <Icon path={mdiRotateRight} size="1rem" className="text-white" />;
         case 'TEMPERATURE':
-          return <Thermometer className="h-4 w-4 text-white" />;
+          return <Icon path={mdiThermometer} size="1rem" className="text-white" />;
         default:
-          return <Ruler className="h-4 w-4 text-white" />; // Default to ruler
+          return <Icon path={mdiRuler} size="1rem" className="text-white" />; // Default to ruler
       }
     }
-    return <Ruler className="h-4 w-4 text-white" />; // Default measurement icon
+    return <Icon path={mdiRuler} size="1rem" className="text-white" />; // Default measurement icon
   }
   return null;
 };

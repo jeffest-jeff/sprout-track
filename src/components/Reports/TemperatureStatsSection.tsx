@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Thermometer } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiThermometer } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import {
   AccordionItem,
@@ -63,7 +64,7 @@ const TemperatureStatsSection: React.FC<TemperatureStatsSectionProps> = ({
   return (
     <AccordionItem value="temperature">
       <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-        <Thermometer className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-measurement")} />
+        <Icon path={mdiThermometer} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-measurement")} />
         <span>{t('Temperature Measurements')}</span>
       </AccordionTrigger>
       <AccordionContent className={styles.accordionContent}>

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PillBottle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBottleTonicPlus } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -45,7 +46,7 @@ const MedicineStatsSection: React.FC<MedicineStatsSectionProps> = ({
     <>
       <AccordionItem value="medicines">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <PillBottle className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-medicine")} />
+          <Icon path={mdiBottleTonicPlus} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-medicine")} />
           <span>{t('Medicine Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

@@ -8,7 +8,8 @@ import {
   AccordionTriggerProps, 
   AccordionContentProps 
 } from "./accordion.types";
-import { ChevronDown } from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronDown } from '@mdi/js';
 import "./accordion.css";
 
 /**
@@ -206,12 +207,14 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
         {...props}
       >
         {children}
-        <ChevronDown 
+        <Icon
+          path={mdiChevronDown}
+          size="1rem"
           className={cn(
             accordionStyles.icon,
             isExpanded && accordionStyles.iconExpanded,
             theme === 'dark' && "accordion-icon-dark"
-          )} 
+          )}
         />
       </button>
     );

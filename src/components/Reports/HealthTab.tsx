@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useMemo, useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Accordion } from '@/src/components/ui/accordion';
 import { styles } from './reports.styles';
@@ -349,7 +350,7 @@ const HealthTab: React.FC<HealthTabProps> = ({
   if (isLoading) {
     return (
       <div className={cn(styles.loadingContainer, "reports-loading-container")}>
-        <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="2rem" className="text-teal-600" spin />
         <p className={cn(styles.loadingText, "reports-loading-text")}>{t('Loading statistics...')}</p>
       </div>
     );

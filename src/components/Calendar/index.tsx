@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Plus, ChevronUp, ChevronDown, Calendar as CalendarIcon } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiChevronRight, mdiPlus, mdiChevronUp, mdiChevronDown, mdiCalendar } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Card } from '@/src/components/ui/card';
 import { Calendar as UICalendar } from '@/src/components/ui/calendar';
@@ -386,7 +387,7 @@ export function Calendar({
       <div className="flex flex-col flex-grow overflow-hidden relative mt-1">
         {showUpArrow && (
           <div className="text-center h-4">
-            <ChevronUp className="h-4 w-4 mx-auto text-gray-400 cursor-pointer" onClick={(e) => handleEventScroll(e, date, 'up')} />
+            <Icon path={mdiChevronUp} size="1rem" className="mx-auto text-gray-400 cursor-pointer" onClick={(e) => handleEventScroll(e, date, 'up')} />
           </div>
         )}
         <div className="flex-grow space-y-1 my-1">
@@ -421,7 +422,7 @@ export function Calendar({
         </div>
         {showDownArrow && (
           <div className="text-center h-4">
-            <ChevronDown className="h-4 w-4 mx-auto text-gray-400 cursor-pointer" onClick={(e) => handleEventScroll(e, date, 'down')} />
+            <Icon path={mdiChevronDown} size="1rem" className="mx-auto text-gray-400 cursor-pointer" onClick={(e) => handleEventScroll(e, date, 'down')} />
           </div>
         )}
       </div>
@@ -438,7 +439,7 @@ export function Calendar({
           onClick={goToPreviousMonth}
           className="text-white hover:bg-teal-500/20"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <Icon path={mdiChevronLeft} size="1.25rem" />
         </Button>
         
         <div className="flex flex-col items-center">
@@ -446,7 +447,7 @@ export function Calendar({
           <Popover open={showDatePicker} onOpenChange={setShowDatePicker}>
             <PopoverTrigger asChild>
               <button className="date-picker-trigger flex items-center gap-2 text-lg font-semibold hover:bg-teal-500/20 px-3 py-1 rounded transition-colors">
-                <CalendarIcon className="h-4 w-4" />
+                <Icon path={mdiCalendar} size="1rem" />
                 {formatMonthYear(currentDate)}
               </button>
             </PopoverTrigger>
@@ -481,7 +482,7 @@ export function Calendar({
           onClick={goToNextMonth}
           className="text-white hover:bg-teal-500/20"
         >
-          <ChevronRight className="h-5 w-5" />
+          <Icon path={mdiChevronRight} size="1.25rem" />
         </Button>
       </div>
       
@@ -538,7 +539,7 @@ export function Calendar({
             onClick={() => handleAddEvent(new Date())}
             className="rounded-full w-12 h-12 shadow-lg"
           >
-            <Plus className="h-6 w-6" />
+            <Icon path={mdiPlus} size={1} />
           </Button>
         </div>
       )}

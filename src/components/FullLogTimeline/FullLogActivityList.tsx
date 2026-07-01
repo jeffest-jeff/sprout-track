@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/src/components/ui/button';
-import { Baby as BabyIcon } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline } from '@mdi/js';
 import { FullLogActivityListProps } from './full-log-timeline.types';
 import { cn } from '@/src/lib/utils';
 import styles from './full-log-timeline.styles';
@@ -62,7 +63,7 @@ const FullLogActivityList: React.FC<FullLogActivityListProps> = ({
             <div className={cn(styles.emptyState, "full-log-timeline-empty-state")}>
               <div className={cn(styles.emptyStateContent, "full-log-timeline-empty-state-content")}>
                 <div className={cn(styles.emptyStateIcon, "full-log-timeline-empty-state-icon")}>
-                  <BabyIcon className={cn(styles.emptyStateIconInner, "full-log-timeline-empty-state-icon-inner")} />
+                  <Icon path={mdiBabyFaceOutline} size={1} className={cn(styles.emptyStateIconInner, "full-log-timeline-empty-state-icon-inner")} />
                 </div>
                 <h3 className={cn(styles.emptyStateTitle, "full-log-timeline-empty-state-title")}>
                   {t('No activities recorded')}

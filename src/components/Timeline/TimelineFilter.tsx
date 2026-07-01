@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { Button } from '@/src/components/ui/button';
+import { Icon } from '@/src/components/ui/icon';
 import {
-  Moon,
-  Icon,
-  Edit,
-  ChevronLeft,
-  ChevronRight,
-  Bath,
-  ChevronDown,
-  LampWallDown,
-  Trophy,
-  Ruler,
-  PillBottle,
-} from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+  mdiMoonWaningCrescent,
+  mdiPencil,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiBathtub,
+  mdiChevronDown,
+  mdiMotherNurse,
+  mdiTrophy,
+  mdiRuler,
+  mdiBottleTonicPlus,
+  mdiDiaperOutline,
+  mdiBabyBottle,
+} from '@mdi/js';
 import { FilterType, TimelineFilterProps } from './types';
 import {
   DropdownMenu,
@@ -46,16 +47,16 @@ const TimelineFilter = ({
   
   // Define filter types and their icons
   const filterOptions = [
-    { type: 'sleep', icon: <Moon className="h-4 w-4" />, label: t('Sleep') },
-    { type: 'feed', icon: <Icon iconNode={bottleBaby} className="h-4 w-4" />, label: t('Feed') },
-    { type: 'diaper', icon: <Icon iconNode={diaper} className="h-4 w-4" />, label: t('Diaper') },
-    { type: 'bath', icon: <Bath className="h-4 w-4" />, label: t('Bath') },
-    { type: 'note', icon: <Edit className="h-4 w-4" />, label: t('Note') },
-    { type: 'pump', icon: <LampWallDown className="h-4 w-4" />, label: t('Pump') },
-    ...(enableBreastMilkTracking ? [{ type: 'breast-milk-adjustment' as const, icon: <LampWallDown className="h-4 w-4" />, label: t('Milk Adjust') }] : []),
-    { type: 'milestone', icon: <Trophy className="h-4 w-4" />, label: t('Milestone') },
-    { type: 'measurement', icon: <Ruler className="h-4 w-4" />, label: t('Measurement') },
-    { type: 'medicine', icon: <PillBottle className="h-4 w-4" />, label: t('Medicine') },
+    { type: 'sleep', icon: <Icon path={mdiMoonWaningCrescent} size="1rem" />, label: t('Sleep') },
+    { type: 'feed', icon: <Icon path={mdiBabyBottle} size="1rem" />, label: t('Feed') },
+    { type: 'diaper', icon: <Icon path={mdiDiaperOutline} size="1rem" />, label: t('Diaper') },
+    { type: 'bath', icon: <Icon path={mdiBathtub} size="1rem" />, label: t('Bath') },
+    { type: 'note', icon: <Icon path={mdiPencil} size="1rem" />, label: t('Note') },
+    { type: 'pump', icon: <Icon path={mdiMotherNurse} size="1rem" />, label: t('Pump') },
+    ...(enableBreastMilkTracking ? [{ type: 'breast-milk-adjustment' as const, icon: <Icon path={mdiMotherNurse} size="1rem" />, label: t('Milk Adjust') }] : []),
+    { type: 'milestone', icon: <Icon path={mdiTrophy} size="1rem" />, label: t('Milestone') },
+    { type: 'measurement', icon: <Icon path={mdiRuler} size="1rem" />, label: t('Measurement') },
+    { type: 'medicine', icon: <Icon path={mdiBottleTonicPlus} size="1rem" />, label: t('Medicine') },
   ] as const;
 
 
@@ -71,7 +72,7 @@ const TimelineFilter = ({
           aria-label={t("Previous day")}
 
         >
-          <ChevronLeft className="h-4 w-4" />
+          <Icon path={mdiChevronLeft} size="1rem" />
         </Button>
         
         <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -111,7 +112,7 @@ const TimelineFilter = ({
           aria-label={t("Next day")}
 
         >
-          <ChevronRight className="h-4 w-4" />
+          <Icon path={mdiChevronRight} size="1rem" />
         </Button>
       </div>
       
@@ -122,7 +123,7 @@ const TimelineFilter = ({
             size="sm" 
             className="flex items-center gap-1 h-7 text-sm font-medium text-white hover:bg-transparent hover:text-white/90 p-0"
           >
-            {t('Filters')} <ChevronDown className="h-4 w-4 ml-1" />
+            {t('Filters')} <Icon path={mdiChevronDown} size="1rem" className="ml-1" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">

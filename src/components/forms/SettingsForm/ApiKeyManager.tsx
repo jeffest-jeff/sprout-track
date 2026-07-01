@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Baby } from '@prisma/client';
-import { Key, Plus, Copy, Check, Trash2, Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiKey, mdiPlus, mdiContentCopy, mdiCheck, mdiTrashCan, mdiLoading } from '@mdi/js';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
@@ -235,7 +236,7 @@ export default function ApiKeyManager({ babies, familyId }: ApiKeyManagerProps) 
               size="sm"
               onClick={handleCopyKey}
             >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              {copied ? <Icon path={mdiCheck} size="1rem" /> : <Icon path={mdiContentCopy} size="1rem" />}
               <span className="ml-1">{copied ? t('Copied!') : t('Copy to Clipboard')}</span>
             </Button>
           </div>
@@ -323,7 +324,7 @@ export default function ApiKeyManager({ babies, familyId }: ApiKeyManagerProps) 
               disabled={creating || !newKeyName.trim() || (!newKeyReadScope && !newKeyWriteScope)}
               size="sm"
             >
-              {creating ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Key className="h-4 w-4 mr-1" />}
+              {creating ? <Icon path={mdiLoading} size="1rem" spin className="mr-1" /> : <Icon path={mdiKey} size="1rem" className="mr-1" />}
               {t('Create API Key')}
             </Button>
             <Button
@@ -344,11 +345,11 @@ export default function ApiKeyManager({ babies, familyId }: ApiKeyManagerProps) 
       {/* Key list */}
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+          <Icon path={mdiLoading} size="1.5rem" spin className="text-gray-400" />
         </div>
       ) : apiKeys.length === 0 && !showCreateForm ? (
         <div className="text-center py-8 text-gray-500">
-          <Key className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <Icon path={mdiKey} size="2rem" className="mx-auto mb-2 opacity-50" />
           <p className="text-sm">{t('No API keys yet')}</p>
           <p className="text-xs mt-1">{t('Create your first API key to enable external integrations.')}</p>
         </div>
@@ -408,7 +409,7 @@ export default function ApiKeyManager({ babies, familyId }: ApiKeyManagerProps) 
                         size="sm"
                         onClick={() => setRevokingKeyId(key.id)}
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                        <Icon path={mdiTrashCan} size="1rem" className="text-red-500" />
                       </Button>
                     )}
                   </div>
@@ -427,7 +428,7 @@ export default function ApiKeyManager({ babies, familyId }: ApiKeyManagerProps) 
           className="w-full mt-3"
           onClick={() => setShowCreateForm(true)}
         >
-          <Plus className="h-4 w-4 mr-2" />
+          <Icon path={mdiPlus} size="1rem" className="mr-2" />
           {t('Create API Key')}
         </Button>
       )}

@@ -4,22 +4,8 @@ import { styles } from './account-manager.styles';
 import { FamilyPeopleTabProps, BabyData, CaretakerData, ContactData } from './account-manager.types';
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
-import { 
-  Baby, 
-  Users, 
-  Phone, 
-  Plus, 
-  Edit, 
-  Loader2,
-  AlertTriangle,
-  Calendar,
-  Clock,
-  Shield,
-  UserCheck,
-  UserX,
-  Mail,
-  MapPin
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline, mdiAccountGroup, mdiPhone, mdiPlus, mdiPencil, mdiLoading, mdiAlert, mdiCalendar, mdiClockOutline, mdiShield, mdiAccountCheck, mdiAccountRemove, mdiEmail, mdiMapMarker } from '@mdi/js';
 import BabyForm from '@/src/components/forms/BabyForm';
 import CaretakerForm from '@/src/components/forms/CaretakerForm';
 import ContactForm from '@/src/components/forms/ContactForm';
@@ -216,7 +202,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
   if (isLoading) {
     return (
       <div className={cn(styles.loadingContainer, "account-manager-loading-container")}>
-        <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
         <p className={cn("mt-2 text-gray-600", "account-manager-loading-text")}>{t('Loading family people...')}</p>
       </div>
     );
@@ -226,7 +212,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
     return (
       <div className={cn(styles.errorContainer, "account-manager-error-container")}>
         <div className="flex items-center gap-2 text-red-600 mb-2">
-          <AlertTriangle className="h-5 w-5" />
+          <Icon path={mdiAlert} size="1.25rem" />
           <p className="font-medium">{t('Error')}</p>
         </div>
         <p className={cn("text-red-500 mb-4", "account-manager-error-text")}>{error}</p>
@@ -247,7 +233,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
       <div className={cn(styles.sectionBorder, "account-manager-section-border")}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Baby className="h-5 w-5 text-teal-600" />
+            <Icon path={mdiBabyFaceOutline} size="1.25rem" className="text-teal-600" />
             <h3 className={cn(styles.sectionTitle, "account-manager-section-title")}>
               {t('Babies')}
             </h3>
@@ -257,7 +243,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
             size="sm"
             onClick={handleAddBaby}
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Icon path={mdiPlus} size="1rem" className="mr-2" />
             {t('Add Baby')}
           </Button>
         </div>
@@ -291,11 +277,11 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                 <div className={cn(styles.cardContent, "account-manager-card-content")}>
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
+                      <Icon path={mdiClockOutline} size="0.75rem" />
                       <span>{t('Feed:')} {baby.feedWarningTime}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
+                      <Icon path={mdiCalendar} size="0.75rem" />
                       <span>{t('Diaper:')} {baby.diaperWarningTime}</span>
                     </div>
                   </div>
@@ -306,7 +292,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                     size="sm"
                     onClick={() => handleEditBaby(baby)}
                   >
-                    <Edit className="h-3 w-3 mr-1" />
+                    <Icon path={mdiPencil} size="0.75rem" className="mr-1" />
                     {t('Edit')}
                   </Button>
                 </div>
@@ -315,7 +301,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
           </div>
         ) : (
           <div className={cn(styles.emptyState, "account-manager-empty-state")}>
-            <Baby className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+            <Icon path={mdiBabyFaceOutline} size="2rem" className="mx-auto mb-2 text-gray-400" />
             <p>{t('No babies added yet')}</p>
             <p className="text-sm">{t('Add your first baby to start tracking')}</p>
           </div>
@@ -326,7 +312,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
       <div className={cn(styles.sectionBorder, "account-manager-section-border")}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-blue-600" />
+            <Icon path={mdiAccountGroup} size="1.25rem" className="text-blue-600" />
             <h3 className={cn(styles.sectionTitle, "account-manager-section-title")}>
               {t('Caretakers')}
             </h3>
@@ -336,7 +322,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
             size="sm"
             onClick={handleAddCaretaker}
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Icon path={mdiPlus} size="1rem" className="mr-2" />
             {t('Add Caretaker')}
           </Button>
         </div>
@@ -357,17 +343,17 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                   <div className="flex items-center gap-2">
                     {caretaker.inactive ? (
                       <span className={cn(styles.badge, styles.badgeInactive, "account-manager-badge-inactive")}>
-                        <UserX className="h-3 w-3 mr-1" />
+                        <Icon path={mdiAccountRemove} size="0.75rem" className="mr-1" />
                         {t('Inactive')}
                       </span>
                     ) : (
                       <span className={cn(styles.badge, styles.badgeActive, "account-manager-badge-active")}>
-                        <UserCheck className="h-3 w-3 mr-1" />
+                        <Icon path={mdiAccountCheck} size="0.75rem" className="mr-1" />
                         {t('Active')}
                       </span>
                     )}
                     <span className={cn(styles.badge, styles.badgeRole, "account-manager-badge-role")}>
-                      <Shield className="h-3 w-3 mr-1" />
+                      <Icon path={mdiShield} size="0.75rem" className="mr-1" />
                       {caretaker.role}
                     </span>
                   </div>
@@ -378,7 +364,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                     size="sm"
                     onClick={() => handleEditCaretaker(caretaker)}
                   >
-                    <Edit className="h-3 w-3 mr-1" />
+                    <Icon path={mdiPencil} size="0.75rem" className="mr-1" />
                     {t('Edit')}
                   </Button>
                 </div>
@@ -387,7 +373,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
           </div>
         ) : (
           <div className={cn(styles.emptyState, "account-manager-empty-state")}>
-            <Users className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+            <Icon path={mdiAccountGroup} size="2rem" className="mx-auto mb-2 text-gray-400" />
             <p>{t('No caretakers added yet')}</p>
             <p className="text-sm">{t('Add caretakers to help manage your family')}</p>
           </div>
@@ -398,7 +384,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
       <div className={cn(styles.sectionBorder, "account-manager-section-border")}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Phone className="h-5 w-5 text-green-600" />
+            <Icon path={mdiPhone} size="1.25rem" className="text-green-600" />
             <h3 className={cn(styles.sectionTitle, "account-manager-section-title")}>
               {t('Contacts')}
             </h3>
@@ -408,7 +394,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
             size="sm"
             onClick={handleAddContact}
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Icon path={mdiPlus} size="1rem" className="mr-2" />
             {t('Add Contact')}
           </Button>
         </div>
@@ -431,7 +417,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                   <div className="space-y-1 text-sm">
                     {contact.phone && (
                       <div className="flex items-center gap-2">
-                        <Phone className="h-3 w-3 text-gray-400" />
+                        <Icon path={mdiPhone} size="0.75rem" className="text-gray-400" />
                         <a 
                           href={`tel:${contact.phone.replace(/\D/g, '')}`}
                           className="text-blue-600 hover:text-blue-800 hover:underline"
@@ -442,7 +428,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                     )}
                     {contact.email && (
                       <div className="flex items-center gap-2">
-                        <Mail className="h-3 w-3 text-gray-400" />
+                        <Icon path={mdiEmail} size="0.75rem" className="text-gray-400" />
                         <a 
                           href={`mailto:${contact.email}`}
                           className="text-blue-600 hover:text-blue-800 hover:underline"
@@ -453,7 +439,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                     )}
                     {contact.address && (
                       <div className="flex items-center gap-2">
-                        <MapPin className="h-3 w-3 text-gray-400" />
+                        <Icon path={mdiMapMarker} size="0.75rem" className="text-gray-400" />
                         <span className="text-gray-600">{contact.address}</span>
                       </div>
                     )}
@@ -465,7 +451,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
                     size="sm"
                     onClick={() => handleEditContact(contact)}
                   >
-                    <Edit className="h-3 w-3 mr-1" />
+                    <Icon path={mdiPencil} size="0.75rem" className="mr-1" />
                     {t('Edit')}
                   </Button>
                 </div>
@@ -474,7 +460,7 @@ const FamilyPeopleTab: React.FC<FamilyPeopleTabProps> = ({
           </div>
         ) : (
           <div className={cn(styles.emptyState, "account-manager-empty-state")}>
-            <Phone className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+            <Icon path={mdiPhone} size="2rem" className="mx-auto mb-2 text-gray-400" />
             <p>{t('No contacts added yet')}</p>
             <p className="text-sm">{t('Add contacts like doctors, family members, or caregivers')}</p>
           </div>

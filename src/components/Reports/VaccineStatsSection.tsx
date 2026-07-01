@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Syringe, ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiNeedle, mdiChevronDown } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -45,7 +46,7 @@ const VaccineStatsSection: React.FC<VaccineStatsSectionProps> = ({
   return (
     <AccordionItem value="vaccines">
       <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-        <Syringe className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-measurement")} />
+        <Icon path={mdiNeedle} size="1.25rem" className={cn("text-gray-600", "reports-accordion-trigger-icon reports-icon-measurement")} />
         <span>{t('Vaccine History')}</span>
       </AccordionTrigger>
       <AccordionContent className={styles.accordionContent}>
@@ -110,7 +111,7 @@ const VaccineStatsSection: React.FC<VaccineStatsSectionProps> = ({
                     >
                       <div className="flex items-center flex-1 min-w-0">
                         <div className="flex-shrink-0 rounded-full bg-teal-100 p-1.5 reports-health-vaccine-icon-bg">
-                          <Syringe className="h-3.5 w-3.5 text-teal-600" />
+                          <Icon path={mdiNeedle} size="0.875rem" className="text-teal-600" />
                         </div>
                         <div className="ml-2 min-w-0 flex-1">
                           <div className="font-medium text-sm truncate reports-health-vaccine-name">
@@ -122,9 +123,11 @@ const VaccineStatsSection: React.FC<VaccineStatsSectionProps> = ({
                           </div>
                         </div>
                       </div>
-                      <ChevronDown
+                      <Icon
+                        path={mdiChevronDown}
+                        size="1rem"
                         className={cn(
-                          "h-4 w-4 text-gray-500 transition-transform duration-200",
+                          "text-gray-500 transition-transform duration-200",
                           isExpanded && "rotate-180"
                         )}
                       />

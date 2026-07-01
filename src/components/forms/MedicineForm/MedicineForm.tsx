@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { medicineFormStyles as styles } from './medicine-form.styles';
 import { MedicineFormData } from './medicine-form.types';
-import { PillBottle, Loader2, AlertCircle, Clock, FileText } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBottleTonicPlus, mdiLoading, mdiAlertCircle, mdiClockOutline, mdiFileDocument } from '@mdi/js';
 import { FormPage, FormPageContent, FormPageFooter } from '@/src/components/ui/form-page';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
@@ -437,11 +438,11 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
                   className="w-full pl-9"
                   placeholder={isSupplement ? t("Enter supplement name") : t("Enter medicine name")}
                 />
-                <PillBottle className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Icon path={mdiBottleTonicPlus} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
               </div>
               {errors.name && (
                 <div className="text-xs text-red-500 mt-1">
-                  <AlertCircle className="h-3 w-3 inline mr-1" />
+                  <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                   {errors.name}
                 </div>
               )}
@@ -464,7 +465,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
                 />
                 {errors.typicalDoseSize && (
                   <div className="text-xs text-red-500 mt-1">
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.typicalDoseSize}
                   </div>
                 )}
@@ -491,7 +492,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
                 </Select>
                 {errors.unitAbbr && (
                   <div className="text-xs text-red-500 mt-1">
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.unitAbbr}
                   </div>
                 )}
@@ -515,7 +516,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
                       className="w-full pl-9"
                       placeholder={t("Enter time")}
                     />
-                    <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                    <Icon path={mdiClockOutline} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
                   </div>
                   
                   {/* Unit Toggle */}
@@ -546,7 +547,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
               
               {errors.doseMinTime && (
                 <div className="text-xs text-red-500 mt-1">
-                  <AlertCircle className="h-3 w-3 inline mr-1" />
+                  <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                   {errors.doseMinTime}
                 </div>
               )}
@@ -581,7 +582,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
                   className="w-full min-h-[100px] pl-9"
                   placeholder="Enter additional notes about this medicine"
                 />
-                <FileText className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Icon path={mdiFileDocument} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
               </div>
             </div>
             
@@ -621,7 +622,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                <Icon path={mdiLoading} size="1rem" spin className="mr-1.5" />
                 {t('Saving...')}
               </>
             ) : (medicine ? t('Update') : t('Save'))}

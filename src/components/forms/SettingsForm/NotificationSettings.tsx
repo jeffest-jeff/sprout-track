@@ -28,7 +28,8 @@ import {
   checkSubscriptionStatus,
 } from '@/src/lib/notifications/client';
 import { Card, CardContent } from '@/src/components/ui/card';
-import { Loader2, Trash2, Bell, BellOff, ChevronDown, ChevronUp } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiTrashCan, mdiBell, mdiBellOff, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 
 const ALL_ACTIVITY_TYPES = [
   'feed', 'diaper', 'sleep', 'bath', 'pump', 'medicine', 'supplement', 'play', 'note', 'milestone', 'measurement',
@@ -357,7 +358,7 @@ export default function NotificationSettings({
     return (
       <div className="border-t border-slate-200 pt-6">
         <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+          <Icon path={mdiLoading} size="1.5rem" spin className="text-gray-400" />
         </div>
       </div>
     );
@@ -377,12 +378,12 @@ export default function NotificationSettings({
           >
             {subscribing ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                 {t('Enabling...')}
               </>
             ) : (
               <>
-                <Bell className="h-4 w-4 mr-2" />
+                <Icon path={mdiBell} size="1rem" className="mr-2" />
                 {t('Enable Notifications')}
               </>
             )}
@@ -425,7 +426,7 @@ export default function NotificationSettings({
                     onClick={() => handleRemoveDevice(subscription)}
                     disabled={loading}
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
+                    <Icon path={mdiTrashCan} size="1rem" className="mr-2" />
                     {t('Remove Device')}
                   </Button>
                 </CardContent>
@@ -495,9 +496,9 @@ export default function NotificationSettings({
                           }}
                         >
                           {expandedActivities[`${subscription.id}-${baby.id}`] ? (
-                            <ChevronUp className="h-3 w-3" />
+                            <Icon path={mdiChevronUp} size="0.75rem" />
                           ) : (
-                            <ChevronDown className="h-3 w-3" />
+                            <Icon path={mdiChevronDown} size="0.75rem" />
                           )}
                           {t('Select Activities')}
                         </button>

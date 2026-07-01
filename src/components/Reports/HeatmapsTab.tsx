@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Grid3X3, Loader2, Moon, Sun, BedDouble } from 'lucide-react';
-import { Icon } from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
-import { LampWallDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiGrid, mdiLoading, mdiMoonWaningCrescent, mdiWhiteBalanceSunny, mdiBed, mdiDiaperOutline, mdiBabyBottle, mdiMotherNurse } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { styles } from './reports.styles';
 import { HeatmapsTabProps } from './reports.types';
@@ -28,14 +26,14 @@ const DISPLAYED_HEATMAP_TYPES: HeatmapType[] = [
   'wakeTime', 'bedtime', 'allSleep', 'feeds', 'diapers', 'pumps',
 ];
 
-const HEATMAP_ICONS: Record<HeatmapType, { icon: any; isLabIcon?: boolean }> = {
-  wakeTime: { icon: Sun },
-  bedtime: { icon: Moon },
-  naps: { icon: BedDouble },
-  allSleep: { icon: Moon },
-  feeds: { icon: bottleBaby, isLabIcon: true },
-  diapers: { icon: diaper, isLabIcon: true },
-  pumps: { icon: LampWallDown },
+const HEATMAP_ICONS: Record<HeatmapType, string> = {
+  wakeTime: mdiWhiteBalanceSunny,
+  bedtime: mdiMoonWaningCrescent,
+  naps: mdiBed,
+  allSleep: mdiMoonWaningCrescent,
+  feeds: mdiBabyBottle,
+  diapers: mdiDiaperOutline,
+  pumps: mdiMotherNurse,
 };
 
 const HEATMAP_LABELS: Record<HeatmapType, string> = {
@@ -81,7 +79,7 @@ const HeatmapsTab: React.FC<HeatmapsTabProps> = ({
   if (!dateRange.from || !dateRange.to) {
     return (
       <div className={cn(styles.emptyContainer, "reports-empty-container")}>
-        <Grid3X3 className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
+        <Icon path={mdiGrid} size={1} className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
         <p className={cn(styles.emptyText, "reports-empty-text")}>
           {t('Select a date range to view heatmaps.')}
         </p>
@@ -92,7 +90,7 @@ const HeatmapsTab: React.FC<HeatmapsTabProps> = ({
   if (isLoading) {
     return (
       <div className={cn(styles.loadingContainer, "reports-loading-container")}>
-        <Loader2 className="h-6 w-6 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="1.5rem" spin className="text-teal-600" />
         <p className={cn(styles.loadingText, "reports-loading-text")}>
           {t('Loading heatmap data...')}
         </p>
@@ -103,7 +101,7 @@ const HeatmapsTab: React.FC<HeatmapsTabProps> = ({
   if (!heatmapData || !activities.length) {
     return (
       <div className={cn(styles.emptyContainer, "reports-empty-container")}>
-        <Grid3X3 className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
+        <Icon path={mdiGrid} size={1} className={cn(styles.placeholderIcon, "reports-placeholder-icon")} />
         <p className={cn(styles.emptyText, "reports-empty-text")}>
           {t('No activities recorded for this date range.')}
         </p>
@@ -120,14 +118,10 @@ const HeatmapsTab: React.FC<HeatmapsTabProps> = ({
       <div className="heatmap-legend flex flex-wrap items-center justify-center gap-3 py-2 bg-white sticky top-0 z-10 activity-chart-day-header">
         {DISPLAYED_HEATMAP_TYPES.map((type) => {
           const colors = HEATMAP_COLORS[type];
-          const iconConfig = HEATMAP_ICONS[type];
+          const iconPath = HEATMAP_ICONS[type];
           return (
             <div key={type} className="flex items-center gap-1">
-              {iconConfig.isLabIcon ? (
-                <Icon iconNode={iconConfig.icon} className="h-3 w-3" style={{ color: colors.base }} />
-              ) : (
-                <iconConfig.icon className="h-3 w-3" style={{ color: colors.base }} />
-              )}
+              <Icon path={iconPath} size="0.75rem" style={{ color: colors.base }} />
               <span className="text-[10px] text-gray-500">{t(HEATMAP_LABELS[type])}</span>
             </div>
           );

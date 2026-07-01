@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react';
-import { Moon, Icon, LampWallDown } from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMoonWaningCrescent, mdiMotherNurse, mdiDiaperOutline, mdiBabyBottle } from '@mdi/js';
 import { ActivityType } from '../types';
 import {
   TIME_SLOTS,
@@ -26,12 +26,12 @@ const LANE_GAP = 2;
 // Only show these lanes in the heatmap
 const DISPLAYED_HEATMAP_TYPES: HeatmapType[] = ['allSleep', 'feeds', 'diapers', 'pumps'];
 
-// Icon config per heatmap lane
-const HEATMAP_ICONS: Record<string, { icon: any; isLabIcon?: boolean }> = {
-  allSleep: { icon: Moon },
-  feeds: { icon: bottleBaby, isLabIcon: true },
-  diapers: { icon: diaper, isLabIcon: true },
-  pumps: { icon: LampWallDown },
+// Icon path per heatmap lane (MDI icon paths)
+const HEATMAP_ICON_PATHS: Record<string, string> = {
+  allSleep: mdiMoonWaningCrescent,
+  feeds: mdiBabyBottle,
+  diapers: mdiDiaperOutline,
+  pumps: mdiMotherNurse,
 };
 
 // Format hour for labels (reuses pattern from Reports)
@@ -182,7 +182,7 @@ const TimelineV2Heatmap: React.FC<TimelineV2HeatmapProps> = ({
                 const data = heatmapData[type];
                 const colors = HEATMAP_COLORS[type];
                 const laneLeft = laneIndex * (LANE_WIDTH + LANE_GAP);
-                const iconConfig = HEATMAP_ICONS[type];
+                const iconPath = HEATMAP_ICON_PATHS[type];
 
                 if (!data || data.maxCount === 0) {
                   return null;
@@ -234,10 +234,8 @@ const TimelineV2Heatmap: React.FC<TimelineV2HeatmapProps> = ({
                         paddingTop: 4,
                       }}
                     >
-                      {iconConfig.isLabIcon ? (
-                        <Icon iconNode={iconConfig.icon} className="h-3 w-3" style={{ color: colors.base }} />
-                      ) : (
-                        <iconConfig.icon className="h-3 w-3" style={{ color: colors.base }} />
+                      {iconPath && (
+                        <Icon path={iconPath} size="0.75rem" color={colors.base} />
                       )}
                     </div>
                   </div>

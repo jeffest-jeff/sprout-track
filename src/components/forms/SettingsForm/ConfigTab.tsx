@@ -3,7 +3,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Baby } from '@prisma/client';
-import { Edit, ExternalLink, AlertCircle, Loader2, Plus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPencil, mdiOpenInNew, mdiAlertCircle, mdiLoading, mdiPlus } from '@mdi/js';
 import { Contact } from '@/src/components/CalendarEvent/calendar-event.types';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
@@ -137,7 +138,7 @@ export default function ConfigTab({
                   disabled={savingFamily || !!slugError || checkingSlug || !familyEditData.name || !familyEditData.slug}
                 >
                   {savingFamily ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin />
                   ) : (
                     t('Save')
                   )}
@@ -162,7 +163,7 @@ export default function ConfigTab({
                   onClick={onFamilyEdit}
                   disabled={loading}
                 >
-                  <Edit className="h-4 w-4 mr-2" />
+                  <Icon path={mdiPencil} size="1rem" className="mr-2" />
                   {t('Edit')}
                 </Button>
               </>
@@ -184,12 +185,12 @@ export default function ConfigTab({
                     disabled={savingFamily}
                   />
                   {checkingSlug && (
-                    <Loader2 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
+                    <Icon path={mdiLoading} size="1rem" spin className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   )}
                 </div>
                 {slugError && (
                   <div className="flex items-center gap-1 text-red-600 text-xs">
-                    <AlertCircle className="h-3 w-3" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" />
                     {slugError}
                   </div>
                 )}
@@ -253,11 +254,11 @@ export default function ConfigTab({
                 onBabyFormOpen(baby || null, true);
               }}
             >
-              <Edit className="h-4 w-4 mr-2" />
+              <Icon path={mdiPencil} size="1rem" className="mr-2" />
               {t('Edit')}
             </Button>
             <Button variant="outline" onClick={() => onBabyFormOpen(null, false)}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Icon path={mdiPlus} size="1rem" className="mr-2" />
               {t('Add')}
             </Button>
           </div>
@@ -294,14 +295,14 @@ export default function ConfigTab({
               disabled={!selectedContact}
               onClick={() => onContactFormOpen(true)}
             >
-              <Edit className="h-4 w-4 mr-2" />
+              <Icon path={mdiPencil} size="1rem" className="mr-2" />
               {t('Edit')}
             </Button>
             <Button variant="outline" onClick={() => {
               onSelectedContactChange(null);
               onContactFormOpen(false);
             }}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Icon path={mdiPlus} size="1rem" className="mr-2" />
               {t('Add')}
             </Button>
           </div>
@@ -442,7 +443,7 @@ export default function ConfigTab({
               className="w-full"
               disabled={loading}
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
+              <Icon path={mdiOpenInNew} size="1rem" className="mr-2" />
               {t('Open Family Manager')}
             </Button>
             <p className="text-sm text-gray-500">

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { FileDown, Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiFileDownload, mdiLoading } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { useBaby } from '@/app/context/baby';
 import { useTimezone } from '@/app/context/timezone';
@@ -224,7 +225,7 @@ const MonthlyReportCard: React.FC<MonthlyReportCardProps> = ({ className }) => {
   if (isLoading) {
     return (
       <div className={cn(s.loading)}>
-        <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size="2rem" className="text-teal-600" spin />
         <p className={cn(s.loadingText, 'report-card-loading-text')}>{t('Loading report...')}</p>
       </div>
     );
@@ -274,7 +275,7 @@ const MonthlyReportCard: React.FC<MonthlyReportCardProps> = ({ className }) => {
             disabled={exporting || !reportData}
             type="button"
           >
-            <FileDown className="w-3.5 h-3.5" />
+            <Icon path={mdiFileDownload} size="0.875rem" />
             <span className="hidden sm:inline">{exporting ? t('Exporting PDF...') : t('PDF export')}</span>
           </button>
         )}

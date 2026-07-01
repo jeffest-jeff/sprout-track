@@ -9,12 +9,8 @@ import {
   TableRow,
 } from '@/src/components/ui/table';
 import { Button } from '@/src/components/ui/button';
-import {
-  Loader2,
-  Receipt,
-  AlertTriangle,
-  X,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiReceipt, mdiAlert, mdiClose } from '@mdi/js';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/src/components/ui/dialog';
 import { useLocalization } from '@/src/context/localization';
 
@@ -187,7 +183,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ isOpen, onClose }) => {
           {error && (
             <div className={cn("mb-4 p-4 bg-red-50 border border-red-200 rounded-lg", "payment-history-error")}>
               <div className={cn("flex items-center gap-2 text-red-700", "payment-history-error-text")}>
-                <AlertTriangle className="h-5 w-5" />
+                <Icon path={mdiAlert} size="1.25rem" />
                 <span className="font-medium">{t('Error')}</span>
               </div>
               <p className={cn("text-sm text-red-600 mt-1", "payment-history-error-description")}>{error}</p>
@@ -196,11 +192,11 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ isOpen, onClose }) => {
 
           {loading && transactions.length === 0 ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className={cn("h-8 w-8 animate-spin text-teal-600", "payment-history-loading")} />
+              <Icon path={mdiLoading} size="2rem" spin className={cn("text-teal-600", "payment-history-loading")} />
             </div>
           ) : transactions.length === 0 ? (
             <div className={cn("flex flex-col items-center justify-center py-12 text-gray-500", "payment-history-empty")}>
-              <Receipt className="h-12 w-12 mb-3" />
+              <Icon path={mdiReceipt} size="3rem" className="mb-3" />
               <p className="text-lg font-medium">{t('No payment history')}</p>
               <p className="text-sm">{t('You haven\'t made any payments yet.')}</p>
             </div>
@@ -242,7 +238,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ isOpen, onClose }) => {
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                         {t('Loading...')}
                       </>
                     ) : (
@@ -257,7 +253,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ isOpen, onClose }) => {
 
         <div className={cn("flex justify-end pt-4 border-t", "payment-history-footer")}>
           <Button variant="outline" onClick={onClose}>
-            <X className="h-4 w-4 mr-2" />
+            <Icon path={mdiClose} size="1rem" className="mr-2" />
             {t('Close')}
           </Button>
         </div>

@@ -29,7 +29,8 @@ import {
   sendSubscriptionToServer,
 } from '@/src/lib/notifications/client';
 import { Card, CardContent } from '@/src/components/ui/card';
-import { Bell, Loader2, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBell, mdiLoading, mdiCheckCircle, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 
 const ALL_ACTIVITY_TYPES = [
   'feed', 'diaper', 'sleep', 'bath', 'pump', 'medicine', 'supplement', 'play', 'note', 'milestone', 'measurement',
@@ -234,7 +235,7 @@ export default function NotificationSplashModal({
             <DialogHeader>
               <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                  <Bell className="h-8 w-8 text-teal-600 dark:text-teal-400" />
+                  <Icon path={mdiBell} size="2rem" className="text-teal-600" />
                 </div>
               </div>
               <DialogTitle className="text-center text-xl">
@@ -252,12 +253,12 @@ export default function NotificationSplashModal({
               >
                 {subscribing ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                     {t('Enabling...')}
                   </>
                 ) : (
                   <>
-                    <Bell className="h-4 w-4 mr-2" />
+                    <Icon path={mdiBell} size="1rem" className="mr-2" />
                     {t('Enable Notifications')}
                   </>
                 )}
@@ -281,7 +282,7 @@ export default function NotificationSplashModal({
             <DialogHeader>
               <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                  <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  <Icon path={mdiCheckCircle} size="2rem" className="text-green-600" />
                 </div>
               </div>
               <DialogTitle className="text-center text-xl">
@@ -326,9 +327,9 @@ export default function NotificationSplashModal({
                           }}
                         >
                           {expandedActivities[baby.id] ? (
-                            <ChevronUp className="h-3 w-3" />
+                            <Icon path={mdiChevronUp} size="0.75rem" />
                           ) : (
-                            <ChevronDown className="h-3 w-3" />
+                            <Icon path={mdiChevronDown} size="0.75rem" />
                           )}
                           {t('Select Activities')}
                         </button>

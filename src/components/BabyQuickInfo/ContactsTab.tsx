@@ -1,5 +1,6 @@
 import React from 'react';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPhone, mdiEmail, mdiMapMarker } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { styles } from './baby-quick-info.styles';
 import { ContactsTabProps } from './baby-quick-info.types';
@@ -45,7 +46,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({
                 <div className={cn(styles.contactDetails, "baby-quick-info-contact-details")}>
                   {contact.phone && (
                     <div className={cn(styles.contactDetail, "baby-quick-info-contact-detail")}>
-                      <Phone className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
+                      <Icon path={mdiPhone} size="1rem" className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
                       <a 
                         href={`tel:${contact.phone.replace(/\D/g, '')}`}
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
@@ -58,7 +59,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({
                   
                   {contact.email && (
                     <div className={cn(styles.contactDetail, "baby-quick-info-contact-detail")}>
-                      <Mail className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
+                      <Icon path={mdiEmail} size="1rem" className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
                       <a 
                         href={`mailto:${contact.email}`}
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
@@ -71,7 +72,7 @@ const ContactsTab: React.FC<ContactsTabProps> = ({
                   
                   {contact.address && (
                     <div className={cn(styles.contactDetail, "baby-quick-info-contact-detail")}>
-                      <MapPin className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
+                      <Icon path={mdiMapMarker} size="1rem" className={cn(styles.contactIcon, "baby-quick-info-contact-icon")} />
                       <a 
                         href={`https://maps.google.com/?q=${encodeURIComponent(contact.address)}`}
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"

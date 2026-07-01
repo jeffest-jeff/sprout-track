@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
-import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiAlertCircle, mdiRefresh } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { styles } from './setup-wizard.styles';
 import { FamilySetupStageProps } from './setup-wizard.types';
@@ -215,9 +216,9 @@ const FamilySetupStage: React.FC<FamilySetupStageProps> = ({
               title="Generate random URL"
             >
               {generatingSlug ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Icon path={mdiLoading} size="1rem" spin />
               ) : (
-                <RefreshCw className="h-4 w-4" />
+                <Icon path={mdiRefresh} size="1rem" />
               )}
             </Button>
           </div>
@@ -233,13 +234,13 @@ const FamilySetupStage: React.FC<FamilySetupStageProps> = ({
           <div className="min-h-[20px]">
             {checkingSlug && (
               <div className="flex items-center gap-1 text-blue-600 text-sm">
-                <Loader2 className="h-3 w-3 animate-spin" />
+                <Icon path={mdiLoading} size="0.75rem" spin />
                 {t('Checking availability...')}
               </div>
             )}
             {slugError && (
               <div className="flex items-center gap-1 text-red-600 text-sm">
-                <AlertCircle className="h-3 w-3" />
+                <Icon path={mdiAlertCircle} size="0.75rem" />
                 {slugError}
               </div>
             )}

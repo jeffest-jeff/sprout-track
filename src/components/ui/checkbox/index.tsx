@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import { cn } from '@/src/lib/utils';
-import { Check } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheck } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 
 import { checkboxVariants } from './checkbox.styles';
@@ -62,7 +63,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           data-state={checked ? "checked" : "unchecked"}
           onClick={() => onCheckedChange?.(!checked)}
         >
-          {checked && <Check className="h-3.5 w-3.5 text-white checkbox-check" />}
+          {checked && <Icon path={mdiCheck} size="0.875rem" className="text-white checkbox-check" />}
         </div>
       </div>
     );

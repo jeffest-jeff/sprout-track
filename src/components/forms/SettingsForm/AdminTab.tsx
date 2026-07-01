@@ -3,7 +3,8 @@
 import React from 'react';
 import { Baby, Caretaker } from '@prisma/client';
 import { Settings } from '@/app/api/types';
-import { Edit, Plus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPencil, mdiPlus } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
@@ -145,14 +146,14 @@ export default function AdminTab({
                 disabled={!selectedCaretaker}
                 onClick={() => onCaretakerFormOpen(true)}
               >
-                <Edit className="h-4 w-4 mr-2" />
+                <Icon path={mdiPencil} size="1rem" className="mr-2" />
                 {t('Edit')}
               </Button>
               <Button variant="outline" onClick={() => {
                 onSelectedCaretakerChange(null);
                 onCaretakerFormOpen(false);
               }}>
-                <Plus className="h-4 w-4 mr-2" />
+                <Icon path={mdiPlus} size="1rem" className="mr-2" />
                 {t('Add')}
               </Button>
             </div>

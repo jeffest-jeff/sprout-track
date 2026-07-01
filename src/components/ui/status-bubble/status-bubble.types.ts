@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import { Icon as LucideIcon } from 'lucide-react';
 
 export type StatusType = 'sleeping' | 'awake' | 'feed' | 'feedActive' | 'diaper';
 
@@ -20,5 +19,5 @@ export interface StatusBubbleProps {
 
 export interface StatusStyle {
   bgColor: string;
-  icon: ReactElement<typeof LucideIcon> | null;
+  icon: ReactElement | null;
 }

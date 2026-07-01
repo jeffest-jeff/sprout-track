@@ -7,7 +7,8 @@ import { CalendarEventType, RecurrencePattern } from '@prisma/client';
 import { format } from 'date-fns'; // Import date-fns for formatting
 // import RecurrenceSelector from './RecurrenceSelector'; // Commented out - functionality not fully implemented yet
 import ContactSelector from './ContactSelector';
-import { MapPin, AlertCircle, Bell, Loader2, Trash2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMapMarker, mdiAlertCircle, mdiLoading, mdiTrashCan } from '@mdi/js';
 import { FormPage, FormPageContent, FormPageFooter } from '@/src/components/ui/form-page';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
@@ -443,7 +444,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                 />
                 {errors.title && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.title}
                   </div>
                 )}
@@ -479,7 +480,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                 </DropdownMenu>
                 {errors.type && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.type}
                   </div>
                 )}
@@ -521,7 +522,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                   </div>
                   {errors.startTime && (
                     <div className={styles.fieldError}>
-                      <AlertCircle className="h-3 w-3 inline mr-1" />
+                      <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                       {errors.startTime}
                     </div>
                   )}
@@ -543,7 +544,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                   </div>
                   {errors.endTime && (
                     <div className={styles.fieldError}>
-                      <AlertCircle className="h-3 w-3 inline mr-1" />
+                      <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                       {errors.endTime}
                     </div>
                   )}
@@ -565,7 +566,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                     className="w-full pl-8"
                     placeholder={t("Enter location (optional)")}
                   />
-                  <MapPin className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+                  <Icon path={mdiMapMarker} size="1rem" className="absolute left-2.5 top-2.5 text-gray-400" />
                 </div>
               </div>
               
@@ -896,7 +897,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
                   }}
                   disabled={isLoading}
                 >
-                  <Trash2 className="h-4 w-4 mr-1.5" />
+                  <Icon path={mdiTrashCan} size="1rem" className="mr-1.5" />
                   {t('Delete')}
                 </Button>
               )}
@@ -918,7 +919,7 @@ const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-1.5" />
                     {t('Saving...')}
                   </>
                 ) : (

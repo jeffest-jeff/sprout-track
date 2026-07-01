@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { cn } from '@/src/lib/utils';
 import { Contact } from '@/src/components/CalendarEvent/calendar-event.types';
-import { Check, X, Plus, Phone, Mail, Edit, User } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCheck, mdiClose, mdiPlus, mdiPhone, mdiEmail, mdiPencil, mdiAccount } from '@mdi/js';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import ContactForm from '@/src/components/forms/ContactForm';
@@ -152,7 +153,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
             onClick={() => setSearchTerm('')}
             className="contact-selector-clear-button absolute right-2 top-2 text-gray-400 hover:text-gray-600"
           >
-            <X className="h-4 w-4" />
+            <Icon path={mdiClose} size="1rem" />
           </button>
         )}
       </div>
@@ -179,7 +180,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
                 >
                   <div className="flex-shrink-0 w-4 mt-1">
                     {selectedContactIds.includes(contact.id) && (
-                      <Check className="contact-selector-check-icon h-4 w-4 text-teal-600" />
+                      <Icon path={mdiCheck} size="1rem" className="contact-selector-check-icon text-teal-600" />
                     )}
                   </div>
                   <div className="ml-2 text-sm text-gray-700 contact-selector-contact-info">
@@ -187,13 +188,13 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
                     <div className="contact-selector-contact-details text-xs text-gray-500 flex flex-wrap gap-2">
                       {contact.phone && (
                         <span className="flex items-center">
-                          <Phone className="h-3 w-3 mr-1" />
+                          <Icon path={mdiPhone} size="0.75rem" className="mr-1" />
                           {contact.phone}
                         </span>
                       )}
                       {contact.email && (
                         <span className="flex items-center">
-                          <Mail className="h-3 w-3 mr-1" />
+                          <Icon path={mdiEmail} size="0.75rem" className="mr-1" />
                           {contact.email}
                         </span>
                       )}
@@ -211,7 +212,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
                     className="contact-selector-edit-button p-1 text-gray-400 hover:text-gray-600"
                     aria-label={t('Edit') + ' ' + contact.name}
                   >
-                    <Edit className="h-3.5 w-3.5" />
+                    <Icon path={mdiPencil} size="0.875rem" />
                   </button>
                 )}
               </div>
@@ -244,7 +245,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
         <div className="flex flex-wrap gap-2 mt-2">
           {selectedContacts.map(contact => (
             <div key={contact.id} className="contact-selector-selected-tag flex items-center rounded-full bg-teal-100 px-2 py-1 text-xs text-teal-800">
-              <User className="contact-selector-selected-tag-icon h-3 w-3 mr-1 text-teal-600" />
+              <Icon path={mdiAccount} size="0.75rem" className="contact-selector-selected-tag-icon mr-1 text-teal-600" />
               <span>{contact.name}</span>
               <button
                 type="button"
@@ -254,7 +255,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
                 }}
                 className="contact-selector-remove-tag-button ml-1 h-3 w-3 text-teal-600 hover:text-teal-800"
               >
-                <X className="h-3 w-3" />
+                <Icon path={mdiClose} size="0.75rem" />
               </button>
             </div>
           ))}
@@ -274,7 +275,7 @@ const ContactSelector: React.FC<ContactSelectorProps> = ({
             className="w-full"
             size="sm"
           >
-            <Plus className="h-4 w-4 mr-1.5" />
+            <Icon path={mdiPlus} size="1rem" className="mr-1.5" />
             {t('Add New Contact')}
           </Button>
         </div>

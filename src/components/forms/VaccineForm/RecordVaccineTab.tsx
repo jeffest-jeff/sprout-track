@@ -11,7 +11,8 @@ import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
-import { Loader2, ChevronDown, Upload, Download, Trash2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiChevronDown, mdiUpload, mdiDownload, mdiTrashCan } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { useTheme } from '@/src/context/theme';
 import { useToast } from '@/src/components/ui/toast';
@@ -516,8 +517,8 @@ const RecordVaccineTab: React.FC<RecordVaccineTabProps> = ({
                   disabled={isSubmitting}
                   required
                 />
-                <ChevronDown
-                  className="absolute right-3 h-4 w-4 text-gray-500 vaccine-form-dropdown-icon"
+                <Icon path={mdiChevronDown} size="1rem"
+                  className="absolute right-3 text-gray-500 vaccine-form-dropdown-icon"
                   onClick={() => {
                     setDropdownOpen(!dropdownOpen);
                     if (document.activeElement instanceof HTMLElement) {
@@ -631,9 +632,9 @@ const RecordVaccineTab: React.FC<RecordVaccineTabProps> = ({
                   disabled={isUploading}
                 >
                   {isUploading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin />
                   ) : (
-                    <Upload className="h-4 w-4" />
+                    <Icon path={mdiUpload} size="1rem" />
                   )}
                 </Button>
               )}
@@ -662,7 +663,7 @@ const RecordVaccineTab: React.FC<RecordVaccineTabProps> = ({
                       onClick={() => handleDownloadDocument(doc.id, doc.originalName)}
                       title={t('Download')}
                     >
-                      <Download className="h-4 w-4 text-teal-600" />
+                      <Icon path={mdiDownload} size="1rem" className="text-teal-600" />
                     </Button>
                     <Button
                       type="button"
@@ -671,7 +672,7 @@ const RecordVaccineTab: React.FC<RecordVaccineTabProps> = ({
                       onClick={() => handleDeleteDocument(doc.id)}
                       title={t('Delete')}
                     >
-                      <Trash2 className="h-4 w-4 text-red-500" />
+                      <Icon path={mdiTrashCan} size="1rem" className="text-red-500" />
                     </Button>
                   </div>
                 </div>
@@ -692,7 +693,7 @@ const RecordVaccineTab: React.FC<RecordVaccineTabProps> = ({
           </Button>
           <Button type="submit" disabled={isSubmitting || !vaccineName.trim()}>
             {isSubmitting ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
             ) : null}
             {activity ? t('Update') : t('Save')}
           </Button>

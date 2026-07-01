@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/src/lib/utils';
-import { ChevronLeft, Send, MessageSquare, X, ImagePlus } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiSend, mdiMessageText, mdiClose, mdiImagePlus } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
 import { useTimezone } from '@/app/context/timezone';
@@ -233,7 +234,7 @@ export function ChatConversation({
     return (
       <div className={cn(styles.container, 'chat-conversation-container', className)}>
         <div className={cn(styles.emptyState, 'chat-conversation-empty')}>
-          <MessageSquare className="h-8 w-8 chat-conversation-empty-icon" strokeWidth={1.5} />
+          <Icon path={mdiMessageText} size="2rem" className="chat-conversation-empty-icon" />
           <span>{t('Select a conversation')}</span>
         </div>
       </div>
@@ -250,7 +251,7 @@ export function ChatConversation({
         <div className={cn(styles.header, 'chat-conversation-header')}>
           {showBackButton && onBack && (
             <button onClick={onBack} className={styles.backButton} aria-label={t('Back')}>
-              <ChevronLeft className="h-[18px] w-[18px]" />
+              <Icon path={mdiChevronLeft} size="1.125rem" />
             </button>
           )}
           <div className={styles.headerContent}>
@@ -403,7 +404,7 @@ export function ChatConversation({
                               className={cn(styles.attachmentDeleteButton, 'chat-conversation-attachment-delete')}
                               aria-label={t('Remove image')}
                             >
-                              <X className="h-3 w-3 text-white" />
+                              <Icon path={mdiClose} size="0.75rem" className="text-white" />
                             </button>
                           )}
                         </div>
@@ -441,7 +442,7 @@ export function ChatConversation({
                 className={styles.replyPreviewDelete}
                 aria-label={t('Remove image')}
               >
-                <X className="h-2.5 w-2.5 text-white" />
+                <Icon path={mdiClose} size="0.625rem" className="text-white" />
               </button>
             </div>
           ))}
@@ -464,7 +465,7 @@ export function ChatConversation({
             className={cn(styles.replyAttachButton, 'chat-conversation-attach-button')}
             aria-label={t('Attach images')}
           >
-            <ImagePlus className="h-[18px] w-[18px] text-gray-500" />
+            <Icon path={mdiImagePlus} size="1.125rem" className="text-gray-500" />
           </button>
           <textarea
             ref={textareaRef}
@@ -488,7 +489,7 @@ export function ChatConversation({
             )}
             aria-label={t('Send')}
           >
-            <Send className="h-[15px] w-[15px]" color={canSend ? '#fff' : '#a3a39b'} />
+            <Icon path={mdiSend} size="0.9375rem" color={canSend ? '#fff' : '#a3a39b'} />
           </button>
         </div>
       )}
@@ -575,7 +576,7 @@ export function ChatReplyBar({
                 className={styles.replyPreviewDelete}
                 aria-label={t('Remove image')}
               >
-                <X className="h-2.5 w-2.5 text-white" />
+                <Icon path={mdiClose} size="0.625rem" className="text-white" />
               </button>
             </div>
           ))}
@@ -595,7 +596,7 @@ export function ChatReplyBar({
           className={cn(styles.replyAttachButton, 'chat-conversation-attach-button')}
           aria-label={t('Attach images')}
         >
-          <ImagePlus className="h-[18px] w-[18px] text-gray-500" />
+          <Icon path={mdiImagePlus} size="1.125rem" className="text-gray-500" />
         </button>
         <textarea
           ref={textareaRef}
@@ -619,7 +620,7 @@ export function ChatReplyBar({
           )}
           aria-label={t('Send')}
         >
-          <Send className="h-[15px] w-[15px]" color={canSend ? '#fff' : '#a3a39b'} />
+          <Icon path={mdiSend} size="0.9375rem" color={canSend ? '#fff' : '#a3a39b'} />
         </button>
       </div>
     </div>

@@ -19,7 +19,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/src/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronDown } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { useTheme } from '@/src/context/theme';
 import { useToast } from '@/src/components/ui/toast';
@@ -422,8 +423,8 @@ export default function NoteForm({
                       placeholder={t("Enter or select a category")}
                       disabled={loading}
                     />
-                    <ChevronDown 
-                      className="absolute right-3 h-4 w-4 text-gray-500 note-form-dropdown-icon"
+                    <Icon path={mdiChevronDown} size="1rem"
+                      className="absolute right-3 text-gray-500 note-form-dropdown-icon"
                       onClick={() => {
                         setDropdownOpen(!dropdownOpen);
                         // Remove focus when toggling dropdown with the icon

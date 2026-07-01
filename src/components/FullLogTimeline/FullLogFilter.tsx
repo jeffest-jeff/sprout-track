@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { Button } from '@/src/components/ui/button';
+import { Icon } from '@/src/components/ui/icon';
 import {
-  Moon,
-  Icon,
-  Edit,
-  ChevronLeft,
-  ChevronRight,
-  Bath,
-  ChevronDown,
-  Calendar as CalendarIcon,
-  LampWallDown,
-  Trophy,
-  Ruler,
-  PillBottle,
-  Baby,
-  Syringe,
-} from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+  mdiMoonWaningCrescent,
+  mdiPencil,
+  mdiChevronDown,
+  mdiBathtub,
+  mdiMotherNurse,
+  mdiTrophy,
+  mdiRuler,
+  mdiBottleTonicPlus,
+  mdiBabyFaceOutline,
+  mdiNeedle,
+  mdiDiaperOutline,
+  mdiBabyBottle,
+} from '@mdi/js';
 import { FilterType, FullLogFilterProps } from './full-log-timeline.types';
 import {
   DropdownMenu,
@@ -60,18 +58,18 @@ const FullLogFilter: React.FC<FullLogFilterProps> = ({
   
   // Define filter types and their icons
   const filterOptions = [
-    { type: 'sleep', icon: <Moon className="h-4 w-4" />, labelKey: 'Sleep' },
-    { type: 'feed', icon: <Icon iconNode={bottleBaby} className="h-4 w-4" />, labelKey: 'Feed' },
-    { type: 'diaper', icon: <Icon iconNode={diaper} className="h-4 w-4" />, labelKey: 'Diaper' },
-    { type: 'bath', icon: <Bath className="h-4 w-4" />, labelKey: 'Bath' },
-    { type: 'note', icon: <Edit className="h-4 w-4" />, labelKey: 'Note' },
-    { type: 'pump', icon: <LampWallDown className="h-4 w-4" />, labelKey: 'Pump' },
-    ...(enableBreastMilkTracking ? [{ type: 'breast-milk-adjustment' as const, icon: <LampWallDown className="h-4 w-4" />, labelKey: 'Milk Adjust' as const }] : []),
-    { type: 'milestone', icon: <Trophy className="h-4 w-4" />, labelKey: 'Milestone' },
-    { type: 'measurement', icon: <Ruler className="h-4 w-4" />, labelKey: 'Measurement' },
-    { type: 'medicine', icon: <PillBottle className="h-4 w-4" />, labelKey: 'Medicine' },
-    { type: 'play', icon: <Baby className="h-4 w-4" />, labelKey: 'Activity' },
-    { type: 'vaccine', icon: <Syringe className="h-4 w-4" />, labelKey: 'Vaccine' },
+    { type: 'sleep', icon: <Icon path={mdiMoonWaningCrescent} size="1rem" />, labelKey: 'Sleep' },
+    { type: 'feed', icon: <Icon path={mdiBabyBottle} size="1rem" />, labelKey: 'Feed' },
+    { type: 'diaper', icon: <Icon path={mdiDiaperOutline} size="1rem" />, labelKey: 'Diaper' },
+    { type: 'bath', icon: <Icon path={mdiBathtub} size="1rem" />, labelKey: 'Bath' },
+    { type: 'note', icon: <Icon path={mdiPencil} size="1rem" />, labelKey: 'Note' },
+    { type: 'pump', icon: <Icon path={mdiMotherNurse} size="1rem" />, labelKey: 'Pump' },
+    ...(enableBreastMilkTracking ? [{ type: 'breast-milk-adjustment' as const, icon: <Icon path={mdiMotherNurse} size="1rem" />, labelKey: 'Milk Adjust' as const }] : []),
+    { type: 'milestone', icon: <Icon path={mdiTrophy} size="1rem" />, labelKey: 'Milestone' },
+    { type: 'measurement', icon: <Icon path={mdiRuler} size="1rem" />, labelKey: 'Measurement' },
+    { type: 'medicine', icon: <Icon path={mdiBottleTonicPlus} size="1rem" />, labelKey: 'Medicine' },
+    { type: 'play', icon: <Icon path={mdiBabyFaceOutline} size="1rem" />, labelKey: 'Activity' },
+    { type: 'vaccine', icon: <Icon path={mdiNeedle} size="1rem" />, labelKey: 'Vaccine' },
   ] as const;
 
   // Format date range for display
@@ -170,7 +168,7 @@ const FullLogFilter: React.FC<FullLogFilterProps> = ({
             size="sm" 
             className="flex items-center gap-1 h-7 text-sm font-medium text-white hover:bg-transparent hover:text-white/90 p-0"
           >
-            {t('Filters')} <ChevronDown className="h-4 w-4 ml-1" />
+            {t('Filters')} <Icon path={mdiChevronDown} size="1rem" className="ml-1" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">

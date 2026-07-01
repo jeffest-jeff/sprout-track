@@ -1,5 +1,6 @@
 import React from 'react';
-import { Search } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMagnify } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import styles from './full-log-timeline.styles';
 import { useLocalization } from '@/src/context/localization';
@@ -22,7 +23,7 @@ const FullLogSearchBar: React.FC<FullLogSearchBarProps> = ({
   return (
     <div className={cn("border-t border-gray-200 bg-gray-100 p-3 full-log-timeline-search-bar", styles.search.bar)}>
       <div className={cn("w-full flex items-center bg-white p-1 full-log-timeline-search-container", styles.search.container)}>
-        <Search className="h-4 w-4 text-gray-500 mr-2" />
+        <Icon path={mdiMagnify} size="1rem" className="text-gray-500 mr-2" />
         <input 
           type="text"
           placeholder={t("Search activities...")}

@@ -13,15 +13,8 @@ import type { SortDirection } from "@/src/components/ui/table";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Checkbox } from "@/src/components/ui/checkbox";
-import { 
-  Edit, 
-  Users, 
-  LogIn, 
-  Check, 
-  X, 
-  Loader2,
-  AlertCircle,
-} from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPencil, mdiAccountGroup, mdiLogin, mdiCheck, mdiClose, mdiLoading, mdiAlertCircle } from '@mdi/js';
 import { ShareButton } from '@/src/components/ui/share-button';
 import { useLocalization } from '@/src/context/localization';
 
@@ -129,12 +122,12 @@ export default function FamilyView({
                           className={`min-w-[150px] ${slugError ? 'border-red-500' : ''}`}
                         />
                         {checkingSlug && (
-                          <Loader2 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
+                          <Icon path={mdiLoading} size="1rem" spin className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         )}
                       </div>
                       {slugError && (
                         <div className="flex items-center gap-1 text-red-600 text-xs">
-                          <AlertCircle className="h-3 w-3" />
+                          <Icon path={mdiAlertCircle} size="0.75rem" />
                           {slugError}
                         </div>
                       )}
@@ -179,9 +172,9 @@ export default function FamilyView({
                           disabled={saving || !!slugError || checkingSlug}
                         >
                           {saving ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <Icon path={mdiLoading} size="1rem" spin />
                           ) : (
-                            <Check className="h-4 w-4" />
+                            <Icon path={mdiCheck} size="1rem" />
                           )}
                         </Button>
                         <Button
@@ -190,7 +183,7 @@ export default function FamilyView({
                           onClick={onCancelEdit}
                           disabled={saving}
                         >
-                          <X className="h-4 w-4" />
+                          <Icon path={mdiClose} size="1rem" />
                         </Button>
                       </>
                     ) : (
@@ -201,7 +194,7 @@ export default function FamilyView({
                           onClick={() => onEdit(family)}
                           title={t("Edit family")}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Icon path={mdiPencil} size="1rem" />
                         </Button>
                         <Button
                           variant="outline"
@@ -209,7 +202,7 @@ export default function FamilyView({
                           onClick={() => onViewCaretakers(family)}
                           title={t("View caretakers")}
                         >
-                          <Users className="h-4 w-4" />
+                          <Icon path={mdiAccountGroup} size="1rem" />
                         </Button>
                         <ShareButton
                           familySlug={family.slug}
@@ -225,7 +218,7 @@ export default function FamilyView({
                           onClick={() => onLogin(family)}
                           title={t("Login to family")}
                         >
-                          <LogIn className="h-4 w-4" />
+                          <Icon path={mdiLogin} size="1rem" />
                         </Button>
                       </>
                     )}

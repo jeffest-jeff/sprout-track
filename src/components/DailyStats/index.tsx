@@ -1,23 +1,24 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Icon } from '@/src/components/ui/icon';
 import {
-  ChevronDown,
-  ChevronUp,
-  Sun,
-  Icon,
-  Moon,
-  Droplet,
-  StickyNote,
-  Utensils,
-  Bath,
-  Trophy,
-  LampWallDown,
-  Ruler,
-  Scale,
-  RotateCw,
-  Thermometer,
-  PillBottle
-} from 'lucide-react';
-import { diaper, bottleBaby } from '@lucide/lab';
+  mdiChevronDown,
+  mdiChevronUp,
+  mdiWhiteBalanceSunny,
+  mdiMoonWaningCrescent,
+  mdiWater,
+  mdiNoteText,
+  mdiSilverwareForkKnife,
+  mdiBathtub,
+  mdiTrophy,
+  mdiMotherNurse,
+  mdiRuler,
+  mdiScale,
+  mdiRotateRight,
+  mdiThermometer,
+  mdiBottleTonicPlus,
+  mdiDiaperOutline,
+  mdiBabyBottle,
+} from '@mdi/js';
 import { Card } from '@/src/components/ui/card';
 import { cardStyles } from '@/src/components/ui/card/card.styles';
 import { useTheme } from '@/src/context/theme';
@@ -452,50 +453,50 @@ export const DailyStats: React.FC<DailyStatsProps> = ({ activities, date, isLoad
         {!isExpanded && !isLoading && activities.length > 0 && (
           <StatsTicker 
             stats={[
-              ...(awakeTime !== '0h 0m' ? [{ icon: <Sun className="h-3 w-3 text-amber-500" />, label: "Awake", value: awakeTime }] : []),
-              ...(sleepTime !== '0h 0m' ? [{ icon: <Moon className="h-3 w-3 text-gray-700" />, label: "Sleep", value: sleepTime }] : []),
-              ...(totalConsumed !== 'None' ? [{ icon: <Icon iconNode={bottleBaby} className="h-3 w-3 text-sky-600" />, label: "Bottle", value: totalConsumed }] : []),
-              ...(diaperChanges !== '0' ? [{ icon: <Icon iconNode={diaper} className="h-3 w-3 text-teal-600" />, label: "Diapers", value: diaperChanges }] : []),
-              ...(poopCount !== '0' ? [{ icon: <Icon iconNode={diaper} className="h-3 w-3 text-amber-700" />, label: "Poops", value: poopCount }] : []),
-              ...(solidsConsumed !== 'None' ? [{ icon: <Utensils className="h-3 w-3 text-green-600" />, label: "Solids", value: solidsConsumed }] : []),
-              ...(leftBreastTime !== '0h 0m' ? [{ icon: <Droplet className="h-3 w-3 text-blue-500" />, label: "Left", value: leftBreastTime }] : []),
-              ...(rightBreastTime !== '0h 0m' ? [{ icon: <Droplet className="h-3 w-3 text-red-500" />, label: "Right", value: rightBreastTime }] : []),
-              ...(noteCount !== '0' ? [{ icon: <StickyNote className="h-3 w-3 text-yellow-500" />, label: "Notes", value: noteCount }] : []),
-              ...(bathCount !== '0' ? [{ icon: <Bath className="h-3 w-3 text-orange-500" />, label: "Baths", value: bathCount }] : []),
-              ...(milestoneCount !== '0' ? [{ icon: <Trophy className="h-3 w-3 text-blue-500" />, label: "Milestones", value: milestoneCount }] : []),
-              ...(pumpTotals !== 'None' ? [{ icon: <LampWallDown className="h-3 w-3 text-purple-500" />, label: "Pumped", value: pumpTotals }] : []),
-              ...(breastMilkBalance ? [{ icon: <LampWallDown className="h-3 w-3 text-purple-500" />, label: t('Breast Milk Stored'), value: breastMilkBalance }] : []),
-              ...(medicineCounts.length > 0 ? medicineCounts.map(med => ({ 
-                icon: <PillBottle className="h-3 w-3 text-green-600" />, 
-                label: med.name, 
-                value: med.display 
+              ...(awakeTime !== '0h 0m' ? [{ icon: <Icon path={mdiWhiteBalanceSunny} size="0.75rem" className="text-amber-500" />, label: "Awake", value: awakeTime }] : []),
+              ...(sleepTime !== '0h 0m' ? [{ icon: <Icon path={mdiMoonWaningCrescent} size="0.75rem" className="text-gray-700" />, label: "Sleep", value: sleepTime }] : []),
+              ...(totalConsumed !== 'None' ? [{ icon: <Icon path={mdiBabyBottle} size="0.75rem" className="text-sky-600" />, label: "Bottle", value: totalConsumed }] : []),
+              ...(diaperChanges !== '0' ? [{ icon: <Icon path={mdiDiaperOutline} size="0.75rem" className="text-teal-600" />, label: "Diapers", value: diaperChanges }] : []),
+              ...(poopCount !== '0' ? [{ icon: <Icon path={mdiDiaperOutline} size="0.75rem" className="text-amber-700" />, label: "Poops", value: poopCount }] : []),
+              ...(solidsConsumed !== 'None' ? [{ icon: <Icon path={mdiSilverwareForkKnife} size="0.75rem" className="text-green-600" />, label: "Solids", value: solidsConsumed }] : []),
+              ...(leftBreastTime !== '0h 0m' ? [{ icon: <Icon path={mdiWater} size="0.75rem" className="text-blue-500" />, label: "Left", value: leftBreastTime }] : []),
+              ...(rightBreastTime !== '0h 0m' ? [{ icon: <Icon path={mdiWater} size="0.75rem" className="text-red-500" />, label: "Right", value: rightBreastTime }] : []),
+              ...(noteCount !== '0' ? [{ icon: <Icon path={mdiNoteText} size="0.75rem" className="text-yellow-500" />, label: "Notes", value: noteCount }] : []),
+              ...(bathCount !== '0' ? [{ icon: <Icon path={mdiBathtub} size="0.75rem" className="text-orange-500" />, label: "Baths", value: bathCount }] : []),
+              ...(milestoneCount !== '0' ? [{ icon: <Icon path={mdiTrophy} size="0.75rem" className="text-blue-500" />, label: "Milestones", value: milestoneCount }] : []),
+              ...(pumpTotals !== 'None' ? [{ icon: <Icon path={mdiMotherNurse} size="0.75rem" className="text-purple-500" />, label: "Pumped", value: pumpTotals }] : []),
+              ...(breastMilkBalance ? [{ icon: <Icon path={mdiMotherNurse} size="0.75rem" className="text-purple-500" />, label: t('Breast Milk Stored'), value: breastMilkBalance }] : []),
+              ...(medicineCounts.length > 0 ? medicineCounts.map(med => ({
+                icon: <Icon path={mdiBottleTonicPlus} size="0.75rem" className="text-green-600" />,
+                label: med.name,
+                value: med.display
               })) : []),
-              ...(lastMeasurements['HEIGHT'] ? [{ 
-                icon: <Ruler className="h-3 w-3 text-red-500" />, 
-                label: "Height", 
-                value: `${lastMeasurements['HEIGHT'].value} ${lastMeasurements['HEIGHT'].unit}` 
+              ...(lastMeasurements['HEIGHT'] ? [{
+                icon: <Icon path={mdiRuler} size="0.75rem" className="text-red-500" />,
+                label: "Height",
+                value: `${lastMeasurements['HEIGHT'].value} ${lastMeasurements['HEIGHT'].unit}`
               }] : []),
-              ...(lastMeasurements['WEIGHT'] ? [{ 
-                icon: <Scale className="h-3 w-3 text-red-500" />, 
-                label: "Weight", 
-                value: `${lastMeasurements['WEIGHT'].value} ${lastMeasurements['WEIGHT'].unit}` 
+              ...(lastMeasurements['WEIGHT'] ? [{
+                icon: <Icon path={mdiScale} size="0.75rem" className="text-red-500" />,
+                label: "Weight",
+                value: `${lastMeasurements['WEIGHT'].value} ${lastMeasurements['WEIGHT'].unit}`
               }] : []),
-              ...(lastMeasurements['HEAD_CIRCUMFERENCE'] ? [{ 
-                icon: <RotateCw className="h-3 w-3 text-red-500" />, 
-                label: "Head", 
-                value: `${lastMeasurements['HEAD_CIRCUMFERENCE'].value} ${lastMeasurements['HEAD_CIRCUMFERENCE'].unit}` 
+              ...(lastMeasurements['HEAD_CIRCUMFERENCE'] ? [{
+                icon: <Icon path={mdiRotateRight} size="0.75rem" className="text-red-500" />,
+                label: "Head",
+                value: `${lastMeasurements['HEAD_CIRCUMFERENCE'].value} ${lastMeasurements['HEAD_CIRCUMFERENCE'].unit}`
               }] : []),
-              ...(lastMeasurements['TEMPERATURE'] ? [{ 
-                icon: <Thermometer className="h-3 w-3 text-red-500" />, 
-                label: "Temp", 
-                value: `${lastMeasurements['TEMPERATURE'].value} ${lastMeasurements['TEMPERATURE'].unit}` 
+              ...(lastMeasurements['TEMPERATURE'] ? [{
+                icon: <Icon path={mdiThermometer} size="0.75rem" className="text-red-500" />,
+                label: "Temp",
+                value: `${lastMeasurements['TEMPERATURE'].value} ${lastMeasurements['TEMPERATURE'].unit}`
               }] : [])
             ]}
           />
         )}
         
         <button className={dailyStatsStyles.toggle}>
-          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {isExpanded ? <Icon path={mdiChevronUp} size="1rem" /> : <Icon path={mdiChevronDown} size="1rem" />}
         </button>
       </div>
       
@@ -511,127 +512,127 @@ export const DailyStats: React.FC<DailyStatsProps> = ({ activities, date, isLoad
             </div>
           ) : (
             <>
-              <StatItem 
-                icon={<Sun className="h-4 w-4 text-amber-500" />} 
-                label="Awake Time" 
-                value={awakeTime} 
+              <StatItem
+                icon={<Icon path={mdiWhiteBalanceSunny} size="1rem" className="text-amber-500" />}
+                label="Awake Time"
+                value={awakeTime}
               />
-              <StatItem 
-                icon={<Moon className="h-4 w-4 text-gray-700" />} 
-                label="Sleep Time" 
-                value={sleepTime} 
+              <StatItem
+                icon={<Icon path={mdiMoonWaningCrescent} size="1rem" className="text-gray-700" />}
+                label="Sleep Time"
+                value={sleepTime}
               />
               {totalConsumed !== 'None' && (
-                <StatItem 
-                  icon={<Icon iconNode={bottleBaby} className="h-4 w-4 text-sky-600" />} 
-                  label="Bottle" 
-                  value={totalConsumed} 
+                <StatItem
+                  icon={<Icon path={mdiBabyBottle} size="1rem" className="text-sky-600" />}
+                  label="Bottle"
+                  value={totalConsumed}
                 />
               )}
               {diaperChanges !== '0' && (
-                <StatItem 
-                  icon={<Icon iconNode={diaper} className="h-4 w-4 text-teal-600" />} 
-                  label="Diaper Changes" 
-                  value={diaperChanges} 
+                <StatItem
+                  icon={<Icon path={mdiDiaperOutline} size="1rem" className="text-teal-600" />}
+                  label="Diaper Changes"
+                  value={diaperChanges}
                 />
               )}
               {poopCount !== '0' && (
-                <StatItem 
-                  icon={<Icon iconNode={diaper} className="h-4 w-4 text-amber-700" />} 
-                  label="Poops" 
-                  value={poopCount} 
+                <StatItem
+                  icon={<Icon path={mdiDiaperOutline} size="1rem" className="text-amber-700" />}
+                  label="Poops"
+                  value={poopCount}
                 />
               )}
               {solidsConsumed !== 'None' && (
-                <StatItem 
-                  icon={<Utensils className="h-4 w-4 text-green-600" />} 
-                  label="Solids" 
-                  value={solidsConsumed} 
+                <StatItem
+                  icon={<Icon path={mdiSilverwareForkKnife} size="1rem" className="text-green-600" />}
+                  label="Solids"
+                  value={solidsConsumed}
                 />
               )}
               {leftBreastTime !== '0h 0m' && (
-                <StatItem 
-                  icon={<Droplet className="h-4 w-4 text-blue-500" />} 
-                  label="Left Breast" 
-                  value={leftBreastTime} 
+                <StatItem
+                  icon={<Icon path={mdiWater} size="1rem" className="text-blue-500" />}
+                  label="Left Breast"
+                  value={leftBreastTime}
                 />
               )}
               {rightBreastTime !== '0h 0m' && (
-                <StatItem 
-                  icon={<Droplet className="h-4 w-4 text-red-500" />} 
-                  label="Right Breast" 
-                  value={rightBreastTime} 
+                <StatItem
+                  icon={<Icon path={mdiWater} size="1rem" className="text-red-500" />}
+                  label="Right Breast"
+                  value={rightBreastTime}
                 />
               )}
               {noteCount !== '0' && (
-                <StatItem 
-                  icon={<StickyNote className="h-4 w-4 text-yellow-500" />} 
-                  label="Notes" 
-                  value={noteCount} 
+                <StatItem
+                  icon={<Icon path={mdiNoteText} size="1rem" className="text-yellow-500" />}
+                  label="Notes"
+                  value={noteCount}
                 />
               )}
               {bathCount !== '0' && (
-                <StatItem 
-                  icon={<Bath className="h-4 w-4 text-orange-500" />} 
-                  label="Baths" 
-                  value={bathCount} 
+                <StatItem
+                  icon={<Icon path={mdiBathtub} size="1rem" className="text-orange-500" />}
+                  label="Baths"
+                  value={bathCount}
                 />
               )}
               {milestoneCount !== '0' && (
-                <StatItem 
-                  icon={<Trophy className="h-4 w-4 text-blue-500" />} 
-                  label="Milestones" 
-                  value={milestoneCount} 
+                <StatItem
+                  icon={<Icon path={mdiTrophy} size="1rem" className="text-blue-500" />}
+                  label="Milestones"
+                  value={milestoneCount}
                 />
               )}
               {pumpTotals !== 'None' && (
                 <StatItem
-                  icon={<LampWallDown className="h-4 w-4 text-purple-500" />}
+                  icon={<Icon path={mdiMotherNurse} size="1rem" className="text-purple-500" />}
                   label="Pumped"
                   value={pumpTotals}
                 />
               )}
               {breastMilkBalance && (
                 <StatItem
-                  icon={<LampWallDown className="h-4 w-4 text-purple-500" />}
+                  icon={<Icon path={mdiMotherNurse} size="1rem" className="text-purple-500" />}
                   label={t('Breast Milk Stored')}
                   value={breastMilkBalance}
                 />
               )}
               {medicineCounts.length > 0 && medicineCounts.map((med, index) => (
-                <StatItem 
+                <StatItem
                   key={`med-${index}`}
-                  icon={<PillBottle className="h-4 w-4 text-green-600" />} 
-                  label={med.name} 
-                  value={med.display} 
+                  icon={<Icon path={mdiBottleTonicPlus} size="1rem" className="text-green-600" />}
+                  label={med.name}
+                  value={med.display}
                 />
               ))}
               {lastMeasurements['HEIGHT'] && (
-                <StatItem 
-                  icon={<Ruler className="h-4 w-4 text-red-500" />} 
-                  label="Height" 
-                  value={`${lastMeasurements['HEIGHT'].value} ${lastMeasurements['HEIGHT'].unit}`} 
+                <StatItem
+                  icon={<Icon path={mdiRuler} size="1rem" className="text-red-500" />}
+                  label="Height"
+                  value={`${lastMeasurements['HEIGHT'].value} ${lastMeasurements['HEIGHT'].unit}`}
                 />
               )}
               {lastMeasurements['WEIGHT'] && (
-                <StatItem 
-                  icon={<Scale className="h-4 w-4 text-red-500" />} 
-                  label="Weight" 
-                  value={`${lastMeasurements['WEIGHT'].value} ${lastMeasurements['WEIGHT'].unit}`} 
+                <StatItem
+                  icon={<Icon path={mdiScale} size="1rem" className="text-red-500" />}
+                  label="Weight"
+                  value={`${lastMeasurements['WEIGHT'].value} ${lastMeasurements['WEIGHT'].unit}`}
                 />
               )}
               {lastMeasurements['HEAD_CIRCUMFERENCE'] && (
-                <StatItem 
-                  icon={<RotateCw className="h-4 w-4 text-red-500" />} 
-                  label="Head Circ." 
-                  value={`${lastMeasurements['HEAD_CIRCUMFERENCE'].value} ${lastMeasurements['HEAD_CIRCUMFERENCE'].unit}`} 
+                <StatItem
+                  icon={<Icon path={mdiRotateRight} size="1rem" className="text-red-500" />}
+                  label="Head Circ."
+                  value={`${lastMeasurements['HEAD_CIRCUMFERENCE'].value} ${lastMeasurements['HEAD_CIRCUMFERENCE'].unit}`}
                 />
               )}
               {lastMeasurements['TEMPERATURE'] && (
-                <StatItem 
-                  icon={<Thermometer className="h-4 w-4 text-red-500" />} 
-                  label="Temperature" 
-                  value={`${lastMeasurements['TEMPERATURE'].value} ${lastMeasurements['TEMPERATURE'].unit}`} 
+                <StatItem
+                  icon={<Icon path={mdiThermometer} size="1rem" className="text-red-500" />}
+                  label="Temperature"
+                  value={`${lastMeasurements['TEMPERATURE'].value} ${lastMeasurements['TEMPERATURE'].unit}`}
                 />
               )}
             </>

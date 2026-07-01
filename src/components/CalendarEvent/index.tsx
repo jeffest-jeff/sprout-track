@@ -4,14 +4,8 @@ import { CalendarEventProps } from './calendar-event.types';
 import { calendarEventStyles as styles } from './calendar-event.styles';
 import { useLocalization } from '@/src/context/localization';
 
-import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  Users, 
-  Repeat, 
-  Bell
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCalendar, mdiClockOutline, mdiMapMarker, mdiAccountGroup, mdiRepeat, mdiBell } from '@mdi/js';
 import './calendar-event.css';
 
 /**
@@ -150,7 +144,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({
       <div className={styles.content}>
         {/* Date and time */}
         <div className={styles.detail}>
-          <Calendar className={styles.icon} />
+          <Icon path={mdiCalendar} size="1rem" className={styles.icon} />
           <div>
             <div>{formatDateTime(event.startTime)}</div>
             {event.endTime && !event.allDay && (
@@ -164,7 +158,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({
         {/* Location */}
         {event.location && (
           <div className={styles.detail}>
-            <MapPin className={styles.icon} />
+            <Icon path={mdiMapMarker} size="1rem" className={styles.icon} />
             <div>{event.location}</div>
           </div>
         )}
@@ -172,7 +166,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({
         {/* Recurrence */}
         {event.recurring && (
           <div className={styles.detail}>
-            <Repeat className={styles.icon} />
+            <Icon path={mdiRepeat} size="1rem" className={styles.icon} />
             <div>{getRecurrenceText()}</div>
           </div>
         )}
@@ -180,7 +174,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({
         {/* Reminder */}
         {event.reminderTime !== null && (
           <div className={styles.detail}>
-            <Bell className={styles.icon} />
+            <Icon path={mdiBell} size="1rem" className={styles.icon} />
             <div>{getReminderText()}</div>
           </div>
         )}
@@ -188,7 +182,7 @@ const CalendarEvent: React.FC<CalendarEventProps> = ({
         {/* People */}
         {(event.babies.length > 0 || event.caretakers.length > 0 || event.contacts.length > 0) && (
           <div className={styles.detail}>
-            <Users className={styles.icon} />
+            <Icon path={mdiAccountGroup} size="1rem" className={styles.icon} />
             <div className={styles.people}>
               {/* Babies */}
               {event.babies.length > 0 && (

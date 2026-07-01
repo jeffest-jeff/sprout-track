@@ -8,7 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
-import { AlertCircle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAlertCircle } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { styles } from './setup-wizard.styles';
 import { SecuritySetupStageProps } from './setup-wizard.types';
@@ -281,7 +282,7 @@ const SecuritySetupStage: React.FC<SecuritySetupStageProps> = ({
                   />
                   {loginIdError && (
                     <div className="flex items-center gap-1 text-red-600 text-xs">
-                      <AlertCircle className="h-3 w-3" />
+                      <Icon path={mdiAlertCircle} size="0.75rem" />
                       {loginIdError}
                     </div>
                   )}

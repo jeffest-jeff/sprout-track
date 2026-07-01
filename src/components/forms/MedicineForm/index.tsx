@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { MedicineFormProps, MedicineFormTab } from './medicine-form.types';
-import { PillBottle, Pill, Loader2 } from 'lucide-react';
+import { mdiBottleTonicPlus, mdiPill } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { FormPage, FormPageFooter } from '@/src/components/ui/form-page';
 import { FormPageTab } from '@/src/components/ui/form-page/form-page.types';
@@ -91,7 +91,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
     {
       id: 'active-doses',
       label: t('Doses'),
-      icon: PillBottle,
+      icon: mdiBottleTonicPlus,
       content: (
         <ActiveDosesTab
           babyId={babyId}
@@ -105,7 +105,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
     {
       id: 'manage-medicines',
       label: t('Medicines'),
-      icon: PillBottle,
+      icon: mdiBottleTonicPlus,
       content: (
         <ManageMedicinesTab
           refreshData={refreshData}
@@ -115,7 +115,7 @@ const MedicineForm: React.FC<MedicineFormProps> = ({
     {
       id: 'supplements',
       label: t('Supplements'),
-      icon: Pill,
+      icon: mdiPill,
       content: (
         <ManageSupplementsTab
           refreshData={refreshData}

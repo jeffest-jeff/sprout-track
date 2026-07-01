@@ -7,14 +7,8 @@ import { Button } from '@/src/components/ui/button';
 import { Badge } from '@/src/components/ui/badge';
 import { ShareButton } from '@/src/components/ui/share-button';
 import type { SortDirection } from '@/src/components/ui/table';
-import {
-  Loader2,
-  Trash2,
-  Clock,
-  CheckCircle,
-  XCircle,
-  ChevronRight,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiTrashCan, mdiClockOutline, mdiCheckCircle, mdiCloseCircle, mdiChevronRight } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import './mobile-views.css';
 
@@ -60,7 +54,7 @@ function getStatusBadge(invite: FamilySetupInvite, t: (key: string) => string) {
   if (invite.isUsed) {
     return (
       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mobile-status-badge">
-        <CheckCircle className="h-3 w-3 mr-1" />
+        <Icon path={mdiCheckCircle} size="0.75rem" className="mr-1" />
         {t('Used')}
       </span>
     );
@@ -68,14 +62,14 @@ function getStatusBadge(invite: FamilySetupInvite, t: (key: string) => string) {
   if (invite.isExpired) {
     return (
       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 mobile-status-badge">
-        <XCircle className="h-3 w-3 mr-1" />
+        <Icon path={mdiCloseCircle} size="0.75rem" className="mr-1" />
         {t('Expired')}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mobile-status-badge">
-      <Clock className="h-3 w-3 mr-1" />
+      <Icon path={mdiClockOutline} size="0.75rem" className="mr-1" />
       {t('Active')}
     </span>
   );
@@ -144,7 +138,7 @@ export default function InviteMobileView({
                   <span className="font-mono text-sm text-gray-900 mobile-card-name">{invite.token.substring(0, 16)}...</span>
                   <div className="flex items-center gap-2">
                     {getStatusBadge(invite, t)}
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
+                    <Icon path={mdiChevronRight} size="1rem" className="text-gray-400" />
                   </div>
                 </div>
               </CardHeader>
@@ -236,7 +230,7 @@ export default function InviteMobileView({
                       onClick={() => handleConfirmRevoke(selectedInvite.id)}
                       disabled={deletingInviteId === selectedInvite.id}
                     >
-                      {deletingInviteId === selectedInvite.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                      {deletingInviteId === selectedInvite.id ? <Icon path={mdiLoading} size="1rem" spin className="mr-1" /> : null}
                       {t('Confirm')}
                     </Button>
                     <Button
@@ -271,9 +265,9 @@ export default function InviteMobileView({
                   disabled={deletingInviteId === selectedInvite.id}
                 >
                   {deletingInviteId === selectedInvite.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-1" />
                   ) : (
-                    <Trash2 className="h-4 w-4 mr-1" />
+                    <Icon path={mdiTrashCan} size="1rem" className="mr-1" />
                   )}
                   {t('Revoke')}
                 </Button>

@@ -5,7 +5,8 @@ import { useTheme } from "@/src/context/theme";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/components/ui/select";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Search, ChevronUp, ChevronDown } from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiChevronRight, mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiMagnify, mdiChevronUp, mdiChevronDown } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 
 import "./table.css";
@@ -109,9 +110,9 @@ const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
     const sortIcon = sortable && sortDirection ? (
       <span className={cn(tableStyles.sortIcon, 'table-sort-icon-active-dark')}>
         {sortDirection === 'asc' ? (
-          <ChevronUp className="h-4 w-4" />
+          <Icon path={mdiChevronUp} size="1rem" />
         ) : (
-          <ChevronDown className="h-4 w-4" />
+          <Icon path={mdiChevronDown} size="1rem" />
         )}
       </span>
     ) : null;
@@ -182,7 +183,7 @@ const TableSearch = React.forwardRef<HTMLInputElement, TableSearchProps>(
     return (
       <div className={cn(tableStyles.searchContainer, className)}>
         <div className={cn("relative", tableStyles.searchInput)}>
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Icon path={mdiMagnify} size="1rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <Input
             ref={ref}
             type="text"
@@ -290,7 +291,7 @@ const TablePagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
               color: disabled || currentPage === 1 ? '#9ca3af' : undefined
             }}
           >
-            <ChevronsLeft className="h-4 w-4" />
+            <Icon path={mdiChevronDoubleLeft} size="1rem" />
           </button>
 
           <button
@@ -301,7 +302,7 @@ const TablePagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
               color: disabled || currentPage === 1 ? '#9ca3af' : undefined
             }}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <Icon path={mdiChevronLeft} size="1rem" />
           </button>
           
           {pageNumbers.map((page) => (
@@ -330,7 +331,7 @@ const TablePagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
               color: disabled || currentPage === totalPages ? '#9ca3af' : undefined
             }}
           >
-            <ChevronRight className="h-4 w-4" />
+            <Icon path={mdiChevronRight} size="1rem" />
           </button>
 
           <button
@@ -341,7 +342,7 @@ const TablePagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
               color: disabled || currentPage === totalPages ? '#9ca3af' : undefined
             }}
           >
-            <ChevronsRight className="h-4 w-4" />
+            <Icon path={mdiChevronDoubleRight} size="1rem" />
           </button>
         </div>
       </div>

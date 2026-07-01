@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Button } from '@/src/components/ui/button';
-import { AlertTriangle, Crown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAlert, mdiCrown } from '@mdi/js';
 import Image from 'next/image';
 import { useLocalization } from '@/src/context/localization';
 
@@ -50,7 +51,7 @@ export default function ExpiredAccountMessage({
         {/* Warning Icon */}
         <div className="flex justify-center mb-4">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center expired-account-icon-bg">
-            <AlertTriangle className="w-8 h-8 text-red-600 expired-account-icon" />
+            <Icon path={mdiAlert} size="2rem" className="text-red-600 expired-account-icon" />
           </div>
         </div>
 
@@ -90,7 +91,7 @@ export default function ExpiredAccountMessage({
           size="lg"
           className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
         >
-          <Crown className="w-5 h-5 mr-2" />
+          <Icon path={mdiCrown} size="1.25rem" className="mr-2" />
           {isTrialExpired ? 'Upgrade Account' : 'Renew Subscription'}
         </Button>
 

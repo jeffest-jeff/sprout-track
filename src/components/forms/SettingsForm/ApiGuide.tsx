@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Baby } from '@prisma/client';
-import { Copy, Check } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiContentCopy, mdiCheck } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Badge } from '@/src/components/ui/badge';
 import { Label } from '@/src/components/ui/label';
@@ -49,7 +50,7 @@ function CopyableCodeBlock({ code, label }: { code: string; label?: string }) {
           className="absolute top-1 right-1 h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={handleCopy}
         >
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+          {copied ? <Icon path={mdiCheck} size="0.75rem" /> : <Icon path={mdiContentCopy} size="0.75rem" />}
         </Button>
       </div>
     </div>
@@ -127,9 +128,9 @@ export default function ApiGuide({ babies }: ApiGuideProps) {
                   onClick={() => handleCopyBabyId(baby.id)}
                 >
                   {copiedBabyId === baby.id ? (
-                    <Check className="h-3 w-3 text-green-600" />
+                    <Icon path={mdiCheck} size="0.75rem" className="text-green-600" />
                   ) : (
-                    <Copy className="h-3 w-3" />
+                    <Icon path={mdiContentCopy} size="0.75rem" />
                   )}
                 </Button>
               </div>

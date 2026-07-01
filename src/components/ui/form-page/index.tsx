@@ -4,13 +4,14 @@ import { cn } from '@/src/lib/utils';
 import { formPageStyles, tabStyles } from './form-page.styles';
 import { useTheme } from '@/src/context/theme';
 import './form-page.css';
-import { 
-  FormPageProps, 
-  FormPageHeaderProps, 
-  FormPageContentProps, 
+import {
+  FormPageProps,
+  FormPageHeaderProps,
+  FormPageContentProps,
   FormPageFooterProps,
   FormPageTab
 } from './form-page.types';
+import { Icon } from '@/src/components/ui/icon';
 
 /**
  * FormPageHeader component
@@ -96,15 +97,13 @@ export function FormPageTabs({
     <div className={cn(tabStyles.tabContainer, className, "form-page-tab-container")}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
-        const IconComponent = tab.icon;
-        
         return (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={cn(
               tabStyles.tabButton,
-              "form-page-tab-button relative", // Added relative for badge positioning
+              "form-page-tab-button relative",
               isActive && tabStyles.tabButtonActive,
               isActive && "form-page-tab-button-active"
             )}
@@ -114,8 +113,8 @@ export function FormPageTabs({
             aria-controls={`tabpanel-${tab.id}`}
           >
             {/* Icon */}
-            {IconComponent && (
-              <IconComponent className={cn(tabStyles.tabIcon, "form-page-tab-icon")} />
+            {tab.icon && (
+              <Icon path={tab.icon} size="1rem" className={cn(tabStyles.tabIcon, "form-page-tab-icon")} />
             )}
             {tab.imageSrc && (
               <img

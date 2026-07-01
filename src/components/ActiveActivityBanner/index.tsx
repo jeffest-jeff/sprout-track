@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ActiveActivityResponse } from '@/app/api/types';
 import { useLocalization } from '@/src/context/localization';
-import { Pause, Play, Square } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPause, mdiPlay, mdiSquare } from '@mdi/js';
 import './active-activity-banner.css';
 
 interface ActiveActivityBannerProps {
@@ -114,7 +115,7 @@ export default function ActiveActivityBanner({
                 className="banner-btn activity-banner-btn-pause"
                 title={t('Pause Activity')}
               >
-                <Pause className="h-5 w-5" />
+                <Icon path={mdiPause} size="1.25rem" />
               </button>
               <button
                 type="button"
@@ -122,7 +123,7 @@ export default function ActiveActivityBanner({
                 className="banner-btn activity-banner-btn-stop"
                 title={t('End Activity')}
               >
-                <Square className="h-5 w-5" />
+                <Icon path={mdiSquare} size="1.25rem" />
               </button>
             </div>
           </div>
@@ -151,7 +152,7 @@ export default function ActiveActivityBanner({
                 className="banner-btn activity-banner-btn-resume"
                 title={t('Resume Activity')}
               >
-                <Play className="h-5 w-5 mr-0.5" />
+                <Icon path={mdiPlay} size="1.25rem" className="mr-0.5" />
               </button>
               <button
                 type="button"
@@ -159,7 +160,7 @@ export default function ActiveActivityBanner({
                 className="banner-btn activity-banner-btn-stop"
                 title={t('End Activity')}
               >
-                <Square className="h-5 w-5" />
+                <Icon path={mdiSquare} size="1.25rem" />
               </button>
             </div>
           </div>

@@ -162,7 +162,16 @@ export default function CustomActivitySettings({ babies = [] }: CustomActivitySe
             <tbody>
               {activities.map((activity) => (
                 <tr key={activity.id} className="border-t">
-                  <td className="p-2">{activity.icon} {activity.name}</td>
+                  <td className="p-2">
+                    <span className="inline-flex items-center gap-1">
+                      {activity.icon.startsWith('mdi') && ICON_PATH_MAP[activity.icon] ? (
+                        <Icon path={ICON_PATH_MAP[activity.icon]} size="1rem" color={activity.color} />
+                      ) : (
+                        activity.icon
+                      )}
+                      {activity.name}
+                    </span>
+                  </td>
                   {babies.map((baby) => (
                     <td key={baby.id} className="p-2 text-center">
                       <Switch

@@ -6,14 +6,8 @@ import { FormPage, FormPageContent, FormPageFooter } from '@/src/components/ui/f
 import { Button } from '@/src/components/ui/button';
 import { Badge } from '@/src/components/ui/badge';
 import type { SortDirection } from '@/src/components/ui/table';
-import {
-  Loader2,
-  CheckCircle,
-  XCircle,
-  Shield,
-  ShieldCheck,
-  ChevronRight,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiCheckCircle, mdiCloseCircle, mdiShield, mdiShieldCheck, mdiChevronRight } from '@mdi/js';
 import { useLocalization } from '@/src/context/localization';
 import './mobile-views.css';
 
@@ -122,7 +116,7 @@ export default function AccountMobileView({
                     >
                       {!account.closed ? t('Active') : t('Closed')}
                     </span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
+                    <Icon path={mdiChevronRight} size="1rem" className="text-gray-400" />
                   </div>
                 </div>
               </CardHeader>
@@ -133,7 +127,7 @@ export default function AccountMobileView({
                     {account.family ? (
                       <>
                         {account.family.name}
-                        <CheckCircle className="h-3 w-3 text-green-600" />
+                        <Icon path={mdiCheckCircle} size="0.75rem" className="text-green-600" />
                       </>
                     ) : (
                       t('No family')
@@ -141,9 +135,9 @@ export default function AccountMobileView({
                   </span>
                   <span className={`inline-flex items-center gap-0.5 ${account.verified ? 'text-green-600' : 'text-yellow-600'}`}>
                     {account.verified ? (
-                      <><ShieldCheck className="h-3 w-3" /> {t('Verified')}</>
+                      <><Icon path={mdiShieldCheck} size="0.75rem" /> {t('Verified')}</>
                     ) : (
-                      <><Shield className="h-3 w-3" /> {t('Unverified')}</>
+                      <><Icon path={mdiShield} size="0.75rem" /> {t('Unverified')}</>
                     )}
                   </span>
                 </div>
@@ -213,12 +207,12 @@ export default function AccountMobileView({
                   >
                     {selectedAccount.verified ? (
                       <>
-                        <ShieldCheck className="h-3 w-3 mr-1" />
+                        <Icon path={mdiShieldCheck} size="0.75rem" className="mr-1" />
                         {t('Verified')}
                       </>
                     ) : (
                       <>
-                        <Shield className="h-3 w-3 mr-1" />
+                        <Icon path={mdiShield} size="0.75rem" className="mr-1" />
                         {t('Unverified')}
                       </>
                     )}
@@ -261,7 +255,7 @@ export default function AccountMobileView({
                       onClick={() => handleConfirmAction(selectedAccount)}
                       disabled={updatingAccountId === selectedAccount.id}
                     >
-                      {updatingAccountId === selectedAccount.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                      {updatingAccountId === selectedAccount.id ? <Icon path={mdiLoading} size="1rem" spin className="mr-1" /> : null}
                       {t('Confirm')}
                     </Button>
                     <Button
@@ -285,11 +279,11 @@ export default function AccountMobileView({
               disabled={updatingAccountId === selectedAccount.id}
             >
               {updatingAccountId === selectedAccount.id ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                <Icon path={mdiLoading} size="1rem" spin className="mr-1" />
               ) : selectedAccount.closed ? (
-                <CheckCircle className="h-4 w-4 mr-1" />
+                <Icon path={mdiCheckCircle} size="1rem" className="mr-1" />
               ) : (
-                <XCircle className="h-4 w-4 mr-1" />
+                <Icon path={mdiCloseCircle} size="1rem" className="mr-1" />
               )}
               {selectedAccount.closed ? t('Reinstate Account') : t('Close Account')}
             </Button>

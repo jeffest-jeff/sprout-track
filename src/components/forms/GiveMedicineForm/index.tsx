@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { MedicineWithContacts, MedicineLogFormData } from '../MedicineForm/medicine-form.types';
-import { Loader2, AlertCircle, ChevronDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiAlertCircle, mdiChevronDown } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
@@ -362,14 +363,14 @@ const GiveMedicineForm: React.FC<GiveMedicineFormProps> = ({
         <FormPageContent>
           {isFetching ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+              <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
               <p className="mt-2 text-gray-600">{t('Loading form data...')}</p>
             </div>
           ) : (
             <div className="space-y-6">
               {error && (
                 <div className="flex items-center text-red-500 p-3 bg-red-50 rounded-md border border-red-200">
-                  <AlertCircle className="mr-2 h-4 w-4" />
+                  <Icon path={mdiAlertCircle} size="1rem" className="mr-2" />
                   <span>{error}</span>
                 </div>
               )}
@@ -380,7 +381,7 @@ const GiveMedicineForm: React.FC<GiveMedicineFormProps> = ({
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="w-full justify-between">
                       {selectedMedicine ? selectedMedicine.name : (isSupplement ? t('Select a supplement') : t('Select a medicine'))}
-                      <ChevronDown className="ml-2 h-4 w-4" />
+                      <Icon path={mdiChevronDown} size="1rem" className="ml-2" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
@@ -465,7 +466,7 @@ const GiveMedicineForm: React.FC<GiveMedicineFormProps> = ({
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Saving...')}
                 </>
               ) : (

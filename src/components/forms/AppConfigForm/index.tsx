@@ -10,7 +10,8 @@ import {
   FormPageContent, 
   FormPageFooter 
 } from '@/src/components/ui/form-page';
-import { Settings, Loader2, Save, X, Mail, ChevronDown, Bell, CheckCircle, AlertCircle, XCircle, RefreshCw, Key } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCog, mdiLoading, mdiContentSave, mdiClose, mdiEmail, mdiChevronDown, mdiBell, mdiCheckCircle, mdiAlertCircle, mdiCloseCircle, mdiRefresh, mdiKey } from '@mdi/js';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import { BackupRestore } from '@/src/components/BackupRestore';
@@ -544,7 +545,7 @@ export default function AppConfigForm({
         <FormPageContent className="space-y-6 overflow-y-auto flex-1 pb-24">
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+              <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
               <span className="ml-2 text-gray-600">{t('Loading configuration...')}</span>
             </div>
           ) : (
@@ -552,7 +553,7 @@ export default function AppConfigForm({
               {/* System Settings Section */}
               <div className="space-y-4">
                                  <div className="flex items-center space-x-2">
-                   <Settings className="h-5 w-5 text-teal-600" />
+                   <Icon path={mdiCog} size="1.25rem" className="text-teal-600" />
                    <Label className="text-lg font-semibold">
                      {t('System Settings')}
                    </Label>
@@ -684,7 +685,7 @@ export default function AppConfigForm({
                               >
                                 {saving ? (
                                   <>
-                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                                     {t('Updating...')}
                                   </>
                                 ) : (
@@ -764,7 +765,7 @@ export default function AppConfigForm({
               {/* Email Configuration Section */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <Mail className="h-5 w-5 text-teal-600" />
+                  <Icon path={mdiEmail} size="1.25rem" className="text-teal-600" />
                   <Label className="text-lg font-semibold">
                     {t('Email Configuration')}
                   </Label>
@@ -779,7 +780,7 @@ export default function AppConfigForm({
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="w-full justify-between">
                           <span>{emailFormData.providerType.replace('_', ' ')}</span>
-                          <ChevronDown className="h-4 w-4" />
+                          <Icon path={mdiChevronDown} size="1rem" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
@@ -913,7 +914,7 @@ export default function AppConfigForm({
               {/* Push Notifications Configuration Section */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <Bell className="h-5 w-5 text-teal-600" />
+                  <Icon path={mdiBell} size="1.25rem" className="text-teal-600" />
                   <Label className="text-lg font-semibold">
                     {t('Push Notifications')}
                   </Label>
@@ -953,12 +954,12 @@ export default function AppConfigForm({
                       >
                         {generatingVapid ? (
                           <>
-                            <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                            <Icon path={mdiLoading} size="0.75rem" spin className="mr-1" />
                             {t('Generating...')}
                           </>
                         ) : (
                           <>
-                            <Key className="h-3 w-3 mr-1" />
+                            <Icon path={mdiKey} size="0.75rem" className="mr-1" />
                             {t('Generate New Keys')}
                           </>
                         )}
@@ -1051,7 +1052,7 @@ export default function AppConfigForm({
               {notificationStatus && (
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
-                    <Bell className="h-5 w-5 text-teal-600" />
+                    <Icon path={mdiBell} size="1.25rem" className="text-teal-600" />
                     <Label className="text-lg font-semibold">
                       {t('Notification System Status')}
                     </Label>
@@ -1060,7 +1061,7 @@ export default function AppConfigForm({
                     <CardContent className="p-4 space-y-3">
                       {notificationStatusLoading ? (
                         <div className="flex items-center justify-center py-4">
-                          <Loader2 className="h-5 w-5 animate-spin text-teal-600" />
+                          <Icon path={mdiLoading} size="1.25rem" spin className="text-teal-600" />
                           <Label className="ml-2 text-sm text-gray-600">{t('Loading...')}</Label>
                         </div>
                       ) : (
@@ -1154,7 +1155,7 @@ export default function AppConfigForm({
               {error && (
                 <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
                   <div className="flex items-center">
-                    <X className="h-4 w-4 text-red-500 mr-2" />
+                    <Icon path={mdiClose} size="1rem" className="text-red-500 mr-2" />
                     <span className="text-sm text-red-700 dark:text-red-300">{error}</span>
                   </div>
                 </div>
@@ -1163,7 +1164,7 @@ export default function AppConfigForm({
               {success && (
                 <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
                   <div className="flex items-center">
-                    <Save className="h-4 w-4 text-green-500 mr-2" />
+                    <Icon path={mdiContentSave} size="1rem" className="text-green-500 mr-2" />
                     <span className="text-sm text-green-700 dark:text-green-300">{success}</span>
                   </div>
                 </div>
@@ -1196,12 +1197,12 @@ export default function AppConfigForm({
             >
               {saving ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Saving...')}
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4 mr-2" />
+                  <Icon path={mdiContentSave} size="1rem" className="mr-2" />
                   {t('Save Configuration')}
                 </>
               )}

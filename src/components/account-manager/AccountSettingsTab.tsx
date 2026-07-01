@@ -9,25 +9,8 @@ import PaymentModal from './PaymentModal';
 import PaymentHistory from './PaymentHistory';
 import { useLocalization } from '@/src/context/localization';
 
-import {
-  User,
-  Mail,
-  Home,
-  Link,
-  Download,
-  AlertTriangle,
-  Edit,
-  Save,
-  X,
-  Loader2,
-  CheckCircle,
-  Key,
-  Crown,
-  Calendar,
-  Shield,
-  CreditCard,
-  Receipt
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAccount, mdiEmail, mdiHome, mdiLink, mdiDownload, mdiAlert, mdiPencil, mdiContentSave, mdiClose, mdiLoading, mdiCheckCircle, mdiKey, mdiCrown, mdiCalendar, mdiShield, mdiCreditCard, mdiReceipt } from '@mdi/js';
 
 /**
  * AccountSettingsTab Component
@@ -597,7 +580,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   setAccountMessage('');
                 }}
               >
-                <Edit className="h-4 w-4 mr-2" />
+                <Icon path={mdiPencil} size="1rem" className="mr-2" />
                 {t('Edit')}
               </Button>
             </div>
@@ -644,12 +627,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               >
                 {savingAccount ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                     {t('Saving...')}
                   </>
                 ) : (
                   <>
-                    <Save className="h-4 w-4 mr-2" />
+                    <Icon path={mdiContentSave} size="1rem" className="mr-2" />
                     {t('Save')}
                   </>
                 )}
@@ -667,7 +650,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                 }}
                 disabled={savingAccount}
               >
-                <X className="h-4 w-4 mr-2" />
+                <Icon path={mdiClose} size="1rem" className="mr-2" />
                 {t('Cancel')}
               </Button>
             </div>
@@ -699,12 +682,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   >
                     {changingPasswordLoading ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                         {t('Verifying...')}
                       </>
                     ) : (
                       <>
-                        <Key className="h-4 w-4 mr-2" />
+                        <Icon path={mdiKey} size="1rem" className="mr-2" />
                         Continue
                       </>
                     )}
@@ -714,7 +697,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     onClick={handlePasswordCancel}
                     disabled={changingPasswordLoading}
                   >
-                    <X className="h-4 w-4 mr-2" />
+                    <Icon path={mdiClose} size="1rem" className="mr-2" />
                     {t('Cancel')}
                   </Button>
                 </div>
@@ -798,12 +781,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   >
                     {changingPasswordLoading ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                         {t('Changing Password...')}
                       </>
                     ) : (
                       <>
-                        <Save className="h-4 w-4 mr-2" />
+                        <Icon path={mdiContentSave} size="1rem" className="mr-2" />
                         {t('Change Password')}
                       </>
                     )}
@@ -813,7 +796,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     onClick={handlePasswordCancel}
                     disabled={changingPasswordLoading}
                   >
-                    <X className="h-4 w-4 mr-2" />
+                    <Icon path={mdiClose} size="1rem" className="mr-2" />
                     {t('Cancel')}
                   </Button>
                 </div>
@@ -825,11 +808,11 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-gray-500" />
+                  <Icon path={mdiAccount} size="1rem" className="text-gray-500" />
                   <Label className="font-medium">{accountStatus.firstName} {accountStatus.lastName}</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-gray-500" />
+                  <Icon path={mdiEmail} size="1rem" className="text-gray-500" />
                   <Label>{accountStatus.email}</Label>
                   {!accountStatus.verified && (
                     <span className="text-amber-600 text-sm">{t('(Unverified)')}</span>
@@ -845,7 +828,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                 }}
                 className="self-start"
               >
-                <Key className="h-4 w-4 mr-2" />
+                <Icon path={mdiKey} size="1rem" className="mr-2" />
                 {t('Reset Password')}
               </Button>
             </div>
@@ -861,9 +844,9 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
           )}>
             <div className="flex items-center gap-2">
               {((accountMessage && accountMessage.startsWith('Error')) || (passwordMessage && passwordMessage.startsWith('Error'))) ? (
-                <AlertTriangle className="h-4 w-4" />
+                <Icon path={mdiAlert} size="1rem" />
               ) : (
-                <CheckCircle className="h-4 w-4" />
+                <Icon path={mdiCheckCircle} size="1rem" />
               )}
               {passwordMessage || accountMessage}
             </div>
@@ -884,7 +867,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
-                  <Crown className="h-6 w-6 text-purple-600" />
+                  <Icon path={mdiCrown} size="1.5rem" className="text-purple-600" />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-lg font-semibold text-purple-800 mb-2">
@@ -894,7 +877,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     {t('Thank you for being a beta participant and helping Sprout Track grow! You have full access to all features and functionality.')}
                   </p>
                   <div className="flex items-center gap-2 text-sm text-purple-600">
-                    <Shield className="h-4 w-4" />
+                    <Icon path={mdiShield} size="1rem" />
                     <span className="font-medium">{t('Full Access')}</span>
                   </div>
                 </div>
@@ -905,7 +888,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0">
-                    <Home className="h-6 w-6 text-blue-600" />
+                    <Icon path={mdiHome} size="1.5rem" className="text-blue-600" />
                   </div>
                   <div className="flex-1">
                     <h4 className="text-lg font-semibold text-blue-800 mb-2">
@@ -928,14 +911,14 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   onClick={() => window.location.href = '/account/family-setup'}
                   className="flex-1"
                 >
-                  <Home className="h-4 w-4 mr-2" />
+                  <Icon path={mdiHome} size="1rem" className="mr-2" />
                   {t('Create Family')}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowPaymentModal(true)}
                 >
-                  <Crown className="h-4 w-4 mr-2" />
+                  <Icon path={mdiCrown} size="1rem" className="mr-2" />
                   {t('Upgrade Plan')}
                 </Button>
               </div>
@@ -959,8 +942,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
 
               {accountStatus.subscriptionActive && (
                 <div className="flex items-center gap-2">
-                  <CheckCircle className={cn(
-                    "h-4 w-4",
+                  <Icon path={mdiCheckCircle} size="1rem" className={cn(
                     subscriptionStatus?.cancelAtPeriodEnd ? "text-amber-600" : "text-green-600"
                   )} />
                   <Label className={cn(
@@ -978,7 +960,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               {accountStatus.trialEnds && accountStatus.accountStatus !== 'expired' && (
                 <>
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-gray-500" />
+                    <Icon path={mdiCalendar} size="1rem" className="text-gray-500" />
                     <Label className="text-sm">
                       {t('Trial ends')} {new Date(accountStatus.trialEnds).toLocaleDateString()}
                     </Label>
@@ -988,7 +970,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     onClick={() => setShowPaymentModal(true)}
                     className="mt-2"
                   >
-                    <Crown className="h-4 w-4 mr-2" />
+                    <Icon path={mdiCrown} size="1rem" className="mr-2" />
                     {t('Upgrade')}
                   </Button>
                 </>
@@ -996,7 +978,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
 
               {accountStatus.planExpires && !accountStatus.trialEnds && accountStatus.planType !== 'full' && (
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Icon path={mdiCalendar} size="1rem" className="text-gray-500" />
                   <Label className="text-sm">
                     {t('Subscription ends')} {new Date(accountStatus.planExpires).toLocaleDateString()}
                   </Label>
@@ -1006,7 +988,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               {accountStatus.accountStatus === 'expired' && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                   <div className="flex items-center gap-2 text-red-700">
-                    <AlertTriangle className="h-4 w-4" />
+                    <Icon path={mdiAlert} size="1rem" />
                     <span className="font-medium">
                       {accountStatus.trialEnds ? 'Trial Expired' : 'Subscription Expired'}
                     </span>
@@ -1022,7 +1004,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     onClick={() => setShowPaymentModal(true)}
                     variant="destructive"
                   >
-                    <Crown className="h-4 w-4 mr-2" />
+                    <Icon path={mdiCrown} size="1rem" className="mr-2" />
                     {accountStatus.trialEnds ? 'Subscribe Now' : 'Renew Subscription'}
                   </Button>
                 </div>
@@ -1037,7 +1019,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                       onClick={() => setShowPaymentModal(true)}
                       className="self-start"
                     >
-                      <CreditCard className="h-4 w-4 mr-2" />
+                      <Icon path={mdiCreditCard} size="1rem" className="mr-2" />
                       {t('Manage Subscription')}
                     </Button>
                   )}
@@ -1051,12 +1033,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     >
                       {renewingSubscription ? (
                         <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                           {t('Renewing...')}
                         </>
                       ) : (
                         <>
-                          <Crown className="h-4 w-4 mr-2" />
+                          <Icon path={mdiCrown} size="1rem" className="mr-2" />
                           {t('Renew Subscription')}
                         </>
                       )}
@@ -1068,7 +1050,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     onClick={() => setShowPaymentHistory(true)}
                     className="self-start"
                   >
-                    <Receipt className="h-4 w-4 mr-2" />
+                    <Icon path={mdiReceipt} size="1rem" className="mr-2" />
                     {t('Payment History')}
                   </Button>
                 </div>
@@ -1094,7 +1076,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   setFamilyMessage('');
                 }}
               >
-                <Edit className="h-4 w-4 mr-2" />
+                <Icon path={mdiPencil} size="1rem" className="mr-2" />
                 {t('Edit')}
               </Button>
             )}
@@ -1122,20 +1104,20 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                     className={slugError ? 'border-red-500' : ''}
                   />
                   {checkingSlug && (
-                    <Loader2 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
+                    <Icon path={mdiLoading} size="1rem" spin className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   )}
                 </div>
                 {/* Validation feedback */}
                 <div className="min-h-[20px] mt-1">
                   {checkingSlug && (
                     <div className="flex items-center gap-1 text-blue-600 text-sm">
-                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <Icon path={mdiLoading} size="0.75rem" spin />
                       {t('Checking availability...')}
                     </div>
                   )}
                   {slugError && (
                     <div className="flex items-center gap-1 text-red-600 text-sm account-manager-validation-error">
-                      <AlertTriangle className="h-3 w-3" />
+                      <Icon path={mdiAlert} size="0.75rem" />
                       {slugError}
                     </div>
                   )}
@@ -1158,12 +1140,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                 >
                   {savingFamily ? (
                     <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                       {t('Saving...')}
                     </>
                   ) : (
                     <>
-                      <Save className="h-4 w-4 mr-2" />
+                      <Icon path={mdiContentSave} size="1rem" className="mr-2" />
                       {t('Save')}
                     </>
                   )}
@@ -1181,7 +1163,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                   }}
                   disabled={savingFamily}
                 >
-                  <X className="h-4 w-4 mr-2" />
+                  <Icon path={mdiClose} size="1rem" className="mr-2" />
                   {t('Cancel')}
                 </Button>
               </div>
@@ -1189,11 +1171,11 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
           ) : (
             <div className={styles.formGroup}>
               <div className="flex items-center gap-2 mb-2">
-                <Home className="h-4 w-4 text-gray-500" />
+                <Icon path={mdiHome} size="1rem" className="text-gray-500" />
                 <Label className="font-medium">{familyData.name}</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Link className="h-4 w-4 text-gray-500" />
+                <Icon path={mdiLink} size="1rem" className="text-gray-500" />
                 <Label className="font-mono text-sm">/{familyData.slug}</Label>
               </div>
             </div>
@@ -1208,9 +1190,9 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
             )}>
               <div className="flex items-center gap-2">
                 {familyMessage.startsWith('Error') ? (
-                  <AlertTriangle className="h-4 w-4" />
+                  <Icon path={mdiAlert} size="1rem" />
                 ) : (
-                  <CheckCircle className="h-4 w-4" />
+                  <Icon path={mdiCheckCircle} size="1rem" />
                 )}
                 {familyMessage}
               </div>
@@ -1238,12 +1220,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
             >
               {downloadingData ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Preparing Download...')}
                 </>
               ) : (
                 <>
-                  <Download className="h-4 w-4 mr-2" />
+                  <Icon path={mdiDownload} size="1rem" className="mr-2" />
                   {t('Download Data')}
                 </>
               )}
@@ -1265,7 +1247,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
             <div className="text-center py-8">
               <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-8 h-8 text-white" />
+                  <Icon path={mdiCheckCircle} size="2rem" className="text-white" />
                 </div>
               </div>
               <h4 className="text-xl font-semibold text-gray-800 mb-2">
@@ -1324,12 +1306,12 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               >
                 {closurePasswordLoading || closingAccount ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                     {closingAccount ? 'Closing Account...' : 'Verifying...'}
                   </>
                 ) : (
                   <>
-                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    <Icon path={mdiAlert} size="1rem" className="mr-2" />
                     {t('Close Account')}
                   </>
                 )}
@@ -1339,7 +1321,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
                 onClick={handleClosureCancel}
                 disabled={closurePasswordLoading || closingAccount}
               >
-                <X className="h-4 w-4 mr-2" />
+                <Icon path={mdiClose} size="1rem" className="mr-2" />
                 {t('Cancel')}
               </Button>
             </div>
@@ -1353,9 +1335,9 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
               )}>
                 <div className="flex items-center gap-2">
                   {closurePasswordMessage.startsWith('Error') || closurePasswordMessage.includes('incorrect') ? (
-                    <AlertTriangle className="h-4 w-4" />
+                    <Icon path={mdiAlert} size="1rem" />
                   ) : (
-                    <CheckCircle className="h-4 w-4" />
+                    <Icon path={mdiCheckCircle} size="1rem" />
                   )}
                   {closurePasswordMessage}
                 </div>
@@ -1365,14 +1347,14 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
         ) : (
           <div className={styles.formGroup}>
             <p className="text-sm text-gray-600 mb-4 account-manager-info-text">
-              <AlertTriangle className="h-4 w-4 inline mr-1" />
+              <Icon path={mdiAlert} size="1rem" className="inline mr-1" />
               {t('Warning: Closing your account will permanently disable access to your')} {familyData ? "family" : "account"} {t('data. This action cannot be undone. Please download your data first if you want to keep it.')}
             </p>
             <Button
               onClick={() => setConfirmingClosure(true)}
               variant="destructive"
             >
-              <AlertTriangle className="h-4 w-4 mr-2" />
+              <Icon path={mdiAlert} size="1rem" className="mr-2" />
               {t('Close Account')}
             </Button>
           </div>

@@ -3,7 +3,8 @@ import { cn } from "@/src/lib/utils";
 import { timeInputStyles } from "../time-input/time-input.styles";
 import { TimeInputProps } from "../time-input/time-input.types";
 import { useTheme } from "@/src/context/theme";
-import { AlertCircle, Check } from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAlertCircle, mdiCheck } from '@mdi/js';
 import "../time-input/time-input.css";
 
 /**
@@ -152,9 +153,9 @@ const ExtendedTimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>(
           {showValidation && internalValue && (
             <>
               {isValid ? (
-                <Check className="absolute right-3 top-3 h-4 w-4 text-green-500" />
+                <Icon path={mdiCheck} size="1rem" className="absolute right-3 top-3 text-green-500" />
               ) : (
-                <AlertCircle className="absolute right-3 top-3 h-4 w-4 text-red-500" />
+                <Icon path={mdiAlertCircle} size="1rem" className="absolute right-3 top-3 text-red-500" />
               )}
             </>
           )}
@@ -163,7 +164,7 @@ const ExtendedTimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>(
         {/* Error message */}
         {showValidation && !isValid && errorMessage && (
           <div className={timeInputStyles.errorMessage}>
-            <AlertCircle className="h-3 w-3 inline mr-1" />
+            <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
             {errorMessage}
           </div>
         )}

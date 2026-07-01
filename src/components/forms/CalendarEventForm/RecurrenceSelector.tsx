@@ -2,7 +2,8 @@ import React from 'react';
 import { cn } from '@/src/lib/utils';
 import { RecurrencePattern } from '@prisma/client';
 import { calendarEventFormStyles as styles } from './calendar-event-form.styles';
-import { Repeat, AlertCircle } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiRepeat, mdiAlertCircle } from '@mdi/js';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import { Checkbox } from '@/src/components/ui/checkbox';
@@ -65,7 +66,7 @@ const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
           onCheckedChange={(checked) => onRecurringChange(checked === true)}
         />
         <label htmlFor="recurring" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
-          <Repeat className="h-4 w-4 mr-1.5 text-gray-500 dark:text-gray-400" />
+          <Icon path={mdiRepeat} size="1rem" className="mr-1.5 text-gray-500 dark:text-gray-400" />
           {t('Recurring event')}
         </label>
       </div>
@@ -94,7 +95,7 @@ const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
             </div>
             {error?.recurrencePattern && (
               <div className={styles.fieldError}>
-                <AlertCircle className="h-3 w-3 inline mr-1" />
+                <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                 {error.recurrencePattern}
               </div>
             )}
@@ -120,7 +121,7 @@ const RecurrenceSelector: React.FC<RecurrenceSelectorProps> = ({
             </div>
             {error?.recurrenceEnd && (
               <div className={styles.fieldError}>
-                <AlertCircle className="h-3 w-3 inline mr-1" />
+                <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                 {error.recurrenceEnd}
               </div>
             )}

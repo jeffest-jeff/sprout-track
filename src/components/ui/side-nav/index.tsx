@@ -2,7 +2,8 @@ import React, { useEffect, useState, Suspense } from 'react';
 import ChangelogModal from '@/src/components/modals/changelog';
 import FeedbackPage from '@/src/components/forms/FeedbackForm/FeedbackPage';
 import dynamic from 'next/dynamic';
-import { X, Settings, LogOut, MessageSquare, CreditCard, Clock, Loader2 } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClose, mdiCog, mdiLogout, mdiMessageText, mdiCreditCard, mdiClockOutline, mdiLoading } from '@mdi/js';
 import NavCountBubble from '@/src/components/ui/nav-count-bubble';
 import { Badge } from '@/src/components/ui/badge';
 import { LanguageSelector } from './language-selector';
@@ -14,7 +15,7 @@ const PaymentModal = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center p-4">
-        <Loader2 className="h-6 w-6 animate-spin text-teal-600" />
+        <Icon path={mdiLoading} size={1} spin className="text-teal-600" />
       </div>
     )
   }
@@ -397,7 +398,7 @@ export const SideNav: React.FC<SideNavProps> = ({
                   className={cn(sideNavStyles.closeButton, "side-nav-close-button")}
                   aria-label="Close navigation"
                 >
-                  <X size={20} />
+                  <Icon path={mdiClose} size="1.25rem" />
                 </button>
               )}
             </div>
@@ -475,7 +476,7 @@ export const SideNav: React.FC<SideNavProps> = ({
                 onClick={() => setShowFeedback(true)}
                 aria-label={t('Send Feedback')}
               >
-                <MessageSquare className="h-3 w-3 mr-1" />
+                <Icon path={mdiMessageText} size="0.75rem" className="mr-1" />
                 {t('Send Feedback')}
                 {unreadFeedbackCount > 0 && (
                   <NavCountBubble
@@ -499,7 +500,7 @@ export const SideNav: React.FC<SideNavProps> = ({
                 <div className="mt-4 px-4">
                   <div className={cn("bg-amber-50 border border-amber-200 rounded-lg p-3 space-y-2", "side-nav-trial-container")}>
                     <div className={cn("flex items-center justify-center text-amber-700", "side-nav-trial-header")}>
-                      <Clock className="h-4 w-4 mr-1" />
+                      <Icon path={mdiClockOutline} size="1rem" className="mr-1" />
                       <span className="text-xs font-medium">{t('Trial Version')}</span>
                     </div>
                     <div className="text-center">
@@ -512,7 +513,7 @@ export const SideNav: React.FC<SideNavProps> = ({
                       className="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white"
                       onClick={() => setShowPaymentModal(true)}
                     >
-                      <CreditCard className="h-3 w-3 mr-1" />
+                      <Icon path={mdiCreditCard} size="0.75rem" className="mr-1" />
                       {t('Buy Now')}
                     </Button>
                   </div>
@@ -601,14 +602,14 @@ export const SideNav: React.FC<SideNavProps> = ({
           
           {/* Settings Button */}
           <FooterButton
-            icon={<Settings />}
+            icon={<Icon path={mdiCog} size={1} />}
             label={t('Settings')}
             onClick={onSettingsClick}
           />
-          
+
           {/* Logout Button */}
           <FooterButton
-            icon={<LogOut />}
+            icon={<Icon path={mdiLogout} size={1} />}
             label={t('Logout')}
             onClick={onLogout}
           />

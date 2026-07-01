@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from "react"
-import { Menu } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMenu } from '@mdi/js';
 import { cn } from "@/src/lib/utils"
 import { Button } from '../button';
 import {
@@ -71,7 +72,7 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
                 className="mobile-menu-hamburger p-2"
                 aria-label="Toggle menu"
               >
-                <Menu size={20} />
+                <Icon path={mdiMenu} size="1.25rem" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 

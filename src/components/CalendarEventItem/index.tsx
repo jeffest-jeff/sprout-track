@@ -3,7 +3,8 @@ import { cn } from '@/src/lib/utils';
 import { CalendarEventItemProps } from './calendar-event-item.types';
 import { calendarEventItemStyles as styles } from './calendar-event-item.styles';
 import { CalendarEventType } from '@prisma/client';
-import { MapPin, Clock, RepeatIcon, Users } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMapMarker, mdiClockOutline, mdiRepeat, mdiAccountGroup } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { formatTimeDisplay, formatDateShort } from '@/src/utils/dateFormat';
 import './calendar-event-item.css';
@@ -117,7 +118,7 @@ export const CalendarEventItem: React.FC<CalendarEventItemProps> = ({
           'calendar-event-item-details'
         )}>
           {/* Time */}
-          <Clock className={cn(styles.icon.base, styles.icon.time)} />
+          <Icon path={mdiClockOutline} size="1rem" className={cn(styles.icon.base, styles.icon.time)} />
           <span>
             {formatEventDate(event.startTime)}, {formatEventTime(event.startTime, event.allDay, event.endTime)}
           </span>
@@ -125,16 +126,16 @@ export const CalendarEventItem: React.FC<CalendarEventItemProps> = ({
           {/* Location if available */}
           {event.location && (
             <span className={styles.location}>
-              <MapPin className={cn(styles.icon.base, styles.icon.location)} />
+              <Icon path={mdiMapMarker} size="1rem" className={cn(styles.icon.base, styles.icon.location)} />
               {event.location}
             </span>
           )}
           
           {/* Recurring indicator */}
           {event.recurring && (
-            <RepeatIcon className={cn(
-              styles.icon.base, 
-              styles.icon.recurring, 
+            <Icon path={mdiRepeat} size="1rem" className={cn(
+              styles.icon.base,
+              styles.icon.recurring,
               "recurring-icon-small",
               "ml-2"
             )} />
@@ -146,7 +147,7 @@ export const CalendarEventItem: React.FC<CalendarEventItemProps> = ({
       {totalParticipants > 0 && (
         <div className={styles.badgesContainer}>
           <div className={cn(styles.badge.base, styles.badge.baby, 'calendar-event-item-badge')}>
-            <Users className="h-3 w-3" />
+            <Icon path={mdiAccountGroup} size="0.75rem" />
           </div>
           <span className={styles.badgeCount}>{totalParticipants}</span>
         </div>

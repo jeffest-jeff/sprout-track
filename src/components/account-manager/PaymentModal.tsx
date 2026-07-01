@@ -10,15 +10,8 @@ import {
   DialogDescription,
 } from '@/src/components/ui/dialog';
 import { Button } from '@/src/components/ui/button';
-import {
-  Loader2,
-  CheckCircle,
-  AlertTriangle,
-  CreditCard,
-  Crown,
-  Calendar,
-  X
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiCheckCircle, mdiAlert, mdiCreditCard, mdiCrown, mdiCalendar, mdiClose } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { PaymentModalProps, PricingPlan, SubscriptionStatus } from './payment-modal.types';
 import { useLocalization } from '@/src/context/localization';
@@ -218,7 +211,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     if (loadingStatus) {
       return (
         <div className="flex items-center justify-center py-8">
-          <Loader2 className={cn("h-8 w-8 animate-spin text-teal-600", "payment-modal-loading")} />
+          <Icon path={mdiLoading} size="2rem" spin className={cn("text-teal-600", "payment-modal-loading")} />
         </div>
       );
     }
@@ -232,7 +225,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         <div className={cn("bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-lg p-6", "payment-modal-active-subscription")}>
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0">
-              <CheckCircle className="h-6 w-6 text-teal-600" />
+              <Icon path={mdiCheckCircle} size="1.5rem" className="text-teal-600" />
             </div>
             <div className="flex-1">
               <h4 className={cn("text-lg font-semibold text-teal-800 mb-2", "payment-modal-subscription-title")}>
@@ -242,7 +235,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               {accountStatus.planType === 'sub' && subscriptionStatus.currentPeriodEnd && (
                 <div className="space-y-2 text-sm">
                   <div className={cn("flex items-center gap-2 text-teal-700", "payment-modal-subscription-info")}>
-                    <Calendar className="h-4 w-4" />
+                    <Icon path={mdiCalendar} size="1rem" />
                     <span>
                       {subscriptionStatus.cancelAtPeriodEnd ? 'Expires' : 'Renews'} on{' '}
                       {new Date(subscriptionStatus.currentPeriodEnd).toLocaleDateString()}
@@ -251,7 +244,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
                   {subscriptionStatus.paymentMethod && (
                     <div className={cn("flex items-center gap-2 text-teal-700", "payment-modal-subscription-info")}>
-                      <CreditCard className="h-4 w-4" />
+                      <Icon path={mdiCreditCard} size="1rem" />
                       <span>
                         {subscriptionStatus.paymentMethod.brand.toUpperCase()} {t('ending in')}{' '}
                         {subscriptionStatus.paymentMethod.last4}
@@ -262,7 +255,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   {subscriptionStatus.cancelAtPeriodEnd && (
                     <div className={cn("mt-3 p-3 bg-amber-50 border border-amber-200 rounded-md", "payment-modal-cancelled-warning")}>
                       <div className={cn("flex items-center gap-2 text-amber-700", "payment-modal-cancelled-warning-text")}>
-                        <AlertTriangle className="h-4 w-4" />
+                        <Icon path={mdiAlert} size="1rem" />
                         <span className="font-medium">{t('Subscription Cancelled')}</span>
                       </div>
                       <p className={cn("text-sm text-amber-600 mt-1", "payment-modal-cancelled-warning-description")}>
@@ -288,7 +281,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             <div className={cn("bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4", "payment-modal-upgrade-section")}>
               <div className="flex items-start gap-3 mb-3">
                 <div className="flex-shrink-0">
-                  <Crown className="h-5 w-5 text-purple-600" />
+                  <Icon path={mdiCrown} size="1.25rem" className="text-purple-600" />
                 </div>
                 <div className="flex-1">
                   <h5 className={cn("font-semibold text-purple-800 mb-1", "payment-modal-upgrade-title")}>{t('Upgrade to Lifetime Access')}</h5>
@@ -310,12 +303,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               >
                 {loading ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                     {t('Processing...')}
                   </>
                 ) : (
                   <>
-                    <Crown className="h-4 w-4 mr-2" />
+                    <Icon path={mdiCrown} size="1rem" className="mr-2" />
                     {t('Upgrade to Lifetime')}
                   </>
                 )}
@@ -333,7 +326,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                 >
                   {cancelingSubscription ? (
                     <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                       {t('Cancelling...')}
                     </>
                   ) : (
@@ -384,7 +377,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               <ul className="space-y-2 mb-6">
                 {plan.features.map((feature, index) => (
                   <li key={index} className={cn("flex items-start gap-2 text-sm text-gray-700", "payment-modal-plan-feature")}>
-                    <CheckCircle className="h-4 w-4 text-teal-600 flex-shrink-0 mt-0.5" />
+                    <Icon path={mdiCheckCircle} size="1rem" className="text-teal-600 flex-shrink-0 mt-0.5" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -399,12 +392,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             >
               {loading ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Icon path={mdiLoading} size="1rem" spin className="mr-2" />
                   {t('Processing...')}
                 </>
               ) : (
                 <>
-                  <Crown className="h-4 w-4 mr-2" />
+                  <Icon path={mdiCrown} size="1rem" className="mr-2" />
                   {t('Select Plan')}
                 </>
               )}
@@ -433,7 +426,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           {error && (
             <div className={cn("mb-6 p-4 bg-red-50 border border-red-200 rounded-lg", "payment-modal-error")}>
               <div className={cn("flex items-center gap-2 text-red-700", "payment-modal-error-text")}>
-                <AlertTriangle className="h-5 w-5" />
+                <Icon path={mdiAlert} size="1.25rem" />
                 <span className="font-medium">{t('Error')}</span>
               </div>
               <p className={cn("text-sm text-red-600 mt-1", "payment-modal-error-description")}>{error}</p>
@@ -449,7 +442,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
         <div className={cn("flex justify-end pt-4 border-t border-gray-400", "payment-modal-footer")}>
           <Button variant="outline" onClick={onClose}>
-            <X className="h-4 w-4 mr-2" />
+            <Icon path={mdiClose} size="1rem" className="mr-2" />
             {t('Close')}
           </Button>
         </div>

@@ -13,7 +13,8 @@ import {
   FormPageContent,
   FormPageFooter
 } from '@/src/components/ui/form-page';
-import { ChevronDown, Timer, Pause, Play, Square } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronDown, mdiTimer, mdiPause, mdiPlay, mdiSquare } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { useTheme } from '@/src/context/theme';
 import { useToast } from '@/src/components/ui/toast';
@@ -480,7 +481,7 @@ export default function ActivityForm({
                     className={cn(dateTimePickerButtonStyles, "date-time-picker-button whitespace-nowrap")}
                     disabled={loading}
                   >
-                    <Timer className="h-4 w-4" />
+                    <Icon path={mdiTimer} size="1rem" />
                     {duration ? t('Resume Timer') : t('Start Timer')}
                   </Button>
                 )}
@@ -497,7 +498,7 @@ export default function ActivityForm({
                         className="banner-btn activity-banner-btn-pause"
                         title={t('Pause Activity')}
                       >
-                        <Pause className="h-4 w-4" />
+                        <Icon path={mdiPause} size="1rem" />
                       </button>
                     ) : (
                       <button
@@ -506,7 +507,7 @@ export default function ActivityForm({
                         className="banner-btn activity-banner-btn-resume"
                         title={t('Resume Activity')}
                       >
-                        <Play className="h-4 w-4" />
+                        <Icon path={mdiPlay} size="1rem" />
                       </button>
                     )}
                     <button
@@ -515,7 +516,7 @@ export default function ActivityForm({
                       className="banner-btn activity-banner-btn-stop"
                       title={t('End Activity')}
                     >
-                      <Square className="h-4 w-4" />
+                      <Icon path={mdiSquare} size="1rem" />
                     </button>
                   </div>
                 )}
@@ -553,8 +554,10 @@ export default function ActivityForm({
                         placeholder={t("Enter or select a category")}
                         disabled={loading}
                       />
-                      <ChevronDown
-                        className="absolute right-3 h-4 w-4 text-gray-500 activity-form-dropdown-icon"
+                      <Icon
+                        path={mdiChevronDown}
+                        size="1rem"
+                        className="absolute right-3 text-gray-500 activity-form-dropdown-icon"
                         onClick={() => {
                           setDropdownOpen(!dropdownOpen);
                           if (document.activeElement instanceof HTMLElement) {

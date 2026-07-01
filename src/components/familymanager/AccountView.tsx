@@ -13,13 +13,8 @@ import type { SortDirection } from "@/src/components/ui/table";
 import { Button } from "@/src/components/ui/button";
 import { useLocalization } from '@/src/context/localization';
 
-import { 
-  Loader2,
-  CheckCircle,
-  XCircle,
-  Shield,
-  ShieldCheck,
-} from "lucide-react";
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiCheckCircle, mdiCloseCircle, mdiShield, mdiShieldCheck } from '@mdi/js';
 
 interface AccountData {
   id: string;
@@ -111,12 +106,12 @@ export default function AccountView({
                 >
                   {account.verified ? (
                     <>
-                      <ShieldCheck className="h-3 w-3 mr-1" />
+                      <Icon path={mdiShieldCheck} size="0.75rem" className="mr-1" />
                       {t('Verified')}
                     </>
                   ) : (
                     <>
-                      <Shield className="h-3 w-3 mr-1" />
+                      <Icon path={mdiShield} size="0.75rem" className="mr-1" />
                       {t('Unverified')}
                     </>
                   )}
@@ -147,11 +142,11 @@ export default function AccountView({
                     title={account.closed ? 'Reinstate account' : 'Close account'}
                   >
                     {updatingAccountId === account.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Icon path={mdiLoading} size="1rem" spin />
                     ) : account.closed ? (
-                      <CheckCircle className="h-4 w-4" />
+                      <Icon path={mdiCheckCircle} size="1rem" />
                     ) : (
-                      <XCircle className="h-4 w-4" />
+                      <Icon path={mdiCloseCircle} size="1rem" />
                     )}
                   </Button>
                 </div>

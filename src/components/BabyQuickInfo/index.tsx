@@ -5,7 +5,8 @@ import { Baby } from '@prisma/client';
 import FormPage, { FormPageFooter } from '@/src/components/ui/form-page';
 import { FormPageTab } from '@/src/components/ui/form-page/form-page.types';
 import { Button } from '@/src/components/ui/button';
-import { Loader2, Bell, Users } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiLoading, mdiBell, mdiAccountGroup } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { styles } from './baby-quick-info.styles';
 import { BabyQuickInfoProps } from './baby-quick-info.types';
@@ -116,13 +117,12 @@ const BabyQuickInfo: React.FC<BabyQuickInfoProps> = ({
     {
       id: 'notifications',
       label: t('Notifications'),
-      icon: Bell,
       content: (
         <>
           {/* Loading state */}
           {isLoading && (
             <div className={cn(styles.loadingContainer, "baby-quick-info-loading-container")}>
-              <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+              <Icon path={mdiLoading} size="2rem" className="text-teal-600" spin />
               <p className={cn("mt-2 text-gray-600", "baby-quick-info-loading-text")}>{t('Loading...')}</p>
             </div>
           )}
@@ -155,13 +155,12 @@ const BabyQuickInfo: React.FC<BabyQuickInfoProps> = ({
     {
       id: 'contacts',
       label: t('Contacts'),
-      icon: Users,
       content: (
         <>
           {/* Loading state */}
           {isLoading && (
             <div className={cn(styles.loadingContainer, "baby-quick-info-loading-container")}>
-              <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+              <Icon path={mdiLoading} size="2rem" className="text-teal-600" spin />
               <p className={cn("mt-2 text-gray-600", "baby-quick-info-loading-text")}>{t('Loading...')}</p>
             </div>
           )}

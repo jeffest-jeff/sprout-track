@@ -4,7 +4,8 @@ import React, { useState, useMemo } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import { Scale, Ruler, CircleDot } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiScale, mdiRuler, mdiCircleSlice8 } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { useLocalization } from '@/src/context/localization';
 import { reportCardStyles as s } from './monthly-report-card.styles';
@@ -14,9 +15,9 @@ import type { GrowthMetric, GrowthChartData } from '@/app/api/types';
 type ChartType = 'weight' | 'length' | 'headCircumference';
 
 const chartTypeConfig: { type: ChartType; label: string; icon: React.ReactNode; cdcLabel: string }[] = [
-  { type: 'weight', label: 'Weight', icon: <Scale className="h-4 w-4" />, cdcLabel: 'Weight-for-age (CDC)' },
-  { type: 'length', label: 'Length', icon: <Ruler className="h-4 w-4" />, cdcLabel: 'Length-for-age (CDC)' },
-  { type: 'headCircumference', label: 'Head', icon: <CircleDot className="h-4 w-4" />, cdcLabel: 'Head circ.-for-age (CDC)' },
+  { type: 'weight', label: 'Weight', icon: <Icon path={mdiScale} size="1rem" />, cdcLabel: 'Weight-for-age (CDC)' },
+  { type: 'length', label: 'Length', icon: <Icon path={mdiRuler} size="1rem" />, cdcLabel: 'Length-for-age (CDC)' },
+  { type: 'headCircumference', label: 'Head', icon: <Icon path={mdiCircleSlice8} size="1rem" />, cdcLabel: 'Head circ.-for-age (CDC)' },
 ];
 
 // Percentile line colors matching GrowthChart.tsx

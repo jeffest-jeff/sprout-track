@@ -3,7 +3,8 @@ import { BreastSide } from '@prisma/client';
 import { Button } from '@/src/components/ui/button';
 import { Label } from '@/src/components/ui/label';
 import { Textarea } from '@/src/components/ui/textarea';
-import { Play, Pause, Clock } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiPlay, mdiPause } from '@mdi/js';
 import TimerInput from './TimerInput';
 import { useLocalization } from '@/src/context/localization';
 
@@ -318,7 +319,7 @@ export default function BreastFeedForm({
               disabled={loading || isEditingLeft || isEditingRight}
             >
               {isTimerRunning && ((side === 'LEFT' && activeBreast === 'LEFT') || (side === 'RIGHT' && activeBreast === 'RIGHT')) ? 
-                <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+                <Icon path={mdiPause} size="1rem" className="mr-1" /> : <Icon path={mdiPlay} size="1rem" className="mr-1" />}
               {isTimerRunning && ((side === 'LEFT' && activeBreast === 'LEFT') || (side === 'RIGHT' && activeBreast === 'RIGHT')) ? 
                 t('Pause') : t('Start')}
             </Button>
@@ -369,7 +370,7 @@ export default function BreastFeedForm({
               disabled={loading || isEditingLeft}
               className="w-full"
             >
-              {isTimerRunning && activeBreast === 'LEFT' ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+              {isTimerRunning && activeBreast === 'LEFT' ? <Icon path={mdiPause} size="1rem" className="mr-1" /> : <Icon path={mdiPlay} size="1rem" className="mr-1" />}
               {isTimerRunning && activeBreast === 'LEFT' ? t('Pause') : t('Start')}
             </Button>
           </div>
@@ -416,7 +417,7 @@ export default function BreastFeedForm({
               disabled={loading || isEditingRight}
               className="w-full"
             >
-              {isTimerRunning && activeBreast === 'RIGHT' ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+              {isTimerRunning && activeBreast === 'RIGHT' ? <Icon path={mdiPause} size="1rem" className="mr-1" /> : <Icon path={mdiPlay} size="1rem" className="mr-1" />}
               {isTimerRunning && activeBreast === 'RIGHT' ? t('Pause') : t('Start')}
             </Button>
           </div>

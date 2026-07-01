@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { LucideIcon } from 'lucide-react';
 
 /**
  * Tab definition for FormPage tabs
@@ -9,16 +8,16 @@ export interface FormPageTab {
    * Unique identifier for the tab
    */
   id: string;
-  
+
   /**
    * Label text for the tab
    */
   label: string;
-  
+
   /**
-   * Optional Lucide icon for the tab
+   * Optional icon for the tab — an MDI path string
    */
-  icon?: LucideIcon;
+  icon?: string;
   
   /**
    * Optional image source for custom icon

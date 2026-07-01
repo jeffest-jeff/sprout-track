@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClose } from '@mdi/js';
 import { cn } from "@/src/lib/utils"
 import { dialogStyles } from "./dialog.styles"
 import { useTheme } from "@/src/context/theme"
@@ -63,7 +64,7 @@ const DialogContent = React.forwardRef<
         {children}
         {!hideClose && (
           <DialogPrimitive.Close className={cn(dialogStyles.closeButton, "dialog-close-button")}>
-            <X className="h-5 w-5" />
+            <Icon path={mdiClose} size="1.25rem" />
             <span className="sr-only">{t('Close')}</span>
           </DialogPrimitive.Close>
         )}

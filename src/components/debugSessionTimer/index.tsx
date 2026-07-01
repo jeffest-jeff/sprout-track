@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClose } from '@mdi/js';
 import { Position, DebugSessionTimerProps } from './debug-session-timer.types';
 import { useLocalization } from '@/src/context/localization';
 
@@ -378,7 +379,7 @@ const DebugSessionTimer: React.FC<DebugSessionTimerProps> = () => {
           onClick={() => setIsVisible(false)}
           aria-label="Close debug timer"
         >
-          <X size={16} />
+          <Icon path={mdiClose} size="1rem" />
         </button>
       </div>
       <div className={debugTimerContent()}>

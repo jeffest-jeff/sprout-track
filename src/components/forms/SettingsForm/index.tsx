@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Baby, Unit, Caretaker } from '@prisma/client';
 import { Settings } from '@/app/api/types';
-import { Settings as SettingsIcon, Wrench, Shield } from 'lucide-react';
+import { mdiCog, mdiWrench, mdiShield } from '@mdi/js';
 import { Contact } from '@/src/components/CalendarEvent/calendar-event.types';
 import { Button } from '@/src/components/ui/button';
 import {
@@ -458,7 +458,7 @@ export default function SettingsForm({
     {
       id: 'user-settings',
       label: t('User Settings'),
-      icon: SettingsIcon,
+      icon: mdiCog,
       content: (
         <UserSettingsTab
           settings={settings}
@@ -473,7 +473,7 @@ export default function SettingsForm({
     ...(isAdmin ? [{
       id: 'config',
       label: t('Config'),
-      icon: Wrench,
+      icon: mdiWrench,
       content: (
         <ConfigTab
           family={family}
@@ -506,7 +506,7 @@ export default function SettingsForm({
     ...(isAdmin ? [{
       id: 'admin',
       label: t('Admin'),
-      icon: Shield,
+      icon: mdiShield,
       content: (
         <AdminTab
           settings={settings}

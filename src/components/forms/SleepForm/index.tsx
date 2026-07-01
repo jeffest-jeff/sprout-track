@@ -23,7 +23,8 @@ import { useTimezone } from '@/app/context/timezone';
 import { useToast } from '@/src/components/ui/toast';
 import { handleExpirationError } from '@/src/lib/expiration-error-handler';
 import { useLocalization } from '@/src/context/localization';
-import { Settings } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCog } from '@mdi/js';
 import { Checkbox } from '@/src/components/ui/checkbox';
 
 import './sleep-form.css';
@@ -602,7 +603,7 @@ export default function SleepForm({
                     className="sleep-settings-button p-1 text-muted-foreground hover:text-foreground transition-colors"
                     title={t('Manage visible locations')}
                   >
-                    <Settings className="h-4 w-4" />
+                    <Icon path={mdiCog} size="1rem" />
                   </button>
                 </div>
                 {showLocationManager && (

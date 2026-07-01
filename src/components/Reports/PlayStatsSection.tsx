@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Baby } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBabyFaceOutline } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -43,7 +44,7 @@ const PlayStatsSection: React.FC<PlayStatsSectionProps> = ({ stats, activities, 
     <>
       <AccordionItem value="activities">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Baby className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-activity")} />
+          <Icon path={mdiBabyFaceOutline} size="1.25rem" className={cn("text-gray-600", "reports-accordion-trigger-icon reports-icon-activity")} />
           <span>{t('Activity Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

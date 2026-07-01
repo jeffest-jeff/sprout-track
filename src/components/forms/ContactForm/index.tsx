@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ContactFormProps, ContactFormData, ContactFormErrors } from './contact-form.types';
 import { contactFormStyles as styles } from './contact-form.styles';
-import { AlertCircle, Loader2, Trash2, Mail, Phone, User, Briefcase } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiAlertCircle, mdiLoading, mdiTrashCan, mdiEmail, mdiPhone, mdiAccount, mdiBriefcase } from '@mdi/js';
 import { FormPage, FormPageContent, FormPageFooter } from '@/src/components/ui/form-page';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
@@ -373,11 +374,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     className="w-full pl-9"
                     placeholder={t("Enter contact name")}
                   />
-                  <User className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                  <Icon path={mdiAccount} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
                 </div>
                 {errors.name && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.name}
                   </div>
                 )}
@@ -402,11 +403,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     className="w-full pl-9"
                     placeholder={t("Enter contact role (e.g., Doctor, Family)")}
                   />
-                  <Briefcase className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                  <Icon path={mdiBriefcase} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
                 </div>
                 {errors.role && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.role}
                   </div>
                 )}
@@ -430,11 +431,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     className="w-full pl-9"
                     placeholder={t("Enter phone number (optional)")}
                   />
-                  <Phone className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                  <Icon path={mdiPhone} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
                 </div>
                 {errors.phone && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.phone}
                   </div>
                 )}
@@ -458,11 +459,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     className="w-full pl-9"
                     placeholder={t("Enter email address (optional)")}
                   />
-                  <Mail className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                  <Icon path={mdiEmail} size="1rem" className="absolute left-3 top-2.5 text-gray-400" />
                 </div>
                 {errors.email && (
                   <div className={styles.fieldError}>
-                    <AlertCircle className="h-3 w-3 inline mr-1" />
+                    <Icon path={mdiAlertCircle} size="0.75rem" className="inline mr-1" />
                     {errors.email}
                   </div>
                 )}
@@ -481,7 +482,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 onClick={handleDelete}
                 disabled={isLoading}
               >
-                <Trash2 className="h-4 w-4 mr-1.5" />
+                <Icon path={mdiTrashCan} size="1rem" className="mr-1.5" />
                 {t('Delete')}
               </Button>
             )}
@@ -504,7 +505,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                    <Icon path={mdiLoading} size="1rem" spin className="mr-1.5" />
                     {t('Saving...')}
                   </>
                 ) : (

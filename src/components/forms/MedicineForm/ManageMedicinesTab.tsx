@@ -4,15 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { cn } from '@/src/lib/utils';
 import { medicineFormStyles as styles } from './medicine-form.styles';
 import { ManageMedicinesTabProps, MedicineWithContacts, MedicineFormData } from './medicine-form.types';
-import { 
-  PillBottle, 
-  Loader2, 
-  AlertCircle, 
-  Edit, 
-  Plus, 
-  User, 
-  Clock,
-} from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiBottleTonicPlus, mdiLoading, mdiAlertCircle, mdiPencil, mdiPlus, mdiAccount, mdiClockOutline } from '@mdi/js';
 import { Button } from '@/src/components/ui/button';
 import { Badge } from '@/src/components/ui/badge';
 import { Switch } from '@/src/components/ui/switch';
@@ -221,14 +214,14 @@ const ManageMedicinesTab: React.FC<ManageMedicinesTabProps> = ({ refreshData }) 
     <div className={cn(styles.tabContent)}>
       {isFetching && (
         <div className="flex flex-col items-center justify-center p-6">
-          <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+          <Icon path={mdiLoading} size="2rem" spin className="text-teal-600" />
           <p className="mt-2 text-gray-600">{t('Loading medicines...')}</p>
         </div>
       )}
       
       {error && (
         <div className="flex flex-col items-center justify-center p-6">
-          <AlertCircle className="h-8 w-8 text-red-500" />
+          <Icon path={mdiAlertCircle} size="2rem" className="text-red-500" />
           <p className="mt-2 text-red-500 text-center">{error}</p>
         </div>
       )}
@@ -255,7 +248,7 @@ const ManageMedicinesTab: React.FC<ManageMedicinesTabProps> = ({ refreshData }) 
                 !medicine.active && styles.medicineListItemInactive
               )}>
                 <div className={cn(styles.medicineListItemHeader)} onClick={() => handleAccordionToggle(medicine.id)}>
-                  <PillBottle className={cn(styles.medicineListIcon, "medicine-form-medicine-list-icon")} />
+                  <Icon path={mdiBottleTonicPlus} size="1.25rem" className={cn(styles.medicineListIcon, "medicine-form-medicine-list-icon")} />
                   <div className={cn(styles.medicineListContent)}>
                     <p className={cn(styles.medicineListName, "medicine-form-medicine-list-name")}>{medicine.name}</p>
                     <p className={cn(styles.medicineListDose, "medicine-form-medicine-list-dose")}>
@@ -263,19 +256,19 @@ const ManageMedicinesTab: React.FC<ManageMedicinesTabProps> = ({ refreshData }) 
                     </p>
                   </div>
                   <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); handleEditMedicine(medicine); }}>
-                    <Edit className="h-4 w-4" />
+                    <Icon path={mdiPencil} size="1rem" />
                   </Button>
                 </div>
                 {expandedMedicine === medicine.id && (
                   <div className={cn(styles.medicineListDetails, "medicine-form-medicine-list-details")}>
                     <div className={cn(styles.medicineListDetailsContent)}>
                       <p className={cn(styles.medicineListDetailItem, "medicine-form-medicine-list-detail-item")}>
-                        <Clock className={cn(styles.medicineListDetailIcon)} /> 
+                        <Icon path={mdiClockOutline} size="1rem" className={cn(styles.medicineListDetailIcon)} /> 
                         {t('Minimum time between doses:')} {formatDoseMinTimeDisplay(medicine.doseMinTime || '')}
                       </p>
                       {medicine.notes && <p className={cn(styles.medicineListNotes, "medicine-form-medicine-list-notes")}>{medicine.notes}</p>}
                       <div className={cn(styles.medicineListContactsContainer)}>
-                        <User className={cn(styles.medicineListDetailIcon)} />
+                        <Icon path={mdiAccount} size="1rem" className={cn(styles.medicineListDetailIcon)} />
                         <div className={cn(styles.medicineListContactsList)}>
                           {medicine.contacts.length > 0 ? (
                             medicine.contacts.map(c => <Badge key={c.contact.id} variant="secondary">{c.contact.name}</Badge>)
@@ -292,7 +285,7 @@ const ManageMedicinesTab: React.FC<ManageMedicinesTabProps> = ({ refreshData }) 
           </div>
           
           <Button className="w-full mt-4" onClick={handleAddMedicine}>
-            <Plus className="mr-2 h-4 w-4" /> {t('Add New Medicine')}
+            <Icon path={mdiPlus} size="1rem" className="mr-2" /> {t('Add New Medicine')}
           </Button>
         </>
       )}

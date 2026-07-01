@@ -22,7 +22,6 @@
     "env:ensure": "node scripts/ensure-env-defaults.js"
   },
   "dependencies": {
-    "@lucide/lab": "^0.1.2",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@prisma/client": "^6.19.1",
@@ -49,7 +48,6 @@
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^4.2.1",
     "jszip": "^3.10.1",
-    "lucide-react": "^0.475.0",
     "next": "^16.0.10",
     "nodemailer": "^7.0.5",
     "prisma": "^6.3.1",

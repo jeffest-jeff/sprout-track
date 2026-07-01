@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { LampWallDown } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiMotherNurse } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -84,7 +85,7 @@ const PumpingStatsSection: React.FC<PumpingStatsSectionProps> = ({ stats, activi
     <>
       <AccordionItem value="pumping">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <LampWallDown className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-pump")} />
+          <Icon path={mdiMotherNurse} size="1rem" className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-pump")} />
           <span>{t('Pumping Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

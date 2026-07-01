@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Icon } from 'lucide-react';
-import { diaper } from '@lucide/lab';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiDiaperOutline } from '@mdi/js';
 import { cn } from '@/src/lib/utils';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -35,7 +35,7 @@ const DiaperStatsSection: React.FC<DiaperStatsSectionProps> = ({ stats, activiti
     <>
       <AccordionItem value="diaper">
         <AccordionTrigger className={cn(styles.accordionTrigger, "reports-accordion-trigger")}>
-          <Icon iconNode={diaper} className={cn(styles.accordionTriggerIcon, "reports-accordion-trigger-icon reports-icon-diaper-wet")} />
+          <Icon path={mdiDiaperOutline} size="1.25rem" className={cn("text-gray-600", "reports-accordion-trigger-icon reports-icon-diaper-wet")} />
           <span>{t('Diaper Statistics')}</span>
         </AccordionTrigger>
         <AccordionContent className={styles.accordionContent}>

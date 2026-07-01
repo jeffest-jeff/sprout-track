@@ -6,7 +6,8 @@ import {
   FormPageFooter,
 } from '@/src/components/ui/form-page';
 import { Button } from '@/src/components/ui/button';
-import { ChevronLeft, Plus, Send } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiChevronLeft, mdiPlus, mdiSend } from '@mdi/js';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
 import { useFeedbackChat } from '@/src/hooks/useFeedbackChat';
@@ -106,7 +107,7 @@ export default function FeedbackPage({
       className="text-emerald-500 flex items-center mr-2 bg-transparent border-none cursor-pointer p-0"
       aria-label={t('Back')}
     >
-      <ChevronLeft className="h-5 w-5" />
+      <Icon path={mdiChevronLeft} size="1.25rem" />
     </button>
   ) : undefined;
 
@@ -179,7 +180,7 @@ export default function FeedbackPage({
               disabled={!canSendNew}
               variant="success"
             >
-              <Send className="h-4 w-4 mr-1.5" />
+              <Icon path={mdiSend} size="1rem" className="mr-1.5" />
               {t('Send feedback')}
             </Button>
             <Button onClick={handleBack} variant="outline">
@@ -191,7 +192,7 @@ export default function FeedbackPage({
         <FormPageFooter>
           <div className="flex justify-between w-full">
             <Button onClick={handleNewToggle} variant="outline">
-              <Plus className="h-4 w-4 mr-1.5" />
+              <Icon path={mdiPlus} size="1rem" className="mr-1.5" />
               {t('New Feedback')}
             </Button>
             <Button onClick={onClose} variant="outline">

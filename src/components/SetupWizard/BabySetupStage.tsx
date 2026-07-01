@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCalendar } from '@mdi/js';
 import { useTimezone } from '@/app/context/timezone';
 import { formatDateLong } from '@/src/utils/dateFormat';
 import { Input } from '@/src/components/ui/input';
@@ -102,7 +103,7 @@ const BabySetupStage: React.FC<BabySetupStageProps> = ({
                 !babyBirthDate && "setup-wizard-date-picker-placeholder"
               )}
             >
-              <Calendar className="mr-2 h-4 w-4" />
+              <Icon path={mdiCalendar} size="1rem" className="mr-2" />
               {babyBirthDate ? formatDateLong(babyBirthDate, dateFormat) : t("Select date")}
             </Button>
           </PopoverTrigger>

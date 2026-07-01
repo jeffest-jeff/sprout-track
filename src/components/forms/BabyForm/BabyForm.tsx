@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { Calendar } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiCalendar } from '@mdi/js';
 import { Baby, Gender } from '@prisma/client';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
@@ -187,7 +188,7 @@ export default function BabyForm({
                     !formData.birthDate && "text-muted-foreground"
                   )}
                 >
-                  <Calendar className="mr-2 h-4 w-4" />
+                  <Icon path={mdiCalendar} size="1rem" className="mr-2" />
                   {formData.birthDate ? formatDateLong(formData.birthDate, dateFormat) : t("Select date")}
                 </Button>
               </PopoverTrigger>

@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
-import { X, Eye, EyeOff } from 'lucide-react';
+import { Icon } from '@/src/components/ui/icon';
+import { mdiClose, mdiEye, mdiEyeOff } from '@mdi/js';
 import { ApiResponse } from '@/app/api/types';
 import { useLocalization } from '@/src/context/localization';
 
@@ -533,9 +534,9 @@ export default function PinLogin({
                 disabled={!!lockoutTime}
               >
                 {showAdminPassword ? (
-                  <EyeOff className="h-4 w-4" />
+                  <Icon path={mdiEyeOff} size="1rem" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Icon path={mdiEye} size="1rem" />
                 )}
               </Button>
             </div>
@@ -704,7 +705,7 @@ export default function PinLogin({
             onClick={handleDelete}
             disabled={!!lockoutTime}
           >
-            <X className="h-6 w-6" />
+            <Icon path={mdiClose} size="1.5rem" />
           </Button>
           {/* Go Button integrated into keypad */}
           <Button
