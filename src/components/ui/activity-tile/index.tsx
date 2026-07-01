@@ -30,7 +30,8 @@ export function ActivityTile({
   description,
   variant: variantProp,
   className,
-  isButton = false
+  isButton = false,
+  tileColor,
 }: ActivityTileProps) {
   const { theme } = useTheme();
   const variant = variantProp || getActivityVariant(activity);
@@ -52,7 +53,7 @@ export function ActivityTile({
             styles.iconContainer.base,
             styles.iconContainer.variants[variant]
           )}>
-            {icon || <ActivityTileIcon activity={activity} variant={variant} isButton={isButton} />}
+            {icon || <ActivityTileIcon activity={activity} variant={variant} isButton={isButton} tileColor={tileColor} />}
           </div>
           {title && (
             <span className="text-xs font-medium mt-1 text-center activity-tile-title">

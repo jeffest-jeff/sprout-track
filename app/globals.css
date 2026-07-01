@@ -200,6 +200,48 @@ html.dark .slug-page-content {
   }
 }
 
+/* Interface accent color themes — applied via html.theme-X class */
+/* Default (teal) needs no overrides — Tailwind classes already use teal */
+html.theme-blue .btn-accent      { background-image: linear-gradient(to right, #2563eb, #1d4ed8); }
+html.theme-blue .btn-accent-text { color: #2563eb; }
+html.theme-blue .btn-accent-outline:hover { border-color: #93c5fd; background-color: #eff6ff; color: #1d4ed8; }
+html.theme-blue .btn-accent-ghost:hover  { background-color: #eff6ff; color: #1d4ed8; }
+html.theme-blue .form-input  { --tw-ring-color: #bfdbfe; border-color-focus: #60a5fa; }
+html.theme-blue .form-input:focus { border-color: #60a5fa; --tw-ring-color: #bfdbfe; }
+
+html.theme-purple .btn-accent      { background-image: linear-gradient(to right, #9333ea, #7c3aed); }
+html.theme-purple .btn-accent-text { color: #9333ea; }
+html.theme-purple .btn-accent-outline:hover { border-color: #d8b4fe; background-color: #faf5ff; color: #7c3aed; }
+html.theme-purple .btn-accent-ghost:hover  { background-color: #faf5ff; color: #7c3aed; }
+
+html.theme-rose .btn-accent      { background-image: linear-gradient(to right, #e11d48, #be123c); }
+html.theme-rose .btn-accent-text { color: #e11d48; }
+html.theme-rose .btn-accent-outline:hover { border-color: #fda4af; background-color: #fff1f2; color: #be123c; }
+html.theme-rose .btn-accent-ghost:hover  { background-color: #fff1f2; color: #be123c; }
+
+html.theme-orange .btn-accent      { background-image: linear-gradient(to right, #ea580c, #c2410c); }
+html.theme-orange .btn-accent-text { color: #ea580c; }
+html.theme-orange .btn-accent-outline:hover { border-color: #fdba74; background-color: #fff7ed; color: #c2410c; }
+html.theme-orange .btn-accent-ghost:hover  { background-color: #fff7ed; color: #c2410c; }
+
+html.theme-green .btn-accent      { background-image: linear-gradient(to right, #16a34a, #15803d); }
+html.theme-green .btn-accent-text { color: #16a34a; }
+html.theme-green .btn-accent-outline:hover { border-color: #86efac; background-color: #f0fdf4; color: #15803d; }
+html.theme-green .btn-accent-ghost:hover  { background-color: #f0fdf4; color: #15803d; }
+
+html.theme-indigo .btn-accent      { background-image: linear-gradient(to right, #4f46e5, #4338ca); }
+html.theme-indigo .btn-accent-text { color: #4f46e5; }
+html.theme-indigo .btn-accent-outline:hover { border-color: #a5b4fc; background-color: #eef2ff; color: #4338ca; }
+html.theme-indigo .btn-accent-ghost:hover  { background-color: #eef2ff; color: #4338ca; }
+
+/* Dark mode accent overrides */
+html.dark.theme-blue   .btn-accent-ghost:hover { background-color: rgba(37,99,235,0.15); color: #93c5fd; }
+html.dark.theme-purple .btn-accent-ghost:hover { background-color: rgba(147,51,234,0.15); color: #d8b4fe; }
+html.dark.theme-rose   .btn-accent-ghost:hover { background-color: rgba(225,29,72,0.15);  color: #fda4af; }
+html.dark.theme-orange .btn-accent-ghost:hover { background-color: rgba(234,88,12,0.15);  color: #fdba74; }
+html.dark.theme-green  .btn-accent-ghost:hover { background-color: rgba(22,163,74,0.15);  color: #86efac; }
+html.dark.theme-indigo .btn-accent-ghost:hover { background-color: rgba(79,70,229,0.15);  color: #a5b4fc; }
+
 @layer base {
   :root {
     --background: 210 40% 98%;

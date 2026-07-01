@@ -26,7 +26,8 @@
       "Bash(node -e \"const icons = require\\('@mdi/js'\\); console.log\\('mdiPillow' in icons, 'mdiSleep' in icons, 'mdiFlower' in icons, 'mdiDog' in icons, 'mdiCat' in icons, 'mdiHandshake' in icons, 'mdiFire' in icons, 'mdiSnowflake' in icons, 'mdiGift' in icons, 'mdiVideo' in icons, 'mdiCamera' in icons, 'mdiUmbrella' in icons\\);\")",
       "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\('bath:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('bath'\\)\\)\\); console.log\\('syringe:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('syring'\\) || k.toLowerCase\\(\\).includes\\('needle'\\) || k.toLowerCase\\(\\).includes\\('inject'\\)\\)\\); console.log\\('fileSpread:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('spread'\\) || k.toLowerCase\\(\\).includes\\('tablecalc'\\)\\)\\); console.log\\('paperclip:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('paperclip'\\) || k.toLowerCase\\(\\).includes\\('attach'\\)\\)\\);\")",
       "Bash(node -e \"const icons = require\\('@mdi/js'\\); const keys = Object.keys\\(icons\\); console.log\\('login:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('login'\\)\\)\\); console.log\\('fileTable:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('filetable'\\) || k.toLowerCase\\(\\).includes\\('file-table'\\)\\)\\); console.log\\('shieldCheck:', keys.filter\\(k => k.toLowerCase\\(\\).includes\\('shieldcheck'\\) || k.toLowerCase\\(\\).includes\\('shield-check'\\) || \\(k.toLowerCase\\(\\).includes\\('shield'\\) && k.toLowerCase\\(\\).includes\\('check'\\)\\)\\)\\);\")",
-      "Bash(perl -i -pe ' *)"
+      "Bash(perl -i -pe ' *)",
+      "Bash(node /Users/jkleinhenz/Documents/Projects/sprout-track/scripts/check-missing-translations.js)"
     ]
   }
 }

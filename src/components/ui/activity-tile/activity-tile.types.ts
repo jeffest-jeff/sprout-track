@@ -46,6 +46,11 @@ export interface ActivityTileProps {
    * When true, applies button-specific styling
    */
   isButton?: boolean;
+
+  /**
+   * Optional background color for the icon circle on button tiles
+   */
+  tileColor?: string;
 }
 
 export interface ActivityTileIconProps {

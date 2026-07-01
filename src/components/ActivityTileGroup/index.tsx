@@ -3,7 +3,8 @@ import { ActivityTile } from '@/src/components/ui/activity-tile';
 import { StatusBubble } from "@/src/components/ui/status-bubble";
 import { SleepLogResponse, FeedLogResponse, DiaperLogResponse, NoteResponse, BathLogResponse, PumpLogResponse, PlayLogResponse, MeasurementResponse, MilestoneResponse, MedicineLogResponse, VaccineLogResponse, ActivitySettings, CustomActivityResponse } from '@/app/api/types';
 import { Icon } from '@/src/components/ui/icon';
-import { mdiArrowUpDown } from '@mdi/js';
+import { mdiArrowUpDown, mdiCog } from '@mdi/js';
+import { defaultTileColors } from '@/src/components/ui/activity-tile/activity-tile-icon';
 import { ICON_PATH_MAP } from '@/src/constants/custom-activity-icons';
 import { useTheme } from '@/src/context/theme';
 import { useLocalization } from '@/src/context/localization';
@@ -137,6 +138,9 @@ export function ActivityTileGroup({
   
   // State for custom activities
   const [customActivities, setCustomActivities] = useState<CustomActivityResponse[]>([]);
+
+  // State for per-tile background colors (keyed by activity type)
+  const [tileColors, setTileColors] = useState<Record<string, string>>({});
 
   // Fetch custom activities for the family
   const fetchCustomActivities = async () => {
@@ -285,6 +289,7 @@ export function ActivityTileGroup({
             // Update state with loaded settings
             setActivityOrder(loadedOrder);
             setVisibleActivities(loadedVisible);
+            setTileColors(data.data.colors || {});
             
             // Mark settings as loaded AFTER state has been updated
             setTimeout(() => {
@@ -389,6 +394,7 @@ export function ActivityTileGroup({
         const settings: ActivitySettings = {
           order: [...activityOrder],
           visible: Array.from(visibleActivities),
+          colors: tileColors,
           caretakerId: caretakerId
         };
         
@@ -421,9 +427,9 @@ export function ActivityTileGroup({
     
     // Debounce saving to avoid too many requests
     const timeoutId = setTimeout(saveActivitySettings, 500);
-    
+
     return () => clearTimeout(timeoutId);
-  }, [activityOrder, visibleActivities, settingsLoaded, settingsModified, caretakerId]);
+  }, [activityOrder, visibleActivities, tileColors, settingsLoaded, settingsModified, caretakerId]);
   
   // Toggle activity visibility
   const toggleActivity = (activity: ActivityType) => {
@@ -454,6 +460,12 @@ export function ActivityTileGroup({
       [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
       setActivityOrder(newOrder);
     }
+  };
+
+  // Update color for a specific activity tile
+  const updateTileColor = (activity: string, color: string) => {
+    setTileColors(prev => ({ ...prev, [activity]: color }));
+    setSettingsModified(true);
   };
 
   // Activity display names for the menu (built-ins)
@@ -510,6 +522,7 @@ export function ActivityTileGroup({
             title={selectedBaby?.id && sleepingBabies.has(selectedBaby.id) ? t('End Sleep') : t('Sleep')}
             variant="sleep"
             isButton={true}
+            tileColor={tileColors['sleep']}
             onClick={() => {
               updateUnlockTimer();
               onSleepClick();
@@ -568,6 +581,7 @@ export function ActivityTileGroup({
               title={isBabyFeeding ? t('End Feed') : t('Feed')}
               variant="feed"
               isButton={true}
+              tileColor={tileColors['feed']}
               onClick={() => {
                 updateUnlockTimer();
                 onFeedClick();
@@ -616,6 +630,7 @@ export function ActivityTileGroup({
               title={t('Diaper')}
               variant="diaper"
               isButton={true}
+              tileColor={tileColors['diaper']}
               onClick={() => {
                 updateUnlockTimer();
                 onDiaperClick();
@@ -653,6 +668,7 @@ export function ActivityTileGroup({
               title={t('Note')}
               variant="note"
               isButton={true}
+              tileColor={tileColors['note']}
               onClick={() => {
                 updateUnlockTimer();
                 onNoteClick();
@@ -681,6 +697,7 @@ export function ActivityTileGroup({
               title={t('Bath')}
               variant="bath"
               isButton={true}
+              tileColor={tileColors['bath']}
               onClick={() => {
                 updateUnlockTimer();
                 onBathClick();
@@ -711,6 +728,7 @@ export function ActivityTileGroup({
               title={t('Pump')}
               variant="pump"
               isButton={true}
+              tileColor={tileColors['pump']}
               onClick={() => {
                 updateUnlockTimer();
                 onPumpClick();
@@ -738,6 +756,7 @@ export function ActivityTileGroup({
               title={t('Measurement')}
               variant="measurement"
               isButton={true}
+              tileColor={tileColors['measurement']}
               onClick={() => {
                 updateUnlockTimer();
                 onMeasurementClick();
@@ -764,6 +783,7 @@ export function ActivityTileGroup({
               title={t('Milestone')}
               variant="milestone"
               isButton={true}
+              tileColor={tileColors['milestone']}
               onClick={() => {
                 updateUnlockTimer();
                 onMilestoneClick();
@@ -793,6 +813,7 @@ export function ActivityTileGroup({
               title={t('Activity')}
               variant="play"
               isButton={true}
+              tileColor={tileColors['play']}
               onClick={() => {
                 updateUnlockTimer();
                 onPlayClick();
@@ -828,6 +849,7 @@ export function ActivityTileGroup({
               title={t('Medicine')}
               variant="medicine"
               isButton={true}
+              tileColor={tileColors['medicine']}
               onClick={() => {
                 updateUnlockTimer();
                 onMedicineClick();
@@ -855,6 +877,7 @@ export function ActivityTileGroup({
               title={t('Vaccines')}
               variant="vaccine"
               isButton={true}
+              tileColor={tileColors['vaccine']}
               onClick={() => {
                 updateUnlockTimer();
                 onVaccineClick();
@@ -876,9 +899,13 @@ export function ActivityTileGroup({
                 isButton={true}
                 icon={
                   ca.icon.startsWith('mdi') && ICON_PATH_MAP[ca.icon] ? (
-                    <Icon path={ICON_PATH_MAP[ca.icon]} size="2rem" color={ca.color} />
+                    <div style={{ width: '3.5rem', height: '3.5rem', borderRadius: '50%', backgroundColor: ca.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon path={ICON_PATH_MAP[ca.icon]} size="2.5rem" color="white" />
+                    </div>
                   ) : (
-                    <span style={{ fontSize: '2.5rem', lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>{ca.icon}</span>
+                    <div style={{ width: '3.5rem', height: '3.5rem', borderRadius: '50%', backgroundColor: ca.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <span style={{ fontSize: '2rem', lineHeight: '1' }}>{ca.icon}</span>
+                    </div>
                   )
                 }
                 onClick={() => { updateUnlockTimer(); onCustomActivityClick?.(ca); }}
@@ -917,7 +944,11 @@ export function ActivityTileGroup({
                 title={t('Configure')}
                 variant="default"
                 isButton={true}
-                icon={<img src="/config-128.png" alt="Configure" width={48} height={48} className="object-contain" />}
+                icon={
+                  <div style={{ width: '3.5rem', height: '3.5rem', borderRadius: '50%', backgroundColor: '#6b7280', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon path={mdiCog} size="2.5rem" color="white" />
+                  </div>
+                }
               />
             </button>
           </DropdownMenuTrigger>
@@ -1108,17 +1139,38 @@ export function ActivityTileGroup({
                 }}
                 data-key={`order-${activity}`}
               >
-                <button 
+                <button
                   className="p-1 rounded-full hover:bg-gray-100 hover-background cursor-grab active:cursor-grabbing mr-2 activity-dropdown-item-drag-button"
-                  onMouseDown={(e) => {
-                    // Prevent dropdown from closing when starting drag
-                    e.stopPropagation();
-                  }}
+                  onMouseDown={(e) => { e.stopPropagation(); }}
                   aria-label={`${t('Drag to reorder')} ${activityDisplayNames[activity]}`}
                   title={t('Drag to reorder')}
                 >
                   <Icon path={mdiArrowUpDown} size="1rem" className="text-gray-500 icon-text" />
                 </button>
+                <label
+                  className="relative mr-2 cursor-pointer flex-shrink-0"
+                  title={t('Change tile color')}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div
+                    style={{
+                      width: '1.25rem',
+                      height: '1.25rem',
+                      borderRadius: '50%',
+                      backgroundColor: tileColors[activity] || (defaultTileColors as Record<string, string>)[activity] || '#6b7280',
+                      border: '2px solid rgba(0,0,0,0.15)',
+                    }}
+                  />
+                  <input
+                    type="color"
+                    value={tileColors[activity] || (defaultTileColors as Record<string, string>)[activity] || '#6b7280'}
+                    onChange={(e) => updateTileColor(activity, e.target.value)}
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </label>
                 <DropdownMenuCheckboxItem
                   checked={visibleActivities.has(activity)}
                   onCheckedChange={() => toggleActivity(activity)}

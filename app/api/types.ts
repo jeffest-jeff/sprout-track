@@ -42,6 +42,7 @@ export interface ActivitySettings {
   visible: string[];
   caretakerId?: string | null; // Optional caretaker ID for per-caretaker settings
   babyId?: string | null; // Optional baby ID for per-baby custom activity visibility
+  colors?: Record<string, string>; // Optional per-tile background color overrides
 }
 
 // Sleep location settings types

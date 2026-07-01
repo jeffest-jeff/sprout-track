@@ -87,7 +87,7 @@ async function getActivitySettings(req: NextRequest, authContext: AuthResult): P
     }
 
     // Parse stored settings
-    let allSettings: Record<string, { order: string[], visible: string[] }>;
+    let allSettings: Record<string, { order: string[], visible: string[], colors?: Record<string, string> }>;
     try {
       allSettings = JSON.parse(settingsWithActivity.activitySettings);
     } catch (parseError) {
@@ -123,12 +123,13 @@ async function getActivitySettings(req: NextRequest, authContext: AuthResult): P
             }
           }
           
-          // Update settings in the database
+          // Update settings in the database (preserve existing colors)
           allSettings[caretakerId] = {
             order: updatedOrder,
-            visible: updatedVisible
+            visible: updatedVisible,
+            colors: caretakerSettings.colors
           };
-          
+
           // Save updated settings
           await prisma.settings.update({
             where: { id: settings.id },
@@ -137,15 +138,16 @@ async function getActivitySettings(req: NextRequest, authContext: AuthResult): P
               ...(({ activitySettings: JSON.stringify(allSettings) }) as any)
             }
           });
-          
+
           console.log(`Updated settings for caretakerId: ${caretakerId} with missing activities`);
-          
+
           // Return updated settings
-          return NextResponse.json({ 
-            success: true, 
+          return NextResponse.json({
+            success: true,
             data: {
               order: updatedOrder,
               visible: updatedVisible,
+              colors: caretakerSettings.colors,
               caretakerId
             }
           });
@@ -197,10 +199,11 @@ async function getActivitySettings(req: NextRequest, authContext: AuthResult): P
           settingsUpdated = true;
         }
         
-        // Create new caretaker settings
+        // Create new caretaker settings (inherit colors from global if present)
         allSettings[caretakerId] = {
           order: caretakerOrder,
-          visible: caretakerVisible
+          visible: caretakerVisible,
+          colors: globalSettings.colors
         };
         
         // Save updated settings if needed
@@ -329,7 +332,7 @@ async function saveActivitySettings(req: NextRequest, authContext: AuthResult): 
     }
 
     const body = await req.json();
-    const { order, visible, caretakerId, babyId } = body as ActivitySettings;
+    const { order, visible, colors, caretakerId, babyId } = body as ActivitySettings;
 
     console.log(`POST /api/activity-settings - caretakerId: ${caretakerId || 'null'}, babyId: ${babyId || 'null'}, familyId: ${userFamilyId}`);
 
@@ -437,7 +440,7 @@ async function saveActivitySettings(req: NextRequest, authContext: AuthResult): 
     const currentSettingsWithActivity = currentSettings as unknown as (typeof currentSettings & { activitySettings?: string });
     
     // Parse existing activity settings or create new object
-    let allSettings: Record<string, { order: string[], visible: string[] }> = {};
+    let allSettings: Record<string, { order: string[], visible: string[], colors?: Record<string, string> }> = {};
     if (currentSettingsWithActivity?.activitySettings) {
       try {
         allSettings = JSON.parse(currentSettingsWithActivity.activitySettings);
@@ -456,7 +459,8 @@ async function saveActivitySettings(req: NextRequest, authContext: AuthResult): 
       ...allSettings,
       [settingsKey]: {
         order: updatedOrder,
-        visible: updatedVisible
+        visible: updatedVisible,
+        colors: colors || allSettings[settingsKey]?.colors || {}
       }
     };
     
@@ -474,11 +478,12 @@ async function saveActivitySettings(req: NextRequest, authContext: AuthResult): 
       }
     });
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       data: {
         order: updatedOrder,
         visible: updatedVisible,
+        colors: newSettings[settingsKey].colors,
         caretakerId: caretakerId || null
       }
     });

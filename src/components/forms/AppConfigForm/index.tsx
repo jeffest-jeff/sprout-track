@@ -26,6 +26,7 @@ import {
 import { EmailProviderType } from '@prisma/client';
 import { useLocalization } from '@/src/context/localization';
 import { useTimezone } from '@/app/context/timezone';
+import { useTheme, ACCENT_THEMES } from '@/src/context/theme';
 import { formatDateTimeDisplay } from '@/src/utils/dateFormat';
 
 interface AppConfigFormProps {
@@ -85,6 +86,7 @@ export default function AppConfigForm({
 }: AppConfigFormProps) {
   const { t } = useLocalization();
   const { dateFormat, timeFormat } = useTimezone();
+  const { accentTheme, setAccentTheme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [appConfig, setAppConfig] = useState<AppConfigData | null>(null);
@@ -550,6 +552,36 @@ export default function AppConfigForm({
             </div>
           ) : (
             <>
+              {/* Appearance Section */}
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Icon path={mdiCog} size="1.25rem" className="text-teal-600" />
+                  <Label className="text-lg font-semibold">
+                    {t('Appearance')}
+                  </Label>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">{t('Accent Color')}</Label>
+                  <div className="flex flex-wrap gap-3 pt-1">
+                    {ACCENT_THEMES.map(theme => (
+                      <button
+                        key={theme.id}
+                        type="button"
+                        title={theme.label}
+                        onClick={() => setAccentTheme(theme.id)}
+                        className="flex flex-col items-center gap-1 group"
+                      >
+                        <div
+                          style={{ backgroundColor: theme.color }}
+                          className={`w-8 h-8 rounded-full transition-all duration-150 ${accentTheme === theme.id ? 'ring-2 ring-offset-2 ring-gray-400 scale-110' : 'opacity-80 hover:opacity-100 hover:scale-105'}`}
+                        />
+                        <span className="text-xs text-gray-500">{theme.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               {/* System Settings Section */}
               <div className="space-y-4">
                                  <div className="flex items-center space-x-2">

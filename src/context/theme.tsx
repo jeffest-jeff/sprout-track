@@ -4,16 +4,48 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Theme = 'light' | 'dark';
 
+export type AccentTheme = 'teal' | 'blue' | 'purple' | 'rose' | 'orange' | 'green' | 'indigo';
+
+export const ACCENT_THEMES: { id: AccentTheme; label: string; color: string }[] = [
+  { id: 'teal',   label: 'Teal',   color: '#0d9488' },
+  { id: 'blue',   label: 'Blue',   color: '#2563eb' },
+  { id: 'purple', label: 'Purple', color: '#9333ea' },
+  { id: 'rose',   label: 'Rose',   color: '#e11d48' },
+  { id: 'orange', label: 'Orange', color: '#ea580c' },
+  { id: 'green',  label: 'Green',  color: '#16a34a' },
+  { id: 'indigo', label: 'Indigo', color: '#4f46e5' },
+];
+
 interface ThemeContextType {
   theme: Theme;
   useSystemTheme: boolean;
+  accentTheme: AccentTheme;
   toggleTheme: () => void;
   toggleUseSystemTheme: () => void;
+  setAccentTheme: (theme: AccentTheme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [accentTheme, setAccentThemeState] = useState<AccentTheme>(() => {
+    if (typeof window === 'undefined') return 'teal';
+    return (localStorage.getItem('accentTheme') as AccentTheme) || 'teal';
+  });
+
+  useEffect(() => {
+    const html = document.documentElement;
+    ACCENT_THEMES.forEach(t => html.classList.remove(`theme-${t.id}`));
+    if (accentTheme !== 'teal') {
+      html.classList.add(`theme-${accentTheme}`);
+    }
+  }, [accentTheme]);
+
+  const setAccentTheme = (theme: AccentTheme) => {
+    localStorage.setItem('accentTheme', theme);
+    setAccentThemeState(theme);
+  };
+
   // Initialize useSystemTheme state - default to false
   const [useSystemTheme, setUseSystemTheme] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false; // Default for SSR
@@ -113,7 +145,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, useSystemTheme, toggleTheme, toggleUseSystemTheme }}>
+    <ThemeContext.Provider value={{ theme, useSystemTheme, accentTheme, toggleTheme, toggleUseSystemTheme, setAccentTheme }}>
       {children}
     </ThemeContext.Provider>
   );
