@@ -141,6 +141,9 @@ export function ActivityTileGroup({
 
   // State for per-tile background colors (keyed by activity type)
   const [tileColors, setTileColors] = useState<Record<string, string>>({});
+  // Ref mirror so the save closure always reads the latest colors without needing
+  // tileColors in the save-effect dependency array (which would reset the debounce).
+  const tileColorsRef = useRef<Record<string, string>>({});
 
   // Fetch custom activities for the family
   const fetchCustomActivities = async () => {
@@ -289,7 +292,9 @@ export function ActivityTileGroup({
             // Update state with loaded settings
             setActivityOrder(loadedOrder);
             setVisibleActivities(loadedVisible);
-            setTileColors(data.data.colors || {});
+            const loadedColors = data.data.colors || {};
+            tileColorsRef.current = loadedColors;
+            setTileColors(loadedColors);
             
             // Mark settings as loaded AFTER state has been updated
             setTimeout(() => {
@@ -394,7 +399,7 @@ export function ActivityTileGroup({
         const settings: ActivitySettings = {
           order: [...activityOrder],
           visible: Array.from(visibleActivities),
-          colors: tileColors,
+          colors: tileColorsRef.current,
           caretakerId: caretakerId
         };
         
@@ -425,11 +430,11 @@ export function ActivityTileGroup({
       }
     };
     
-    // Debounce saving to avoid too many requests
-    const timeoutId = setTimeout(saveActivitySettings, 500);
+    // Debounce saving to avoid too many requests during rapid changes
+    const timeoutId = setTimeout(saveActivitySettings, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [activityOrder, visibleActivities, tileColors, settingsLoaded, settingsModified, caretakerId]);
+  }, [activityOrder, visibleActivities, settingsLoaded, settingsModified, caretakerId]);
   
   // Toggle activity visibility
   const toggleActivity = (activity: ActivityType) => {
@@ -464,7 +469,9 @@ export function ActivityTileGroup({
 
   // Update color for a specific activity tile
   const updateTileColor = (activity: string, color: string) => {
-    setTileColors(prev => ({ ...prev, [activity]: color }));
+    const next = { ...tileColorsRef.current, [activity]: color };
+    tileColorsRef.current = next;
+    setTileColors(next);
     setSettingsModified(true);
   };
 
