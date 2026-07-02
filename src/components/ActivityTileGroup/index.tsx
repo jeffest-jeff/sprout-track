@@ -355,57 +355,22 @@ export function ActivityTileGroup({
   const originalOrderRef = React.useRef<ActivityType[]>(['sleep', 'feed', 'diaper', 'note', 'bath', 'pump', 'play', 'measurement', 'milestone', 'medicine', 'vaccine']);
   const originalVisibleRef = React.useRef<string[]>(['sleep', 'feed', 'diaper', 'note', 'bath', 'pump', 'play', 'measurement', 'milestone', 'medicine', 'vaccine']);
   
-  // Track if settings have been modified since loading
+  // settingsModified tracks tile color changes (order/visible are compared directly via refs)
   const [settingsModified, setSettingsModified] = useState(false);
-  
-  // Update settingsModified when order or visibility changes
+
+  // Save activity settings — fires on any order/visible/color change after load
   useEffect(() => {
-    if (settingsLoaded) {
-      // Compare current settings with original settings to determine if they've been modified
-      const currentOrder = [...activityOrder];
-      const currentVisible = Array.from(visibleActivities);
-      
-      const orderChanged = currentOrder.length !== originalOrderRef.current.length || 
-        currentOrder.some((activity, index) => activity !== originalOrderRef.current[index]);
-      
-      const visibleChanged = currentVisible.length !== originalVisibleRef.current.length ||
-        !currentVisible.every(activity => originalVisibleRef.current.includes(activity));
-      
-      if (orderChanged || visibleChanged) {
-        console.log('Settings modified by user action');
-        setSettingsModified(true);
-      }
-    }
-  }, [activityOrder, visibleActivities, settingsLoaded]);
-  
-  // Save activity settings when they change
-  useEffect(() => {
-    // Don't save until initial settings are loaded AND modified
-    if (!settingsLoaded || !settingsModified) {
-      return;
-    }
-    
-    // Don't save if caretakerId is null (global settings should only be set explicitly)
-    if (caretakerId === null) {
-      console.log('Not saving settings: caretakerId is null');
-      return;
-    }
-    
-    console.log(`Saving activity settings for caretakerId: ${caretakerId}`);
-    
+    if (!settingsLoaded || caretakerId === null) return;
+
+    const orderChanged = activityOrder.length !== originalOrderRef.current.length ||
+      activityOrder.some((a, i) => a !== originalOrderRef.current[i]);
+    const visibleChanged = visibleActivities.size !== originalVisibleRef.current.length ||
+      !Array.from(visibleActivities).every(a => originalVisibleRef.current.includes(a));
+
+    if (!orderChanged && !visibleChanged && !settingsModified) return;
+
     const saveActivitySettings = async () => {
       try {
-        // Prepare settings data with the current caretakerId state
-        const settings: ActivitySettings = {
-          order: [...activityOrder],
-          visible: Array.from(visibleActivities),
-          colors: tileColorsRef.current,
-          caretakerId: caretakerId
-        };
-        
-        console.log(`Saving settings:`, settings);
-        
-        // Save settings to the API
         const authToken = localStorage.getItem('authToken');
         const response = await fetch('/api/activity-settings', {
           method: 'POST',
@@ -413,28 +378,30 @@ export function ActivityTileGroup({
             'Content-Type': 'application/json',
             ...(authToken && { 'Authorization': `Bearer ${authToken}` })
           },
-          body: JSON.stringify(settings)
+          body: JSON.stringify({
+            order: [...activityOrder],
+            visible: Array.from(visibleActivities),
+            colors: tileColorsRef.current,
+            caretakerId
+          })
         });
-        
+
         if (!response.ok) {
           console.error('Failed to save activity settings:', await response.text());
         } else {
           console.log('Successfully saved activity settings');
-          
-          // Update the original settings refs after successful save
           originalOrderRef.current = [...activityOrder];
           originalVisibleRef.current = Array.from(visibleActivities);
+          setSettingsModified(false);
         }
       } catch (error) {
         console.error('Error saving activity settings:', error);
       }
     };
-    
-    // Debounce saving to avoid too many requests during rapid changes
-    const timeoutId = setTimeout(saveActivitySettings, 200);
 
+    const timeoutId = setTimeout(saveActivitySettings, 200);
     return () => clearTimeout(timeoutId);
-  }, [activityOrder, visibleActivities, settingsLoaded, settingsModified, caretakerId]);
+  }, [activityOrder, visibleActivities, settingsModified, settingsLoaded, caretakerId]);
   
   // Toggle activity visibility
   const toggleActivity = (activity: ActivityType) => {
