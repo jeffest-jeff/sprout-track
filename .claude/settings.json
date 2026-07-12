@@ -29,7 +29,13 @@
       "Bash(perl -i -pe ' *)",
       "Bash(node /Users/jkleinhenz/Documents/Projects/sprout-track/scripts/check-missing-translations.js)",
       "Bash(git -C /Users/jkleinhenz/Documents/Projects/sprout-track show --stat 3e8e940)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(git -C /Users/jkleinhenz/Documents/Projects/sprout-track add hassio-addon/Dockerfile hassio-addon/build.yaml)",
+      "Bash(git -C /Users/jkleinhenz/Documents/Projects/sprout-track status)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(sed -i '' 's|ghcr.io/jeffest-jeff/sprout-track:latest|sprouttrack/sprout-track:latest|' hassio-addon/Dockerfile)",
+      "Bash(sed -i '' 's|version: \"1.3.8\"|version: \"1.3.5\"|' hassio-addon/config.yaml)"
     ]
   }
 }
