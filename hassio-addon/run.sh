@@ -12,14 +12,15 @@ export PORT="3000"
 # Ensure the share directory exists for persistent storage
 mkdir -p /share/sprout-track
 
-# Ensure all required env defaults are present
+# Ensure all required env defaults are present in the env file
 mkdir -p /app/env
 npm run env:ensure -- docker /app/env/.env || true
 
 ENV_FILE="/app/env/.env"
 
-# Override the database paths in the env file to point to HA's /share directory
-# (env:ensure writes a default path that only works in the standard Docker container)
+# Overwrite the database paths in the env file.
+# env:ensure writes SQLite defaults that only work in the standard Docker container
+# (file:../db/baby-tracker.db resolves via a /db volume symlink that doesn't exist here).
 if grep -q "^DATABASE_URL=" "$ENV_FILE"; then
   sed -i 's|^DATABASE_URL=.*|DATABASE_URL="file:/share/sprout-track/baby-tracker.db"|' "$ENV_FILE"
 else
@@ -32,10 +33,14 @@ else
   echo 'LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"' >> "$ENV_FILE"
 fi
 
-# Source the env file so all child processes (Prisma, Next.js) pick up the correct variables
+# Source the env file so all child processes inherit the correct variables
 set -a
 . "$ENV_FILE"
 set +a
+
+# Write a minimal /app/.env so Prisma reads the correct DATABASE_URL from the
+# project root (where it looks by default) rather than any baked-in file.
+printf 'DATABASE_URL="file:/share/sprout-track/baby-tracker.db"\nLOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"\n' > /app/.env
 
 bashio::log.info "Generating Prisma clients..."
 npm run prisma:generate
