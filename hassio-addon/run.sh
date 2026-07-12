@@ -5,18 +5,37 @@ export AUTH_LIFE=$(bashio::config 'auth_life')
 export IDLE_TIME=$(bashio::config 'idle_time')
 export ENABLE_NOTIFICATIONS=$(bashio::config 'enable_notifications')
 
-# Persist the SQLite database under HA's /share so it survives addon restarts
 export DATABASE_PROVIDER="sqlite"
-export DATABASE_URL="file:/share/sprout-track/baby-tracker.db"
-export LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"
 export NODE_ENV="production"
 export PORT="3000"
 
+# Ensure the share directory exists for persistent storage
 mkdir -p /share/sprout-track
 
-# Ensure env defaults (generates ENC_HASH, secrets, etc.)
+# Ensure all required env defaults are present
 mkdir -p /app/env
 npm run env:ensure -- docker /app/env/.env || true
+
+ENV_FILE="/app/env/.env"
+
+# Override the database paths in the env file to point to HA's /share directory
+# (env:ensure writes a default path that only works in the standard Docker container)
+if grep -q "^DATABASE_URL=" "$ENV_FILE"; then
+  sed -i 's|^DATABASE_URL=.*|DATABASE_URL="file:/share/sprout-track/baby-tracker.db"|' "$ENV_FILE"
+else
+  echo 'DATABASE_URL="file:/share/sprout-track/baby-tracker.db"' >> "$ENV_FILE"
+fi
+
+if grep -q "^LOG_DATABASE_URL=" "$ENV_FILE"; then
+  sed -i 's|^LOG_DATABASE_URL=.*|LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"|' "$ENV_FILE"
+else
+  echo 'LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"' >> "$ENV_FILE"
+fi
+
+# Source the env file so all child processes (Prisma, Next.js) pick up the correct variables
+set -a
+. "$ENV_FILE"
+set +a
 
 bashio::log.info "Generating Prisma clients..."
 npm run prisma:generate
