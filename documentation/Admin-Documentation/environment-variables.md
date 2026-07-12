@@ -66,6 +66,16 @@ You do not need to create the `.env` file manually. The setup process handles it
 |----------|---------|-------------|
 | `SERVICE_NAME` | `"baby-tracker"` | Name of the systemd service (local deployments only) |
 
+### Cloudflare Access SSO (Optional)
+
+Only needed when using Cloudflare Tunnel with Cloudflare Access for SSO auto-login. See [Cloudflare Tunnel](cloudflare-tunnel.md) for full setup instructions.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLOUDFLARE_ACCESS_TEAM_DOMAIN` | -- | Your Cloudflare Zero Trust team domain, e.g. `myteam.cloudflareaccess.com` |
+| `CLOUDFLARE_ACCESS_AUDIENCE` | -- | The AUD tag from your Cloudflare Access application policy page |
+| `CLOUDFLARE_ACCESS_SKIP_PIN` | `"false"` | Set to `"true"` to enable automatic sign-in for account holders authenticated by Cloudflare. Caretaker PIN login is unaffected. |
+
 ### ST-Guardian (Optional)
 
 | Variable | Default | Description |

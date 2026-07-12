@@ -40,16 +40,24 @@ Order matters — inner providers can access outer provider values.
 
 ### ThemeProvider
 **File:** `src/context/theme.tsx`
-**Purpose:** Manages light/dark theme toggle by adding/removing `dark` class on `<html>`.
+**Purpose:** Manages light/dark theme and interface accent color by manipulating classes on `<html>`.
 
 | Value | Type | Purpose |
 |-------|------|---------|
-| `theme` | 'light' \| 'dark' | Current theme |
-| `toggleTheme()` | function | Switch theme |
+| `theme` | `'light' \| 'dark'` | Current light/dark theme |
+| `toggleTheme()` | function | Switch between light and dark |
 | `useSystemTheme` | boolean | Follow OS preference |
 | `toggleUseSystemTheme()` | function | Toggle OS sync |
+| `accentTheme` | `AccentTheme` | Current interface accent color |
+| `setAccentTheme(theme)` | function | Change the accent color |
 
-**Persistence:** `localStorage` keys `theme` and `useSystemTheme`.
+**`AccentTheme` type:** `'teal' | 'blue' | 'purple' | 'rose' | 'orange' | 'green' | 'indigo'`
+
+**Dark mode:** Adds/removes `dark` class on `<html>`. Dark mode styles live in `*.css` files using `html.dark .classname` selectors — Tailwind's `dark:` prefix is intentionally not used so the toggle works independently of system preference.
+
+**Accent color:** Adds `theme-<id>` class to `<html>` (e.g. `html.theme-blue`). CSS overrides in `app/globals.css` target `.btn-accent`, `.btn-accent-text`, `.btn-accent-outline`, and `.btn-accent-ghost` selector hooks to recolor buttons and interactive elements. The default teal accent requires no class (Tailwind's teal classes are used directly).
+
+**Persistence:** `localStorage` keys `theme`, `useSystemTheme`, and `accentTheme`.
 **System sync:** When `useSystemTheme` is true, listens to `matchMedia('prefers-color-scheme: dark')` changes.
 
 ### LocalizationProvider

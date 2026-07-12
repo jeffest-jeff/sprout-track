@@ -33,7 +33,32 @@ Used for SaaS mode with individual user accounts.
 
 **Key difference:** Account JWTs trigger a database lookup on every request to get current family/caretaker associations, since these can change after the JWT was issued (e.g., during initial family setup).
 
-### 3. Setup Authentication
+### 3. Cloudflare Access SSO
+Automatic sign-in for account holders accessing the app through a Cloudflare Tunnel.
+
+**Flow:**
+1. User reaches the app via a Cloudflare-protected public hostname
+2. Cloudflare Access authenticates the user (Google OAuth, email OTP, etc.) and injects a signed `CF_Authorization` JWT cookie
+3. When the login page loads, it calls `GET /api/auth/cloudflare` — the server detects the cookie and returns `{ available: true }`
+4. The client silently posts to `POST /api/auth/cloudflare`
+5. Server validates the CF JWT against Cloudflare's JWKS (`https://<team>.cloudflareaccess.com/cdn-cgi/access/certs`), extracts the `email` claim
+6. Account is looked up by email; server issues a standard app JWT with `isAccountAuth: true`
+7. Client stores the token in `localStorage` as `authToken` and redirects to the family dashboard
+
+**Requirements:**
+- `CLOUDFLARE_ACCESS_SKIP_PIN=true` must be set
+- `CLOUDFLARE_ACCESS_TEAM_DOMAIN` and `CLOUDFLARE_ACCESS_AUDIENCE` must be configured
+- The email from Cloudflare must match an existing `Account.email` in the database
+
+**Local access unaffected:** The `CF_Authorization` cookie is only injected by the Cloudflare tunnel. Users on LAN reach the app directly, so the cookie is absent and `GET /api/auth/cloudflare` returns `{ available: false }`, falling through to the normal login form.
+
+**Key files:**
+- `src/lib/cloudflare-access.ts` — JWKS fetch + cache + RS256 JWT verification
+- `app/api/auth/cloudflare/route.ts` — check (`GET`) and auto-login (`POST`) endpoints
+
+See [Cloudflare Tunnel](../../documentation/Admin-Documentation/cloudflare-tunnel.md) for setup instructions.
+
+### 4. Setup Authentication
 Token-based auth for invited users creating a new family:
 - Admin creates setup invite via `/api/family/create-setup-link`
 - `FamilySetup` record created with token, hashed password, expiration
@@ -218,7 +243,10 @@ The `FamilyProvider` (`src/context/family.tsx`) handles client-side auth:
 - `app/api/utils/writeProtection.ts` — Write protection for expired accounts
 - `app/api/utils/ip-lockout.ts` — IP-based login lockout
 - `app/api/utils/password-utils.ts` — PBKDF2 password hashing (100K iterations, SHA256)
-- `app/api/auth/route.ts` — Login endpoint
+- `app/api/auth/route.ts` — PIN/system login endpoint
+- `app/api/auth/cloudflare/route.ts` — Cloudflare Access SSO check + auto-login endpoints
 - `app/api/auth/refresh-token/route.ts` — Token refresh endpoint
 - `app/api/auth/logout/route.ts` — Logout (token blacklisting)
+- `src/lib/cloudflare-access.ts` — Cloudflare JWKS fetch, cache, and JWT validation
 - `src/context/family.tsx` — Client-side auth integration
+- `src/components/LoginSecurity/index.tsx` — Login UI including CF auto-login detection

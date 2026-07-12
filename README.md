@@ -167,6 +167,69 @@ The SQLite database is persisted under Home Assistant's `/share/sprout-track` di
 
 Beyond the inbound REST API + API keys, Sprout Track can **push** events to Home Assistant via an outbound webhook. In Settings → Integrations, set your HA webhook URL, optionally provide an HMAC secret, enable it, and use "Test Webhook" to verify. Custom activity log entries dispatch a `custom_activity_created` event; the payload is `{ event, timestamp, familyId, data }` and is signed with `X-Sprout-Signature` (HMAC-SHA256) when a secret is configured.
 
+## Cloudflare Tunnel (Remote Access)
+
+Sprout Track can be securely exposed to the internet via a Cloudflare Tunnel — no open inbound firewall ports required. Two deployment options are supported.
+
+### Option A — Docker sidecar (standalone deployments)
+
+Add a `cloudflared` service alongside the app container in your `docker-compose.yml`:
+
+```yaml
+services:
+  app:
+    # ... existing app service ...
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - app
+```
+
+Get your tunnel token from the [Cloudflare Zero Trust dashboard](https://one.dash.cloudflare.com) → Networks → Tunnels → Create a tunnel → Docker, then copy the token value into `CLOUDFLARE_TUNNEL_TOKEN` in your `.env`.
+
+### Option B — Home Assistant cloudflared addon (recommended for HA users)
+
+If you already run the [Cloudflare addon](https://github.com/brenner-tobias/addon-cloudflared) in Home Assistant, reuse that existing tunnel:
+
+1. In Zero Trust → Networks → Tunnels → click your HA tunnel → **Public Hostnames** tab → **Add a public hostname**
+2. Set the service to `http://<sprout-track-host-ip>:3000`
+3. Save — no changes to Sprout Track's Docker config needed
+
+---
+
+### Cloudflare Access SSO (optional)
+
+Cloudflare Access can protect your public hostname with Google OAuth or email-based authentication. When enabled, Sprout Track automatically signs in account holders whose email matches their Cloudflare-authenticated identity — no PIN entry required. Local network access is unaffected (the auto-login only triggers when the request arrives through the tunnel).
+
+**Cloudflare Zero Trust setup:**
+
+1. In Zero Trust → **Access → Applications** → **Add an application → Self-Hosted**
+2. Set the application domain to your public hostname
+3. Configure a policy (allow by email, Google OAuth, etc.)
+4. Copy the **AUD tag** shown on the application detail page
+
+**Sprout Track env vars** (add to your `.env` or docker-compose environment):
+
+| Variable | Description |
+|---|---|
+| `CLOUDFLARE_ACCESS_TEAM_DOMAIN` | Your team domain, e.g. `myteam.cloudflareaccess.com` |
+| `CLOUDFLARE_ACCESS_AUDIENCE` | The AUD tag from your Access application |
+| `CLOUDFLARE_ACCESS_SKIP_PIN` | Set to `true` to enable auto-login for CF-authenticated accounts |
+
+**How it works:**
+
+- When a user reaches the login page through the tunnel, the app silently calls `GET /api/auth/cloudflare` to detect the Cloudflare JWT cookie
+- If detected, it auto-posts to `POST /api/auth/cloudflare`, which validates the JWT against Cloudflare's public keys and looks up the matching account by email
+- On success, the user is redirected directly to their family dashboard
+- If the email has no matching account, or if `CLOUDFLARE_ACCESS_SKIP_PIN` is not set, the normal login form is shown instead
+
+> **Note:** The account email in Sprout Track must exactly match the email Cloudflare authenticates. Log in with your account password at least once before enabling SSO to ensure the account exists.
+
 ## Quick Start: Local (SQLite)
 
 Requires Node.js 22+, npm 10+, Git, and Bash.
@@ -203,6 +266,7 @@ See [Initial Setup](documentation/Admin-Documentation/initial-setup.md) for deta
 | [Local Deployment](documentation/Admin-Documentation/local-deployment.md) | Manual setup, scripts reference, systemd service |
 | [Initial Setup](documentation/Admin-Documentation/initial-setup.md) | Setup Wizard, default credentials, Family Manager |
 | [Environment Variables](documentation/Admin-Documentation/environment-variables.md) | Full variable reference, auto-generation, security notes |
+| [Cloudflare Tunnel](documentation/Admin-Documentation/cloudflare-tunnel.md) | Remote access via Cloudflare Tunnel and Access SSO |
 | [Upgrades and Backups](documentation/Admin-Documentation/upgrades-and-backups.md) | Upgrade procedures, backup/restore for Docker and local |
 | [Push Notifications](documentation/Admin-Documentation/push-notifications.md) | VAPID keys, cron setup, per-user configuration |
 | [Webhook API](documentation/Admin-Documentation/webhook-api.md) | External integrations (Home Assistant, Grafana, NFC, etc.) |

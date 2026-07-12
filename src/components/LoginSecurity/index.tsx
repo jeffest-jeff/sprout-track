@@ -19,6 +19,7 @@ interface LoginSecurityProps {
 }
 
 type LoginMode = 'pin' | 'account';
+type CfState = 'checking' | 'logging-in' | 'failed' | 'unavailable';
 
 export default function LoginSecurity({ onUnlock, familySlug, familyName }: LoginSecurityProps) {
   const { theme } = useTheme();
@@ -28,6 +29,8 @@ export default function LoginSecurity({ onUnlock, familySlug, familyName }: Logi
   const [lockoutTime, setLockoutTime] = useState<number | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [loginMode, setLoginMode] = useState<LoginMode>('pin');
+  const [cfState, setCfState] = useState<CfState>('checking');
+  const [cfError, setCfError] = useState<string | null>(null);
 
   // Account status for SAAS mode
   const [accountStatus, setAccountStatus] = useState<{
@@ -44,6 +47,54 @@ export default function LoginSecurity({ onUnlock, familySlug, familyName }: Logi
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Cloudflare Access SSO — auto-login when request arrives via CF tunnel
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const tryCfLogin = async () => {
+      try {
+        const checkRes = await fetch('/api/auth/cloudflare');
+        const checkData = await checkRes.json();
+
+        if (!checkData.success || !checkData.data?.available) {
+          setCfState('unavailable');
+          return;
+        }
+
+        setCfState('logging-in');
+        const loginRes = await fetch('/api/auth/cloudflare', { method: 'POST' });
+        const loginData = await loginRes.json();
+
+        if (!loginRes.ok || !loginData.success) {
+          setCfError(loginData.error || t('Cloudflare sign-in failed'));
+          setCfState('failed');
+          return;
+        }
+
+        const { token, user } = loginData.data;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('unlockTime', Date.now().toString());
+        if (user.firstName || user.email) {
+          localStorage.setItem('accountUser', JSON.stringify({
+            firstName: user.firstName,
+            email: user.email,
+            familySlug: user.familySlug || null,
+          }));
+        }
+
+        if (user.familySlug) {
+          router.push(`/${user.familySlug}`);
+        } else {
+          router.push('/setup');
+        }
+      } catch {
+        setCfState('unavailable');
+      }
+    };
+
+    tryCfLogin();
+  }, [isMounted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle lockout changes
   const handleLockoutChange = (time: number | null) => {
@@ -257,31 +308,53 @@ export default function LoginSecurity({ onUnlock, familySlug, familyName }: Logi
         </div>
         <div className="flex flex-col items-center space-y-4 pb-6 pl-6 pr-6">
 
-          {/* Render appropriate login component based on mode */}
-          {loginMode === 'pin' ? (
-            <PinLogin
-              onUnlock={onUnlock}
-              familySlug={familySlug}
-              lockoutTime={lockoutTime}
-              onLockoutChange={handleLockoutChange}
-            />
-          ) : (
-            <AccountLogin
-              lockoutTime={lockoutTime}
-              onLockoutChange={handleLockoutChange}
-            />
-          )}
-
-          {/* Switch login mode link - only show in SAAS mode */}
-          {isSaasMode && (
-            <div className="w-full max-w-[320px] text-center mt-4">
-              <button
-                onClick={toggleLoginMode}
-                className="text-sm text-teal-600 hover:text-teal-700 hover:underline transition-colors"
-              >
-                {loginMode === 'pin' ? t('Switch to account login') : t('Switch to PIN login')}
-              </button>
+          {/* CF auto-login states — shown while checking/logging-in via Cloudflare */}
+          {(cfState === 'checking' || cfState === 'logging-in') ? (
+            <div className="flex flex-col items-center gap-3 py-8 text-slate-500">
+              <svg className="animate-spin h-8 w-8 text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <span className="text-sm">
+                {cfState === 'logging-in' ? t('Signing in via Cloudflare...') : t('Checking sign-in...')}
+              </span>
             </div>
+          ) : (
+            <>
+              {/* CF failed — show error above the normal login form */}
+              {cfState === 'failed' && cfError && (
+                <div className="w-full max-w-[320px] rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                  {cfError}
+                </div>
+              )}
+
+              {/* Render appropriate login component based on mode */}
+              {loginMode === 'pin' ? (
+                <PinLogin
+                  onUnlock={onUnlock}
+                  familySlug={familySlug}
+                  lockoutTime={lockoutTime}
+                  onLockoutChange={handleLockoutChange}
+                />
+              ) : (
+                <AccountLogin
+                  lockoutTime={lockoutTime}
+                  onLockoutChange={handleLockoutChange}
+                />
+              )}
+
+              {/* Switch login mode link - only show in SAAS mode */}
+              {isSaasMode && (
+                <div className="w-full max-w-[320px] text-center mt-4">
+                  <button
+                    onClick={toggleLoginMode}
+                    className="text-sm text-teal-600 hover:text-teal-700 hover:underline transition-colors"
+                  >
+                    {loginMode === 'pin' ? t('Switch to account login') : t('Switch to PIN login')}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
