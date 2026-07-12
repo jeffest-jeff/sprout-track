@@ -6,7 +6,6 @@ init: false
 arch:
   - amd64
   - aarch64
-  - armv7
 ports:
   3000/tcp: 3000
 ports_description:
@@ -21,4 +20,3 @@ schema:
   auth_life: int
   idle_time: int
   enable_notifications: bool
-image: "ghcr.io/oak-and-sprout/sprout-track-hassio/{arch}"
