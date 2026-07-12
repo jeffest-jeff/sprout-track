@@ -1,3 +1,7 @@
+## 1.3.6
+
+- Fix database initialization: patch schema.prisma to absolute /share/sprout-track path before generating the Prisma client, so the CLI and the running app both connect to the same database file
+
 ## 1.3.5
 
 - Initial Home Assistant addon release
