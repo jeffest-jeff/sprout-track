@@ -23,7 +23,7 @@ npm run prisma:generate
 npm run prisma:generate:log
 
 bashio::log.info "Running database migrations..."
-npx prisma migrate deploy
+npx prisma db push --schema=prisma/schema.prisma --accept-data-loss --skip-generate
 npx prisma db push --schema=prisma/log-schema.prisma --accept-data-loss --skip-generate
 
 bashio::log.info "Seeding database..."
