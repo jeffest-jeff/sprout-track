@@ -1,6 +1,6 @@
 name: "Sprout Track"
 description: "Baby activity tracker - self-hosted"
-version: "1.3.6"
+version: "1.3.7"
 slug: "sprout_track"
 init: false
 arch:

@@ -6,9 +6,14 @@ export IDLE_TIME=$(bashio::config 'idle_time')
 export ENABLE_NOTIFICATIONS=$(bashio::config 'enable_notifications')
 
 export DATABASE_PROVIDER="sqlite"
-export LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"
 export NODE_ENV="production"
 export PORT="3000"
+
+# Set database URLs to absolute paths before anything else runs.
+# The Prisma client reads process.env.DATABASE_URL at runtime; using an absolute path
+# here ensures it connects to the same file that db push creates.
+export DATABASE_URL="file:/share/sprout-track/baby-tracker.db"
+export LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"
 
 # Ensure the share directory exists for persistent storage
 mkdir -p /share/sprout-track
@@ -19,7 +24,13 @@ npm run env:ensure -- docker /app/env/.env || true
 
 ENV_FILE="/app/env/.env"
 
-# Patch LOG_DATABASE_URL in the env file
+# Patch database URLs in the env file so sourcing it doesn't overwrite our exports
+if grep -q "^DATABASE_URL=" "$ENV_FILE"; then
+  sed -i 's|^DATABASE_URL=.*|DATABASE_URL="file:/share/sprout-track/baby-tracker.db"|' "$ENV_FILE"
+else
+  echo 'DATABASE_URL="file:/share/sprout-track/baby-tracker.db"' >> "$ENV_FILE"
+fi
+
 if grep -q "^LOG_DATABASE_URL=" "$ENV_FILE"; then
   sed -i 's|^LOG_DATABASE_URL=.*|LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"|' "$ENV_FILE"
 else
@@ -31,33 +42,28 @@ set -a
 . "$ENV_FILE"
 set +a
 
-# Re-assert LOG_DATABASE_URL after sourcing
+# Re-assert database URLs after sourcing in case the env file still had stale values
+export DATABASE_URL="file:/share/sprout-track/baby-tracker.db"
 export LOG_DATABASE_URL="file:/share/sprout-track/baby-tracker-logs.db"
+
+bashio::log.info "DATABASE_URL: $DATABASE_URL"
 
 bashio::log.info "Configuring Prisma schemas..."
 
-# Step 1: Run prisma-provider.js to set the sqlite provider. This also hardcodes
+# Run prisma-provider.js to set the sqlite provider. This also hardcodes
 # url = "file:../db/baby-tracker.db" in schema.prisma.
 node scripts/prisma-provider.js
 
-# Step 2: Immediately overwrite the hardcoded URL with the absolute HA path.
-#
-# WHY: prisma-provider.js hardcodes a relative SQLite path. The Prisma CLI resolves
-# relative paths from the schema file location (/app/prisma/), producing /app/db/baby-tracker.db.
-# The Prisma CLIENT resolves relative paths from the process CWD (/app/), producing
-# /db/baby-tracker.db. These are DIFFERENT files, so db push creates tables in one
-# location and the running app reads from another (empty) database.
-#
-# Using an absolute path guarantees both the CLI and the generated client connect to
-# the same /share/sprout-track/baby-tracker.db file every time.
+# Patch schema.prisma to use the absolute HA path.
+# prisma-provider.js hardcodes a relative URL. The Prisma CLI resolves relative
+# SQLite paths from the schema file location (/app/prisma/), but the runtime
+# Prisma client resolves from CWD (/app/) — different directories, different files.
+# An absolute path guarantees both connect to the same /share/sprout-track/ file.
 sed -i 's|url      = "file:../db/baby-tracker.db"|url      = "file:/share/sprout-track/baby-tracker.db"|' /app/prisma/schema.prisma
-
 bashio::log.info "Schema patched: url = file:/share/sprout-track/baby-tracker.db"
 
-# Step 3: Generate Prisma clients with the patched schema. The absolute path gets
-# embedded in the generated client so the app and seed also connect to the right file.
-# Call prisma directly (not npm run prisma:generate) to avoid re-running prisma:prepare
-# which would revert our schema patch.
+# Generate Prisma clients using the patched schema (call npx directly to avoid
+# npm run prisma:generate which re-runs prisma:prepare and reverts the patch)
 bashio::log.info "Generating Prisma clients..."
 npx prisma generate
 npx prisma generate --schema=prisma/log-schema.prisma
