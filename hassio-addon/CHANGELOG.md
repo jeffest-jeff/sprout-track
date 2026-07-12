@@ -1,3 +1,10 @@
+## 1.3.8
+
+- Build from GHCR (fork's own image) so all customizations are included
+- Add "Open Web UI" button to the addon page
+- Add panel_icon and panel_title for sidebar integration
+- Document sidebar setup via panel_iframe in configuration.yaml
+
 ## 1.3.7
 
 - Fix database initialization: also export DATABASE_URL as absolute path so the Prisma runtime client connects to the same file as the CLI

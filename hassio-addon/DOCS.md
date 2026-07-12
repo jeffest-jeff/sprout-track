@@ -10,7 +10,7 @@ On first access, the **Setup Wizard** will guide you through:
 2. **Security setup** — system-wide PIN or per-caretaker PINs
 3. **Baby setup** — name, birth date, and feeding/diaper thresholds
 
-Open the Web UI from the addon panel or navigate to `http://<your-ha-host>:3000`.
+Click **OPEN WEB UI** on the addon page, or navigate to `http://<your-ha-host>:3000`.
 
 Default admin password for the Family Manager (`/family-manager`): **`admin`**
 
@@ -54,6 +54,21 @@ Optionally, enable **Cloudflare Access SSO** so account holders are signed in au
    - `CLOUDFLARE_ACCESS_SKIP_PIN` — `true`
 
 When configured, users arriving via the tunnel are signed in automatically. Local access always uses the normal PIN or account login.
+
+## HA Sidebar Shortcut
+
+To add Sprout Track to the Home Assistant sidebar, add the following to your `configuration.yaml` and restart HA:
+
+```yaml
+panel_iframe:
+  sprout_track:
+    title: Sprout Track
+    icon: mdi:baby-carriage
+    url: http://homeassistant.local:3000
+    require_admin: false
+```
+
+Replace `homeassistant.local` with your HA host IP or hostname if needed. The panel opens Sprout Track in a full-page frame inside the HA UI.
 
 ## Multi-Caretaker Setup
 

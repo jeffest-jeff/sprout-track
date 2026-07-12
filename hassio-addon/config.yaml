@@ -1,11 +1,14 @@
 name: "Sprout Track"
 description: "Baby activity tracker - self-hosted"
-version: "1.3.7"
+version: "1.3.8"
 slug: "sprout_track"
 init: false
 arch:
   - amd64
   - aarch64
+webui: http://[HOST]:[PORT:3000]
+panel_icon: mdi:baby-carriage
+panel_title: Sprout Track
 ports:
   3000/tcp: 3000
 ports_description:
